@@ -8,7 +8,7 @@ using System.Threading;
 using MahApps.Metro;
 using LEPOSWPF.SplashScreen;
 
-namespace Lepos
+namespace LeposWPF
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -28,8 +28,8 @@ namespace Lepos
 
             for (int i = 1; i <= 10; i += 1)
             {
-                MessageListener.Instance.ReceiveMessage(string.Format("{0}%", i*10));
-                Thread.Sleep(1000);
+                MessageListener.Instance.ReceiveMessage(string.Format("{0}%", i * 10));
+                Thread.Sleep(100);
             }
 
             Splasher.CloseSplash();

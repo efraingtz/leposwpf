@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using MahApps.Metro;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,5 +25,9 @@ namespace LEPOSWPF.SplashScreen
         {
             InitializeComponent();
         }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+      }
     }
 }
