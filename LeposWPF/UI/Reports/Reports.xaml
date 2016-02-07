@@ -1,0 +1,77 @@
+﻿<Controls:MetroWindow x:Class="LeposWPF.UI.Reports.Reports"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:fa="http://schemas.fontawesome.io/icons/"
+                      xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                      xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+                      xmlns:vsm="clr-namespace:System.Windows;assembly=WPFToolkit"
+                      Title="Deudas"
+                      Width="1150"
+                      Height="768"
+                      FontSize="16"
+                      FontWeight="Bold"
+                      WindowStartupLocation="CenterOwner"
+                      Loaded="MetroWindow_Loaded"
+                      WindowState="Maximized"
+                      >
+    <Window.Resources>
+    </Window.Resources>
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="14*" />
+            <RowDefinition Height="86*"/>
+        </Grid.RowDefinitions>
+        <Viewbox HorizontalAlignment="Left">
+            <Border HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Margin="2,0,2,0" Grid.Row="0" Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="0,0,0,0">
+                <GroupBox Header="Datos del Reporte"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid Name="groupBoxGrid"  HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Name="logoImage"
+                               Grid.Column="3"
+                               Margin="0"
+                               Height="40"
+                               ToolTip="Logo" 
+                               Source="/Lepos;component/LocalResources/default_logo.png" />
+                        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                            <Label Foreground="Gray">Inicio -</Label>
+                            <DatePicker Focusable="False"  Margin="10,0,0,0" Name="purchasesStartDatePicker"></DatePicker>
+                            <Label Margin="10,0,0,0" Foreground="Gray">Fin -</Label>
+                            <DatePicker Focusable="False" Margin="10,0,0,0" Name="purchasesEndDatePicker"></DatePicker>
+                            <ComboBox Name="typeReportComboBox" Margin="10,0,0,0">
+                            </ComboBox>
+                            <Button Name="reportButton" Click="reportButton_Click" Margin="10,0,0,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa:ImageAwesome Style="{StaticResource styleImageAwesome}" Icon="Search" />
+                                    <fa:FontAwesome Style="{StaticResource styleFontAwesome}" Text="Ver Reporte" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+            </Border>
+        </Viewbox>
+        <Viewbox ScrollViewer.HorizontalScrollBarVisibility="Auto" Name="dataGridContainerViewBox" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Stretch" >
+            <Border BorderBrush="Gray" BorderThickness="0,2,0,2">
+                <ScrollViewer 
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto">
+                    <DataGrid Name="debtsDataGrid"
+                                      Margin="6,0,6,0"
+                                      MaxColumnWidth="200"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch">
+                    </DataGrid>
+                </ScrollViewer>
+            </Border>
+        </Viewbox>
+    </Grid>
+</Controls:MetroWindow>

@@ -26,10 +26,10 @@ namespace LeposWPF
             Splasher.Splash = new SplashLoadingWindow();
             Splasher.ShowSplash();
 
-            for (int i = 1; i <= 10; i += 1)
+            for (int i = 1; i <= 100; i += 2)
             {
-                MessageListener.Instance.ReceiveMessage(string.Format("{0}%", i * 10));
-                Thread.Sleep(100);
+                MessageListener.Instance.ReceiveMessage(string.Format("{0}%", i));
+                Thread.Sleep(50);
             }
 
             Splasher.CloseSplash();

@@ -11,45 +11,37 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LeposWPF
+namespace LeposWPF.UI
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for SaleDetail.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class SaleDetail : MetroWindow
     {
         #region Constructors
-        /// <summary>
-        /// Empty constructor
-        /// </summary>
-        public MainWindow()
+        public SaleDetail(Window window)
         {
             InitializeComponent();
         }
         #endregion
-        #region Interface
+        #region UI Events
         /// <summary>
-        /// Loaded event for current instance
+        /// Event for loading window
         /// </summary>
         /// <param name="sender">Sender object</param>
         /// <param name="e">Event of sender object</param>
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            dateLabel.Content += DateTime.Now.ToShortDateString();
-        }
-        #endregion
-        #region Buttons
-        /// <summary>
-        /// Close current window
-        /// </summary>
-        /// <param name="sender">Sender object</param>
-        /// <param name="e">Event of sender object</param>
-        private void exitButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
+            productsDataGrid.Width = ActualWidth;
+            var source = new List<Test>();
+            source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
+            source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
+            source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
+            source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
+            productsDataGrid.ItemsSource = source;
+            productsDataGrid.Height = dataGridContainerViewBox.ActualHeight;
         }
         #endregion
     }

@@ -1,0 +1,75 @@
+﻿<Controls:MetroWindow x:Class="LeposWPF.UI.PaymentsPurchase"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:fa="http://schemas.fontawesome.io/icons/"
+                      xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                      Title="Historial de Abonos Compra"
+                      Height="436"
+                      Width="714"
+                      FontSize="16"
+                      FontWeight="Bold"
+                      WindowStartupLocation="CenterScreen"
+                      Loaded="MetroWindow_Loaded"
+                      >
+    <Window.Resources>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="6*"></RowDefinition>
+            <RowDefinition Height="4*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Viewbox Grid.Row="0" Stretch="Uniform" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="Proveedor:" Foreground="gray"  />
+                <TextBox Margin="6" Width="100" Grid.Column="1" Grid.Row="0" x:Name="providerTextBox" TextAlignment="Center" />
+                <Label Grid.Row="1" Grid.Column="0" Content="#Compra:" Foreground="gray"  />
+                <TextBox Margin="6" Width="100" Grid.Column="1" Grid.Row="1" x:Name="purchaseIDTextBox" TextAlignment="Center" />
+                <Label Grid.Row="2" Grid.Column="0" Content="Folio:" Foreground="gray" />
+                <TextBox Margin="6" Width="100" Grid.Column="1" Grid.Row="2" x:Name="folioTextBox" TextAlignment="Center" />
+                <Label Grid.Row="3" Grid.Column="0" Content="Costo:" Foreground="gray" />
+                <TextBox Margin="6" Width="100" Grid.Column="1" Grid.Row="3" x:Name="costTextBox" TextAlignment="Center" />
+                <Label Grid.Row="4" Grid.Column="0" Content="Total Abonos:" Foreground="gray"  />
+                <TextBox Margin="6" Width="100" Grid.Column="1" Grid.Row="4" x:Name="paymentsTextBox" TextAlignment="Center" />
+                <Label Grid.Row="5" Grid.Column="0" Content="Adeudo:" Foreground="gray"  />
+                <TextBox Margin="6" Width="100" Grid.Column="1" Grid.Row="5" x:Name="debtTextBox" TextAlignment="Center" />
+               
+                <Image Name="logoImage"
+                   Grid.Row="0"
+                   Grid.Column="2"
+                   Grid.RowSpan="5"
+                   Margin="20"
+                   Height="80"
+                   ToolTip="Logo" 
+                   Source="/Lepos;component/LocalResources/default_logo.png"
+                   />
+            </Grid>
+        </Viewbox>
+        <Viewbox Name="dataGridContainerViewBox" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+            <DataGrid Name="paymentsDataGrid" 
+                      BorderBrush="Gray"
+                      BorderThickness="2"
+                      Margin="6,0,6,0"
+                      MaxColumnWidth="200"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"/>
+        </Viewbox>
+    </Grid>
+</Controls:MetroWindow>

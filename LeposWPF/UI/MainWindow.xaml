@@ -1,0 +1,361 @@
+﻿<Controls:MetroWindow x:Class="LeposWPF.UI.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:fa="http://schemas.fontawesome.io/icons/"
+                      xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      Title="Inicio"
+                      Width="1150"
+                      Height="768"
+                      FontSize="16"
+                      FontWeight="Bold"
+                      WindowStartupLocation="CenterOwner"
+                      Loaded="MetroWindow_Loaded"
+                      Closed="MetroWindow_Closed"
+                      WindowState="Maximized">
+    <Window.Resources>
+        <Style x:Key="largeTileStyle" TargetType="mah:Tile">
+            <Setter Property="Width" Value="275" />
+            <Setter Property="Height" Value="125" />
+            <Setter Property="TitleFontSize" Value="15" />
+        </Style>
+
+        <Style x:Key="mediumTileStyle" TargetType="mah:Tile">
+            <Setter Property="Width" Value="175" />
+            <Setter Property="Height" Value="125" />
+            <Setter Property="TitleFontSize" Value="15" />
+        </Style>
+        <Style x:Key="littleTileStyle" TargetType="mah:Tile">
+            <Setter Property="Width" Value="125" />
+            <Setter Property="Height" Value="125" />
+            <Setter Property="TitleFontSize" Value="15" />
+        </Style>
+    </Window.Resources>
+    <Grid HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25*" />
+            <RowDefinition Height="75*" />
+        </Grid.RowDefinitions>
+        <Viewbox Margin="50,0,50,0" Grid.Row="0"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+            <Grid HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*" />
+                    <ColumnDefinition Width="60*" />
+                    <ColumnDefinition Width="10*" />
+                    <ColumnDefinition Width="10*" />
+                    <ColumnDefinition Width="10*" />
+                </Grid.ColumnDefinitions>
+
+                <Image Name="logoImage"
+                   Grid.Column="0"
+                   Margin="20"
+                   Height="80"
+                   ToolTip="Logo" 
+                   Source="/Lepos;component/LocalResources/default_logo.png"
+                   />
+
+                <Grid Grid.Column="1"
+                  Margin="6"
+                  VerticalAlignment="Center">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <Grid Name="revisionReleasedStackPanel" Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition  />
+                        </Grid.ColumnDefinitions>
+                        <fa:FontAwesome Name="revisionReleasedFontAwesome"
+                                    Grid.Column="0"
+                                    Grid.Row="0"
+                                    FontSize="18"
+                                    Foreground="Gray"
+                                    Text="Lepos Punto de Venta" />
+
+                        <fa:FontAwesome Grid.Column="0"
+                                    Grid.Row="1"
+                                    FontSize="18"
+                                    Foreground="Red"
+                                    Text="Versión Actual: 2.0.1" />
+
+                        <!--  Users  -->
+                        <Label Grid.Column="1"
+                               Grid.Row="0"
+                               Margin="50,0,0,0"
+                               HorizontalAlignment="Left"
+                               Content="Usuario: "
+                               IsEnabled="False" />
+                        <ComboBox Name="usersComboBox"
+                                  Grid.Column="2"
+                                  Grid.Row="0"
+                                  Cursor="Hand"
+                                  IsEnabled="False"
+                                  IsReadOnly="True"
+                                  SelectedIndex="0">
+                            <ComboBoxItem >Administrator</ComboBoxItem>
+                        </ComboBox>
+                        <Label 
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="50,0,0,0"
+                            HorizontalAlignment="Left"
+                            Content="Fecha: "
+                            IsEnabled="False" />
+                        <Label Name="dateLabel" 
+                               Grid.Column="2"
+                               Grid.Row="1"
+                               Margin="0,0,0,0"
+                               HorizontalAlignment="Left"
+                               IsEnabled="False" />
+                    </Grid>
+                </Grid>
+
+                <!--  Settings  -->
+                <Button Name="settingsButton"
+                        Tag="LeposWPF.UI.Settings"
+                        Click="openWindow"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Transparent"
+                        Cursor="Hand"
+                        ToolTip="Configurar Catálogos">
+                    <!--<Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Name="menuItemSettings"
+                                  Tag="LeposWPF.UI.SettingsWindow"
+                                  Click="openWindow"
+                                  Command="{Binding OnOpen}"
+                                  Header="General Settings" />
+                            <Separator />
+                        </ContextMenu>
+                    </Button.ContextMenu>-->
+
+                    <fa:ImageAwesome Width="38"
+                                 Height="38"
+                                 HorizontalAlignment="Center"
+                                 Icon="Cog" />
+                </Button>
+
+
+                <Button Name="aboutButton"
+                    Tag="LeposWPF.UI.AboutWindow"
+                    Click="openWindow"
+                    Grid.Column="3"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    Cursor="Hand"
+                    ToolTip="About" Margin="6,40">
+                    <fa:ImageAwesome Width="38"
+                                 Height="38"
+                                 Icon="Info" />
+                </Button>
+
+                <Button Name="exitButton"
+                    Click="exitButton_Click"
+                    Grid.Column="4"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    Cursor="Hand"
+                    ToolTip="Exit">
+                    <fa:ImageAwesome Width="38"
+                                 Height="38"
+                                 Icon="PowerOff" />
+                </Button>
+
+            </Grid>
+        </Viewbox>
+        <Viewbox Margin="50,0,50,0" Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <!--  Nueva Venta  -->
+                    <Button Name="newSaleButton"
+                            Grid.Column="0"
+                        Tag="LeposWPF.UI.NewSale"
+                        Click="openWindow"
+                        Margin="6"
+                        Background="DarkBlue"
+                        Cursor="Hand">
+                        <mah:Tile Title="Nueva Venta"
+                              Background="DarkBlue"
+                              Style="{StaticResource largeTileStyle}">
+                            <mah:Tile.Content>
+                                <fa:ImageAwesome Width="48"
+                                             Height="48"
+                                             Margin="6"
+                                             HorizontalAlignment="Center"
+                                             Foreground="White"
+                                             Icon="Tv" />
+                            </mah:Tile.Content>
+                        </mah:Tile>
+                    </Button>
+
+                    <!--  Nueva Compra  -->
+                    <Button Name="newPurchaseButton"
+                            Grid.Column="1"
+                        Tag="LeposWPF.UI.NewPurchase"
+                        Click="openWindow"
+                        Margin="6"
+                        Background="Green"
+                        Cursor="Hand">
+                        <mah:Tile Title="Nueva Compra"
+                              Background="Green"
+                              Style="{StaticResource mediumTileStyle}">
+                            <mah:Tile.Content>
+                                <fa:ImageAwesome Width="48"
+                                             Height="48"
+                                             Margin="6"
+                                             HorizontalAlignment="Center"
+                                             Foreground="White"
+                                             Icon="ShoppingBag" />
+                            </mah:Tile.Content>
+                        </mah:Tile>
+                    </Button>
+
+                    <!--  Catalogues Button-->
+                    <Button Name="cataloguesButton"
+                            Background="Chocolate"
+                            Grid.Column="2"
+                            Margin="6"
+                            Tag="LeposWPF.UI.SettingsWindow"
+                            Click="openWindow"
+                            >
+                        <mah:Tile 
+                            Background="Chocolate"
+                              Style="{StaticResource largeTileStyle}"
+                            Title="Catálogos">
+                            <mah:Tile.Content>
+                                <fa:ImageAwesome Width="48"
+                                             Height="48"
+                                             Margin="6"
+                                             HorizontalAlignment="Center"
+                                             Foreground="White"
+                                             Icon="HddOutline" />
+                            </mah:Tile.Content>
+                        </mah:Tile>
+                    </Button>
+
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35*"></ColumnDefinition>
+                        <ColumnDefinition Width="20*"></ColumnDefinition>
+                        <ColumnDefinition Width="25*"></ColumnDefinition>
+                        <ColumnDefinition Width="20*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Ver Caja  -->
+                    <Button Name="cashRegisterButton"
+                            Grid.Column="0"
+                        Tag="LeposWPF.UI.CashRegister"
+                        Margin="6"
+                        Background="DodgerBlue"
+                        Cursor="Hand"
+                        Click="openWindow">
+                        <mah:Tile Title="Ver Caja"
+                              Background="DodgerBlue"
+                              Style="{StaticResource largeTileStyle}">
+                            <mah:Tile.Content>
+                                <fa:ImageAwesome Width="48"
+                                             Height="48"
+                                             Margin="6"
+                                             HorizontalAlignment="Center"
+                                             Foreground="White"
+                                             Icon="Cube" />
+                            </mah:Tile.Content>
+                        </mah:Tile>
+                    </Button>
+                    <!--  Historial  -->
+                    <Button Name="transactionsRecordButton"
+                            Grid.Column="1"
+                        Tag="LeposWPF.UI.TransactionsRecord"
+                        Margin="6"
+                        Background="Purple"
+                        Cursor="Hand"
+                        Click="openWindow">
+                        <mah:Tile Title="Historial"
+                              Background="Purple"
+                              Style="{StaticResource largeTileStyle}">
+                            <mah:Tile.Content>
+                                <fa:ImageAwesome Width="48"
+                                             Height="48"
+                                             Margin="6"
+                                             HorizontalAlignment="Center"
+                                             Foreground="White"
+                                             Icon="StickyNote" />
+                            </mah:Tile.Content>
+                        </mah:Tile>
+                    </Button>
+
+                    <!--  Deudas  -->
+                    <Button Name="creditRecordButton"
+                            Grid.Column="2"
+                        Tag="LeposWPF.UI.CreditRecord"
+                        Margin="6"
+                        Background="Firebrick"
+                        Cursor="Hand"
+                        Click="openWindow">
+                        <mah:Tile Title="Deudas"
+                              Background="Firebrick"
+                              Style="{StaticResource mediumTileStyle}">
+                            <mah:Tile.Content>
+                                <fa:ImageAwesome Width="48"
+                                             Height="48"
+                                             Margin="6"
+                                             HorizontalAlignment="Center"
+                                             Foreground="White"
+                                             Icon="CreditCard" />
+                            </mah:Tile.Content>
+                        </mah:Tile>
+                    </Button>
+
+                    <!--  Reportes  -->
+                    <Button Name="reportsButton"
+                            Grid.Column="3"
+                        Tag="LeposWPF.UI.Reports.Reports"
+                        Margin="6"
+                        Background="DarkRed"
+                        Cursor="Hand"
+                        Click="openWindow">
+                        <mah:Tile Title="Reportes"
+                              Background="DarkRed"
+                              Style="{StaticResource largeTileStyle}">
+                            <mah:Tile.Content>
+                                <fa:ImageAwesome Width="48"
+                                             Height="48"
+                                             HorizontalAlignment="Center"
+                                             Foreground="White"
+                                             Icon="BarChart" />
+                            </mah:Tile.Content>
+                        </mah:Tile>
+                    </Button>
+                </Grid>
+
+            </Grid>
+        </Viewbox>
+    </Grid>
+</Controls:MetroWindow>

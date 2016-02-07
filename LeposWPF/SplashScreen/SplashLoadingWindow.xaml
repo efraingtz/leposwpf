@@ -3,20 +3,33 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:LEPOSWPF.SplashScreen"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="Loading Lepos" 
-        Height="236" Width="414" WindowStartupLocation="CenterScreen" 
-        ShowInTaskbar="False" ResizeMode="NoResize" WindowStyle="None"
-        Background="White">
-    <Grid >
-        <Image Name="wODPBSGBSInfoCellImage"
-                   Grid.Column="0"
-                   Stretch="None" />
-        <Label Margin="19,2,17,80" 
-               Name="titleLabel" FontSize="31" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Foreground="DarkBlue">
-            LEPOS Point of Sale
-        </Label>
-        <TextBlock Height="28" Margin="33,0,26,25" Name="progressTextBlock" VerticalAlignment="Bottom"
-               Text="{Binding Source={x:Static local:MessageListener.Instance},Path=Message}" Foreground="SlateBlue"></TextBlock>
-        <ProgressBar Height="15" Width="350" Margin="22,166,20,16" IsIndeterminate="True" ></ProgressBar>
-    </Grid>
+        Title="Loading LeposWPF" Height="436" Width="714" WindowStartupLocation="CenterScreen" 
+        ShowInTaskbar="False" ResizeMode="NoResize" WindowStyle="None">
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Controls:MetroWindow.Resources>
+    <Viewbox Stretch="Uniform" Name="dataGridContainerViewBox"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
+        <Grid>
+            <Image Name="logoImage"
+                   Margin="20"
+                   Height="80"
+                   ToolTip="Logo" 
+                   Source="/Lepos;component/LocalResources/default_logo.png"/>
+            <Label Margin="19,2,17,80" 
+                   Name="titleLabel" FontSize="31" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Foreground="#41b1e1">
+                Lepos Punto de Venta
+            </Label>
+            <TextBlock Height="28" Margin="33,0,26,25" Name="progressTextBlock" VerticalAlignment="Bottom"
+                   Text="{Binding Source={x:Static local:MessageListener.Instance},Path=Message}" Foreground="SlateBlue"></TextBlock>
+            <ProgressBar Height="15" Width="350" Margin="22,166,20,16" IsIndeterminate="True" ></ProgressBar>
+        </Grid>
+    </Viewbox>
 </Controls:MetroWindow>

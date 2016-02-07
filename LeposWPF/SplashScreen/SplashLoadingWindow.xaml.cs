@@ -21,13 +21,12 @@ namespace LEPOSWPF.SplashScreen
     /// </summary>
     public partial class SplashLoadingWindow
     {
+        /// <summary>
+        /// Initialize current object
+        /// </summary>
         public SplashLoadingWindow()
         {
             InitializeComponent();
         }
-
-        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-      }
     }
 }

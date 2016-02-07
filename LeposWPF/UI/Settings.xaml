@@ -1,0 +1,83 @@
+﻿<Controls:MetroWindow 
+        x:Class="LeposWPF.UI.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"             
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LeposWPF.UI"
+        Loaded="MetroWindow_Loaded"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        xmlns:localControls="clr-namespace:LeposWPF.UI.Controls"
+        mc:Ignorable="d"
+        Title="Settings">
+    <Grid>
+        <Viewbox HorizontalAlignment="Left" VerticalAlignment="Top" Name="mainViewBox">
+            <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TabItem Header="Datos Empresa">
+                    <localControls:CompanyInfo Height="411" Margin="0,0,0.333,0" RenderTransformOrigin="0.5,0.5">
+                        <localControls:CompanyInfo.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform AngleX="-0.46"/>
+                                <RotateTransform/>
+                                <TranslateTransform X="-1.533"/>
+                            </TransformGroup>
+                        </localControls:CompanyInfo.RenderTransform>
+                    </localControls:CompanyInfo>
+                </TabItem>
+                <TabItem Header="Cambiar Logo">
+                    <localControls:Logo Height="411" Margin="0,0,0.333,0" RenderTransformOrigin="0.5,0.5">
+                        <localControls:Logo.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform AngleX="-0.46"/>
+                                <RotateTransform/>
+                                <TranslateTransform X="-1.533"/>
+                            </TransformGroup>
+                        </localControls:Logo.RenderTransform>
+                    </localControls:Logo>
+                </TabItem>
+                <TabItem Header="Seleccionar Impresora">
+                    <localControls:ConfigPrinter Height="411" Margin="0,0,0.333,0" RenderTransformOrigin="0.5,0.5">
+                        <localControls:ConfigPrinter.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform AngleX="-0.46"/>
+                                <RotateTransform/>
+                                <TranslateTransform X="-1.533"/>
+                            </TransformGroup>
+                        </localControls:ConfigPrinter.RenderTransform>
+                    </localControls:ConfigPrinter>
+                </TabItem>
+                <TabItem Header="Exportar/Importar información">
+                    <localControls:ImportExport Height="411" Margin="0,0,0.333,0" RenderTransformOrigin="0.5,0.5">
+                        <localControls:ImportExport.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform AngleX="-0.46"/>
+                                <RotateTransform/>
+                                <TranslateTransform X="-1.533"/>
+                            </TransformGroup>
+                        </localControls:ImportExport.RenderTransform>
+                    </localControls:ImportExport>
+                </TabItem>
+                <TabItem Header="Depurar Información">
+                    <localControls:EraseData Height="411" Margin="0,0,0.333,0" RenderTransformOrigin="0.5,0.5">
+                        <localControls:EraseData.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform AngleX="-0.46"/>
+                                <RotateTransform/>
+                                <TranslateTransform X="-1.533"/>
+                            </TransformGroup>
+                        </localControls:EraseData.RenderTransform>
+                    </localControls:EraseData>
+                </TabItem>
+            </TabControl>
+        </Viewbox>
+    </Grid>
+</Controls:MetroWindow>
