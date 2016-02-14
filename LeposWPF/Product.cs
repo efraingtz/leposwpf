@@ -11,6 +11,7 @@ namespace LeposWPF.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     /// <summary>
     ///  Class that maps a product to the database
     /// </summary>
@@ -30,47 +31,58 @@ namespace LeposWPF.Model
         /// <summary>
         /// Identifier of the current object
         /// </summary>
+        [Display(Name = "ID", AutoGenerateField = false)]
         public string ID { get; set; }
         /// <summary>
         /// Price of the product
         /// </summary>
+        [Display(Name = "Precio", AutoGenerateField = true)]
         public double Price { get; set; }
         /// <summary>
         /// Wholesale price of the product
         /// </summary>
+        [Display(Name = "Precio Mayoreo", AutoGenerateField = true)]
         public double WholeSalePrice { get; set; }
         /// <summary>
         /// Cost of the product
         /// </summary>
+        [Display(Name = "Costo", AutoGenerateField = true)]
         public double Cost { get; set; }
         /// <summary>
         /// Actual quantity in stock of the product
         /// </summary>
+        [Display(Name="Cantidad Actual", AutoGenerateField = true)]
         public double Quantity { get; set; }
         /// <summary>
         /// Minimum quantity that needs to be on stock for the product
         /// </summary>
+        [Display(Name = "Mínimo en Inventario", AutoGenerateField = true)]
         public double MinimumQuanity { get; set; }
         /// <summary>
         /// Description of the product
         /// </summary>
+        [Display(Name="Descripción", AutoGenerateField = true)]
         public string Description { get; set; }
         /// <summary>
         /// Date of birth in the system of the product
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public System.DateTime Birth { get; set; }
         /// <summary>
         /// Date of death in the system of the product
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public System.DateTime Death { get; set; }
         /// <summary>
         /// Flag that indicates if the product is still active in the system
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public bool IsAlive { get; set; }
         /// <summary>
         /// List of times this product has had its values updated
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
         public virtual ICollection<ProductPrice> ProductPrices { get; set; }
         #endregion
     }

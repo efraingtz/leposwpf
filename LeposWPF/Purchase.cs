@@ -11,9 +11,16 @@ namespace LeposWPF.Model
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    /// <summary>
+    /// Initialize current instance
+    /// </summary>
     public partial class Purchase
     {
+        #region Constructors
+        /// <summary>
+        /// Initialize current instance
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Purchase()
         {
@@ -21,23 +28,77 @@ namespace LeposWPF.Model
             this.PurchasePayments = new HashSet<PurchasePayment>();
             this.PurchaseProducts = new HashSet<PurchaseProduct>();
         }
-    
+        #endregion
+        #region Declaration
+        /// <summary>
+        /// Identifier of current instance
+        /// </summary>
+        [Display(AutoGenerateField = false)]
         public long ID { get; set; }
+        /// <summary>
+        /// Foreign ID of provider
+        /// </summary>
+        [Display(Name = "Proveedor", AutoGenerateField = true, Description = "Template")]
         public long Provider_ID { get; set; }
+        /// <summary>
+        /// Foreign ID of user
+        /// </summary>
+        [Display(Name = "Registrado", AutoGenerateField = true, Description = "Template")]
         public string User_ID { get; set; }
+        /// <summary>
+        /// Flag that indicates if the sell was on credit
+        /// </summary>
+        [Display(Name = "Compra a Crédito", AutoGenerateField = true)]
         public bool IsCredit { get; set; }
+        /// <summary>
+        /// Days to liquidate the credit sell
+        /// </summary>
+        [Display(Name = "Días Crédito", AutoGenerateField = true)]
         public int CreditDays { get; set; }
+        /// <summary>
+        /// Folio provided
+        /// </summary>
+        [Display(Name = "Folio", AutoGenerateField = true)]
         public string Folio { get; set; }
+        /// <summary>
+        /// Date of the purchase
+        /// </summary>
+        [Display(Name = "Fecha", AutoGenerateField = true)]
         public System.DateTime Date { get; set; }
+        /// <summary>
+        /// Total of the purchase
+        /// </summary>
+        [Display(Name="Total",AutoGenerateField = true)]
         public double Total { get; set; }
     
+        /// <summary>
+        /// List of ProductPrice of current products
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
         public virtual ICollection<ProductPrice> ProductPrices { get; set; }
+        /// <summary>
+        /// Map foreign instance of provider
+        /// </summary>
+        [Display(AutoGenerateField = false)]
         public virtual Provider Provider { get; set; }
+        /// <summary>
+        /// Map foreign instance of user
+        /// </summary>
+        [Display(AutoGenerateField = false)]
         public virtual User User { get; set; }
+        /// <summary>
+        /// List of PurchasePayment done to current purchase
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
         public virtual ICollection<PurchasePayment> PurchasePayments { get; set; }
+        /// <summary>
+        /// List of products purchased
+        /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
         public virtual ICollection<PurchaseProduct> PurchaseProducts { get; set; }
+        #endregion
     }
 }

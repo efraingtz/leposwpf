@@ -11,6 +11,7 @@ namespace LeposWPF.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;    
     /// <summary>
     /// Class that maps a ProductPrice to the database
     /// </summary>
@@ -20,39 +21,48 @@ namespace LeposWPF.Model
         /// <summary>
         /// Identifier of the current instance
         /// </summary>
+        [Display(Name = "ID", AutoGenerateField = false)]
         public long ID { get; set; }
         /// <summary>
         /// Foreign ID of the product
         /// </summary>
+        [Display(Name = "Producto", AutoGenerateField = true, Description ="Template")]
         public string Product_ID { get; set; }
         /// <summary>
         /// Foreign ID of user that made the tansaction
         /// </summary>
+        [Display(Name = "Usuario", AutoGenerateField = false, Description = "Template")]
         public string User_ID { get; set; }
         /// <summary>
         /// Foreign ID of purchase
         /// </summary>
+        [Display(Name = "ID Compra", AutoGenerateField = true,, Description = "Template")]
         public Nullable<long> Purchase_ID { get; set; }
         /// <summary>
         /// Price of the product updated
         /// </summary>
+        [Display(Name = "Precio", AutoGenerateField = true)]
         public double Price { get; set; }
         /// <summary>
         /// Date of the transaction
         /// </summary>
+        [Display(Name = "Fecha", AutoGenerateField = true)]
         public System.DateTime Date { get; set; }
-        
+
         /// <summary>
         /// Mapped instance of product
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public virtual Product Product { get; set; }
         /// <summary>
         /// Mapped instace of purchase
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public virtual Purchase Purchase { get; set; }
         /// <summary>
         /// Mapped instace of user
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public virtual User User { get; set; }
         #endregion
     }

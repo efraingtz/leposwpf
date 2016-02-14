@@ -11,6 +11,7 @@ namespace LeposWPF.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     /// <summary>
     /// Class that maps a Sale to the database
     /// </summary>
@@ -31,65 +32,80 @@ namespace LeposWPF.Model
         /// <summary>
         /// Identifier of current instance
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public long ID { get; set; }
         /// <summary>
         /// Foreign ID of client
         /// </summary>
+        [Display(Name = "Cliente", AutoGenerateField = true, Description = "Template")]
         public long Client_ID { get; set; }
         /// <summary>
         /// Foreign ID of user
         /// </summary>
+        [Display(Name = "Registrado", AutoGenerateField = true, Description = "Template")]
         public string User_ID { get; set; }
         /// <summary>
         /// Date of transaction
         /// </summary>
+        [Display(Name = "Fecha", AutoGenerateField = true)]
         public System.DateTime Date { get; set; }
         /// <summary>
         /// Flag that indicates if it's wholesale price
         /// </summary>
+        [Display(Name = "Mayoreo", AutoGenerateField = true)]
         public bool IsWholeSale { get; set; }
         /// <summary>
         /// Flag that indicates if the sale's been sold on credit
         /// </summary>
+        [Display(Name = "Crédito", AutoGenerateField = true)]
         public bool IsCredit { get; set; }
         /// <summary>
         /// Days to liquidate the sell if it's been done on credit
         /// </summary>
+        [Display(Name = "Días Crédito", AutoGenerateField = true)]
         public int CreditDays { get; set; }
         /// <summary>
         /// Value of discount
         /// </summary>
+        [Display(Name = "Descuento", AutoGenerateField = true)]
         public double Discount { get; set; }
         /// <summary>
         /// Type of IVA
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public int IVAType { get; set; }
         /// <summary>
         /// SubtTotal value
         /// </summary>
+        [Display(Name = "SubTotal", AutoGenerateField = true)]
         public double SubTotal { get; set; }
         /// <summary>
         /// Total value
         /// </summary>
+        [Display(Name="Total",AutoGenerateField = true)]
         public double Total { get; set; }
-    
+
         /// <summary>
         /// Map foreign instance of Client
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public virtual Client Client { get; set; }
         /// <summary>
         /// Map foreign instance of User
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public virtual User User { get; set; }
         /// <summary>
         /// Map foreing instance of SalePayment
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
         public virtual ICollection<SalePayment> SalePayments { get; set; }
         /// <summary>
         /// Map foreign instance of SaleProduct
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
         public virtual ICollection<SaleProduct> SaleProducts { get; set; }
         #endregion
     }

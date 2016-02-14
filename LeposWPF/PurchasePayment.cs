@@ -11,6 +11,7 @@ namespace LeposWPF.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     /// <summary>
     /// Class that maps a PurchasePayment to the database
     /// </summary>
@@ -20,31 +21,38 @@ namespace LeposWPF.Model
         /// <summary>
         /// Identifier of the current instance
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public long ID { get; set; }
         /// <summary>
         /// Foreign purchase ID
         /// </summary>
+        [Display(Name="ID Compra",AutoGenerateField = false, Description = "Template")]
         public long Purchase_ID { get; set; }
         /// <summary>
         /// Foreign user ID
         /// </summary>
+        [Display(Name="Registrado", AutoGenerateField = true, Description = "Template")]
         public string User_ID { get; set; }
         /// <summary>
         /// Date of the transaction
         /// </summary>
+        [Display(Name="Fecha",AutoGenerateField = true)]
         public System.DateTime Date { get; set; }
         /// <summary>
         /// Value of payment done
         /// </summary>
+        [Display(Name = "Abono", AutoGenerateField = true)]
         public double Payment { get; set; }
 
         /// <summary>
         /// Mapped instace of purchase
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public virtual Purchase Purchase { get; set; }
         /// <summary>
         /// Mapped instace of user
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public virtual User User { get; set; }
         #endregion
     }

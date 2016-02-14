@@ -11,6 +11,7 @@ namespace LeposWPF.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     /// <summary>
     /// Class that maps a user to the database
     /// </summary>
@@ -34,52 +35,63 @@ namespace LeposWPF.Model
         /// <summary>
         /// Identifier for the local instance
         /// </summary>
+        [Display(Name="ID",AutoGenerateField = true)]
         public string ID { get; set; }
         /// <summary>
         /// Password of the user
         /// </summary>
+        [Display(Name="Password",AutoGenerateField = false)]
         public string Password { get; set; }
         /// <summary>
         /// Type of user, indicating its privileges
         /// </summary>
+        [Display(Name="Tipo",AutoGenerateField = true,Description ="Template")]
         public int Type { get; set; }
         /// <summary>
         /// Date of user's birth in the system
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public System.DateTime Birth { get; set; }
         /// <summary>
         /// Date of user's death in the system
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public System.DateTime Death { get; set; }
         /// <summary>
         /// Flag that indicates if the user is still active
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public bool IsAlive { get; set; }
 
         /// <summary>
         /// List of the times a user has updated a product's value
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
         public virtual ICollection<ProductPrice> ProductPrices { get; set; }
         /// <summary>
         /// List of purchases done by the user
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
         public virtual ICollection<Purchase> Purchases { get; set; }
         /// <summary>
         /// List of purchases payments done by the user
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
         public virtual ICollection<PurchasePayment> PurchasePayments { get; set; }
         /// <summary>
         /// List of sales done by the user
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
         public virtual ICollection<Sale> Sales { get; set; }
         /// <summary>
         /// List of sales payments done by the user
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
         public virtual ICollection<SalePayment> SalePayments { get; set; }
         #endregion
     }

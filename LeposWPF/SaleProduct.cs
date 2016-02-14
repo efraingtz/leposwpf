@@ -11,6 +11,7 @@ namespace LeposWPF.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     /// <summary>
     /// Class that maps a SaleProduct to the database
     /// </summary>
@@ -20,23 +21,28 @@ namespace LeposWPF.Model
         /// <summary>
         /// Foreign ID of sale
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public long Sale_ID { get; set; }
         /// <summary>
         /// Foreign ID of product
         /// </summary>
+        [Display(Name = "Producto", AutoGenerateField = true, Description = "Template")]
         public string Product_ID { get; set; }
         /// <summary>
         /// Quantity of sold products
         /// </summary>
+        [Display(Name = "Cantidad", AutoGenerateField = true)]
         public double Quantity { get; set; }
         /// <summary>
         /// Price of product
         /// </summary>
+        [Display(Name="Precio", AutoGenerateField = true)]
         public double Price { get; set; }
-        
+
         /// <summary>
         /// Map foreign instance of sale
         /// </summary>
+        [Display(AutoGenerateField = false)]
         public virtual Sale Sale { get; set; }
         #endregion
     }
