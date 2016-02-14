@@ -36,7 +36,7 @@ namespace LeposWPF.Model
         /// <summary>
         /// Foreign ID of purchase
         /// </summary>
-        [Display(Name = "ID Compra", AutoGenerateField = true,, Description = "Template")]
+        [Display(Name = "ID Compra", AutoGenerateField = true, Description = "Template")]
         public Nullable<long> Purchase_ID { get; set; }
         /// <summary>
         /// Price of the product updated
