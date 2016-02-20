@@ -54,6 +54,14 @@ namespace LeposWPF.Model
         /// </summary>
         public string Printer { get; set; }
         /// <summary>
+        /// Font size of the paper
+        /// </summary>
+        public string FontSize { get; set; }
+        /// <summary>
+        /// Characters per line in the paper
+        /// </summary>
+        public string CharsPerLine { get; set; }
+        /// <summary>
         /// Money stored in the cash register
         /// </summary>
         public double Cash { get; set; }

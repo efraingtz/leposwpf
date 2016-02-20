@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Lepos.Model.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=&quot;C:\Users\Payo\Documents\Visual Studio 2015\Projects\Lepos\LeposWPF\DB\lepos_DB&quot;;password=un2CeJr8VSmnxKPq" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Lepos.Model.Store" Provider="System.Data.SQLite.EF6" ProviderManifestToken="data source=&quot;C:\Users\Payo\Documents\Visual Studio 2015\Projects\Lepos\LeposWPF\DB\lepos_DB&quot;;password=un2CeJr8VSmnxKPq" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="ID" />
@@ -32,6 +32,8 @@
           <Property Name="IVAType" Type="int" Nullable="false" />
           <Property Name="Logo" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Printer" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="FontSize" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CharsPerLine" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Cash" Type="real" Nullable="false" />
           <Property Name="IsActivated" Type="bit" Nullable="false" />
           <Property Name="DateActivated" Type="datetime" Nullable="false" />
@@ -379,8 +381,7 @@
             <End Role="SaleProduct" EntitySet="SaleProduct" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="LeposWPF.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -416,6 +417,8 @@
           <Property Name="IsActivated" Type="Boolean" Nullable="false" />
           <Property Name="DateActivated" Type="DateTime" Nullable="false" />
           <Property Name="Version" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FontSize" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CharsPerLine" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -808,6 +811,8 @@
           <EntitySetMapping Name="Companies">
             <EntityTypeMapping TypeName="LeposWPF.Model.Company">
               <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="CharsPerLine" ColumnName="CharsPerLine" />
+                <ScalarProperty Name="FontSize" ColumnName="FontSize" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="RFC" ColumnName="RFC" />

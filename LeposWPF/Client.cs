@@ -25,6 +25,7 @@ namespace LeposWPF.Model
         public Client()
         {
             this.Sales = new HashSet<Sale>();
+            this.Birth = DateTime.Now;
         }
         #endregion
         #region Definition
