@@ -25,7 +25,7 @@ namespace LeposWPF.Model
         public Provider()
         {
             this.Purchases = new HashSet<Purchase>();
-            this.ID = -1;
+            this.IsAlive = true;
         }
         #endregion
         #region Definition

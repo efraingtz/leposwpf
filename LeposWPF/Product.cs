@@ -25,13 +25,14 @@ namespace LeposWPF.Model
         public Product()
         {
             this.ProductPrices = new HashSet<ProductPrice>();
+            this.IsAlive = true;
         }
         #endregion
         #region Definition
         /// <summary>
         /// Identifier of the current object
         /// </summary>
-        [Display(Name = "ID", AutoGenerateField = false)]
+        [Display(Name = "Código de Barras", AutoGenerateField = true)]
         public string ID { get; set; }
         /// <summary>
         /// Price of the product

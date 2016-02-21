@@ -29,6 +29,8 @@ namespace LeposWPF.Model
             this.PurchasePayments = new HashSet<PurchasePayment>();
             this.Sales = new HashSet<Sale>();
             this.SalePayments = new HashSet<SalePayment>();
+            this.IsAlive = true;
+            this.Birth = DateTime.Today;
         }
         #endregion
         #region Definition
@@ -47,6 +49,26 @@ namespace LeposWPF.Model
         /// </summary>
         [Display(Name="Tipo",AutoGenerateField = true,Description ="Template")]
         public int Type { get; set; }
+        /// <summary>
+        /// Type of user, indicating its privileges as a string
+        /// </summary>
+        [Display(AutoGenerateField = false)]
+        public String TypeName {
+            get
+            {
+                String type = String.Empty;
+                switch (Type)
+                {
+                    case 0:
+                        type = "Administrador";
+                        break;
+                    case 1:
+                        type = "Vendedor de mostrador";
+                        break;
+                }
+                return type;
+            }
+        }
         /// <summary>
         /// Date of user's birth in the system
         /// </summary>

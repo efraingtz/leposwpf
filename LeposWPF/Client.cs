@@ -26,6 +26,7 @@ namespace LeposWPF.Model
         {
             this.Sales = new HashSet<Sale>();
             this.Birth = DateTime.Now;
+            this.IsAlive = true;
         }
         #endregion
         #region Definition
@@ -74,7 +75,12 @@ namespace LeposWPF.Model
         /// </summary>
         [Display(AutoGenerateField = false)]
         public bool IsAlive { get; set; }
-        
+        /// <summary>
+        /// Flag that indicates if the client is still active
+        /// </summary>
+        [Display(AutoGenerateField = true,Name ="Estado de cuenta",Description ="Template")]
+        public String AccountStatus { get; set; }
+
         /// <summary>
         /// List of sales done to the client
         /// </summary>
