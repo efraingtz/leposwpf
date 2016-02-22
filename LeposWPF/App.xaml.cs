@@ -7,6 +7,7 @@ using System.Windows;
 using System.Threading;
 using MahApps.Metro;
 using LEPOSWPF.SplashScreen;
+using LeposWPF.Helpers.Clases;
 
 namespace LeposWPF
 {
@@ -22,7 +23,8 @@ namespace LeposWPF
         [STAThread()]
         static void Main()
         {
-
+            CompanyHelper.companyExists();
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("es-MX");
             Splasher.Splash = new SplashLoadingWindow();
             Splasher.ShowSplash();
 

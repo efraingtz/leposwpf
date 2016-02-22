@@ -85,6 +85,18 @@ namespace LeposWPF.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [Display(AutoGenerateField = false)]
         public virtual ICollection<ProductPrice> ProductPrices { get; set; }
+        /// <summary>
+        /// List of times this product has been bougth
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
+        public virtual ICollection<PurchaseProduct> PurchaseProducts { get; set; }
+        /// <summary>
+        /// List of times this product has been sold
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [Display(AutoGenerateField = false)]
+        public virtual ICollection<SaleProduct> SaleProducts { get; set; }
         #endregion
     }
 }

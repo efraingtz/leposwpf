@@ -30,6 +30,8 @@ namespace LeposWPF.Model
             this.Sales = new HashSet<Sale>();
             this.SalePayments = new HashSet<SalePayment>();
             this.IsAlive = true;
+            this.IsEditable = true;
+            this.IsErasable = true;
             this.Birth = DateTime.Today;
         }
         #endregion
@@ -79,6 +81,16 @@ namespace LeposWPF.Model
         /// </summary>
         [Display(AutoGenerateField = false)]
         public System.DateTime Death { get; set; }
+        /// <summary>
+        /// Flag that indicates if the client is erasable
+        /// </summary>
+        [Display(AutoGenerateField = false)]
+        public bool IsErasable { get; set; }
+        /// <summary>
+        /// Flag that indicates if the client is editable
+        /// </summary>
+        [Display(AutoGenerateField = false)]
+        public bool IsEditable { get; set; }
         /// <summary>
         /// Flag that indicates if the user is still active
         /// </summary>

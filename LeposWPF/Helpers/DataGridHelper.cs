@@ -15,6 +15,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using LeposWPF.Model;
 
 namespace LeposWPF.Helpers
 {
@@ -62,7 +63,7 @@ namespace LeposWPF.Helpers
         /// Retrieve current entity framework connection
         /// </summary>
         /// <returns>Current connection</returns>
-        WODVPEntities getConn();
+        LeposWPFModel getConn();
 
         /// <summary>
         /// Retrieve Window Resources
@@ -93,7 +94,8 @@ namespace LeposWPF.Helpers
         /// <returns>Text from TextBlock</returns>
         internal static String getTextDG(DataGrid dataGrid, int row, int column)
         {
-            return ((TextBlock)dataGrid.Columns[column].GetCellContent(dataGrid.Items[row])).Text;
+            var data = dataGrid.Columns[column].GetCellContent(dataGrid.Items[row]);
+            return (data != null) ? (data as TextBlock).Text : String.Empty;
         }
 
         /// <summary>
@@ -156,14 +158,18 @@ namespace LeposWPF.Helpers
         /// <param name="dataGrid">DataGrid container</param>
         /// <param name="row">Row index</param>
         /// <param name="column">Column index</param>
-        /// <param name="name">TextBlock's name</param>
         /// <param name="text">New text that will be displayed inside the TextBlock</param>
-        internal static void setTextDG(DataGrid dataGrid, int row, int column, String name, String text)
+        internal static void setTextDG(DataGrid dataGrid, int row, int column, String text)
         {
-            int outVal = 0;
-            int.TryParse(((TextBlock)dataGrid.Columns[column].GetCellContent(dataGrid.Items[row])).Text, out outVal);
-            TextBlock textBlock = ((TextBlock)dataGrid.Columns[column].GetCellContent(dataGrid.Items[row]));
-            textBlock.Text = text;
+            var data = dataGrid.Columns[column].GetCellContent(dataGrid.Items[row]);
+            if (data != null)
+            {
+                if (data is TextBox)
+                    (data as TextBox).Text = text;
+                else if (data is TextBlock)
+                    (data as TextBlock).Text = text;
+            }
+
 
         }
 
@@ -379,13 +385,14 @@ namespace LeposWPF.Helpers
                 setForeignPropertiesValues(flagNew, ref objectEntity, dynamicObject, propertiesForeign);
                 setValuesToProperties(ref objectEntity, properties, values);
                 validateNewRowForeignProperty(flagNew, objectEntity, e, propertiesForeign);
+               
             }
             catch (System.Data.Entity.Infrastructure.DbUpdateException exc)
             {
                 Console.WriteLine(exc.ToString());
                 retrieveChanges();
                 System.Text.StringBuilder message = new System.Text.StringBuilder();
-                message.Append("Error: You are setting a duplicated value");
+                message.Append("Error: valor duplicado");
                 dataGrid.displayText(message.ToString(), false);
                 e.Cancel = true;
             }
@@ -394,9 +401,20 @@ namespace LeposWPF.Helpers
                 retrieveChanges();
                 System.Text.StringBuilder message = new System.Text.StringBuilder();
                 message.Append(dbevException.Message);
-                var errorMessages = dbevException.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage);
-                var fullErrorMessage = string.Join("; ", errorMessages);
-                var exceptionMessage = string.Concat("There were errors in the input values: ", fullErrorMessage);
+                var errorProperties = dbevException.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x);
+                var errorMessage = String.Empty;
+                foreach (var property in errorProperties)
+                {
+                    PropertyInfo propertyInfo = dynamicObject.GetType().GetProperty(property.PropertyName);
+                    var dataAnnotationName = propertyInfo.GetCustomAttribute<DisplayAttribute>().Name;
+                    errorMessage += dataAnnotationName + ", ";
+                }
+
+                if (errorMessage.Length > 2)
+                {
+                    errorMessage = errorMessage.Substring(0,errorMessage.Length-2);
+                }
+                var exceptionMessage = string.Concat("Error en los valores: ", errorMessage);
                 dataGrid.displayText(exceptionMessage.ToString(), false);
                 e.Cancel = true;
             }
@@ -553,7 +571,6 @@ namespace LeposWPF.Helpers
                         }
                     }
                 }
-
                 propertyInfo.SetValue(obj, safeValue, null);
             }
         }
@@ -582,7 +599,7 @@ namespace LeposWPF.Helpers
                         var dataAnnotation = custom[0];
                         String dataName = dataAnnotation.Name;
                         System.Text.StringBuilder message = new System.Text.StringBuilder();
-                        message.Append("Error: Your are Missing the Value for : " + dataName);
+                        message.Append("Error: valor vacío para : " + dataName);
                         dataGrid.displayText(message.ToString(), false);
                         e.Cancel = true;
                         return;
@@ -596,7 +613,7 @@ namespace LeposWPF.Helpers
                 value.Add(objectEntity);
             }
 
-            //dataGrid.getConn().SaveChanges();
+            dataGrid.getConn().SaveChanges();
         }
 
         /// <summary>
@@ -604,36 +621,36 @@ namespace LeposWPF.Helpers
         /// </summary>
         internal static void retrieveChanges()
         {
-            //var changedEntries = dataGrid.getConn().ChangeTracker.Entries().Where(x => x.State != EntityState.Unchanged).ToList();
+            var changedEntries = dataGrid.getConn().ChangeTracker.Entries().Where(x => x.State != EntityState.Unchanged).ToList();
 
-            //foreach (var entry in changedEntries.Where(x => x.State == EntityState.Added))
-            //{
-            //    entry.State = EntityState.Detached;
-            //}
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Added))
+            {
+                entry.State = EntityState.Detached;
+            }
 
-            //foreach (var entry in changedEntries.Where(x => x.State == EntityState.Deleted))
-            //{
-            //    entry.State = EntityState.Unchanged;
-            //}
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Unchanged;
+            }
         }
 
         /// <summary>
         /// Update the state of EntityFramework changed states
         /// </summary>
         /// <param name="conn">EntitiFramework connection</param>
-        internal static void retrieveChanges(ref WODVPEntities conn)
+        internal static void retrieveChanges(ref LeposWPFModel conn)
         {
-            //var changedEntries = conn.ChangeTracker.Entries().Where(x => x.State != EntityState.Unchanged).ToList();
+            var changedEntries = conn.ChangeTracker.Entries().Where(x => x.State != EntityState.Unchanged).ToList();
 
-            //foreach (var entry in changedEntries.Where(x => x.State == EntityState.Added))
-            //{
-            //    entry.State = EntityState.Detached;
-            //}
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Added))
+            {
+                entry.State = EntityState.Detached;
+            }
 
-            //foreach (var entry in changedEntries.Where(x => x.State == EntityState.Deleted))
-            //{
-            //    entry.State = EntityState.Unchanged;
-            //}
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Unchanged;
+            }
         }
 
         #endregion
@@ -647,26 +664,22 @@ namespace LeposWPF.Helpers
         {
             try
             {
-                PropertyDescriptor pd = (PropertyDescriptor)e.PropertyDescriptor;
-                DisplayAttribute da = (DisplayAttribute)pd.Attributes[typeof(DisplayAttribute)];
+                PropertyDescriptor propertyDescriptor = (PropertyDescriptor)e.PropertyDescriptor;
+                DisplayAttribute displayAttribute = (DisplayAttribute)propertyDescriptor.Attributes[typeof(DisplayAttribute)];
 
-                if (da.AutoGenerateField)
+                if (displayAttribute.AutoGenerateField)
                 {
-                    e.Column.Header = da.Name;
+                    e.Column.Header = displayAttribute.Name;
 
-                    if (da.Description == "ComboBox")
+                    if (displayAttribute.Description == "Template")
                     {
                         // Create counter new template column.
                         DataGridTemplateColumn templateColumn = new DataGridTemplateColumn();
-                        templateColumn.Header = da.Name;
+                        templateColumn.Header = displayAttribute.Name;
                         templateColumn.CellTemplate = (DataTemplate)dataGrid.getResources()[e.PropertyName + "CellTemplate"];
                         templateColumn.CellEditingTemplate = (DataTemplate)dataGrid.getResources()[e.PropertyName + "CellEditingTemplate"];
                         templateColumn.SortMemberPath = e.PropertyName;
                         e.Column = templateColumn;
-                        if (e.PropertyName.Equals("HourWageType_ID"))
-                        {
-                            templateColumn.SortMemberPath = "HourWageType.Code";
-                        }
                     }
                 }
                 else
@@ -704,7 +717,7 @@ namespace LeposWPF.Helpers
                     Type type = CollectionView.NewItemPlaceholder.GetType();
                     if (dinamo.GetType() != type)
                     {
-                        if (new Dialogs().msgQuestionCantBeUndone("Confirm Deleting?"))
+                        if (new Dialogs().msgQuestionCantBeUndone("Confirmar borrar el elemento?"))
                         {
                             bool flagNew = (dinamo.ID is string) ? dinamo.ID == "" : dinamo.ID == 0;
 
@@ -716,15 +729,34 @@ namespace LeposWPF.Helpers
                                 {
                                     try
                                     {
-                                        value.Remove(dinamo);
-                                        //dataGrid.getConn().SaveChanges();
+                                        if (dinamo is User)
+                                        {
+                                            User user = dinamo as User;
+                                            if (!user.IsErasable)
+                                            {
+                                                dataGrid.displayText("El elemento actual no puede ser removido", false);
+                                                return;
+                                            }
+                                        }
+                                        else if (dinamo is Client)
+                                        {
+                                            Client client = dinamo as Client;
+                                            if (!client.IsErasable)
+                                            {
+                                                dataGrid.displayText("El elemento actual no puede ser removido", false);
+                                                return;
+                                            }
+                                        }
+                                        dinamo.IsAlive = false;
+                                        dinamo.Death = DateTime.Now;
+                                        dataGrid.getConn().SaveChanges();
                                         dataGrid.fillDataGrid();
-                                        dataGrid.displayText("Data Deleted");
+                                        dataGrid.displayText("Información removida");
                                     }
                                     catch
                                     {
                                         retrieveChanges();
-                                        dataGrid.displayText("The Current Row Cannot Be Deleted", false);
+                                        dataGrid.displayText("El elemento actual no puede ser removido", false);
                                     }
                                 }
                             }

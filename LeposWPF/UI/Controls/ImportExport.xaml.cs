@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LeposWPF.Helpers;
+using LeposWPF.Helpers.Clases;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,7 +57,7 @@ namespace LeposWPF.UI.Controls
         /// <param name="e">Event of sender object</param>
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //errorTextBlock.Width = ActualWidth;
+            logoImage.Source = WindowHelper.getLogo(CompanyHelper.getLogoPath());
         }
         #endregion
     }

@@ -9,6 +9,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LeposWPF.UI"
         Loaded="MetroWindow_Loaded"
+        Closed="MetroWindow_Closed"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         xmlns:localControls="clr-namespace:LeposWPF.UI.Controls"

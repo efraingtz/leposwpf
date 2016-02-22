@@ -1,4 +1,6 @@
-﻿using MahApps.Metro;
+﻿using LeposWPF.Helpers;
+using LeposWPF.Helpers.Clases;
+using MahApps.Metro;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,7 @@ namespace LEPOSWPF.SplashScreen
         public SplashLoadingWindow()
         {
             InitializeComponent();
+            logoImage.Source = WindowHelper.getLogo(CompanyHelper.getLogoPath());
         }
     }
 }

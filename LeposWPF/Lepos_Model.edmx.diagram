@@ -30,6 +30,8 @@
         <AssociationConnector Association="LeposWPF.Model.FK_SalePayment_0_0" ManuallyRouted="false" />
         <AssociationConnector Association="LeposWPF.Model.FK_SaleProduct_1_0" ManuallyRouted="false" />
         <AssociationConnector Association="LeposWPF.Model.FK_SalePayment_1_0" ManuallyRouted="false" />
+        <AssociationConnector Association="LeposWPF.Model.FK_PurchaseProduct_0_01" />
+        <AssociationConnector Association="LeposWPF.Model.FK_SaleProduct_0_0" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

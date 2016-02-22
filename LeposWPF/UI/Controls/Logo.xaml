@@ -41,7 +41,7 @@
             <Button Margin="6" Grid.Column="0" Grid.Row="2" Name="cancelButton" Click="cancelButton_Click"  Content="Cancelar"/>
             <Button Margin="6" Grid.Column="1" Grid.Row="2" Name="saveButton" Click="saveButton_Click"  Content="Guardar"/>
 
-            <TextBlock TextAlignment="Center" Grid.Row="3" Grid.ColumnSpan="3" TextWrapping="Wrap" Name="errorTextBlock" Foreground="Red" Text="error" />
+            <TextBlock TextAlignment="Center" Grid.Row="3" Grid.ColumnSpan="3" TextWrapping="Wrap" Name="messageTextBlock" Foreground="Red" Text="" />
 
         </Grid>
     </Viewbox>

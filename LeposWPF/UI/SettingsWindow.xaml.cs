@@ -1,14 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Reflection;
+using System.Data.Entity;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Windows.Media.Animation;
 using MahApps.Metro.Controls;
+using LeposWPF.Model;
 using LeposWPF.Helpers;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using LeposWPF.Helpers.Clases;
 
 namespace LeposWPF.UI
 {
@@ -29,7 +39,7 @@ namespace LeposWPF.UI
         /// <summary>
         /// Local instance of entity framework model
         /// </summary>
-        public WODVPEntities conn { get; private set; }
+        public LeposWPFModel conn { get; private set; }
         /// <summary>
         /// Current DataGrid
         /// </summary>
@@ -58,12 +68,6 @@ namespace LeposWPF.UI
         public SettingsWindow()
         {
             InitializeComponent();
-            //this.Owner = null;
-            //collectionViewSource = (CollectionViewSource)FindResource("collectionViewSource");
-            //auxiliarCollectionViewSource = (CollectionViewSource)FindResource("auxiliarCollectionViewSource");
-            //conn = new WODVPEntities();
-            storyBoard = (Storyboard)FindResource("animate");
-            //initInterface();
         }
         #endregion
         #region Interface DataGridInterface
@@ -74,7 +78,7 @@ namespace LeposWPF.UI
         /// <param name="good">Define text color, when true it is green, when bad it is red</param>
         public void displayText(string text, bool good = true)
         {
-            WPFUIUtils.displayText(alertTextBlock, loadingProgressBar, storyBoard, text, good);
+            WindowHelper.displayText(alertTextBlock, loadingProgressBar, storyBoard, text, good);
         }
         /// <summary>
         /// Bind current control to static variable
@@ -91,12 +95,42 @@ namespace LeposWPF.UI
         {
             try
             {
-                getGridForTable();
+                mainDataGrid.Children.Clear();
+                DataGrid dataGridDynamic = currentDataGrid = new DataGrid();
+                dataGridDynamic.MaxColumnWidth = 200;
+                dataGridDynamic.Height = dataGridContainerViewBox.ActualHeight;
+                dataGridDynamic.Width = ActualWidth;
+                dataGridDynamic.HeadersVisibility = DataGridHeadersVisibility.Column;
+                dataGridDynamic.SelectionMode = DataGridSelectionMode.Single;
+                dataGridDynamic.Background = Brushes.White;
+                dataGridDynamic.AlternationCount = 2;
+                dataGridDynamic.AutoGeneratingColumn += DataGridHelper.dataGrid_AutoGeneratingColumn;
+                dataGridDynamic.RowEditEnding += dataGridDynamic_RowEditEnding;
+                dataGridDynamic.CellEditEnding += dataGridDynamic_CellEditEnding;
+                setContentDataGrid();
+                dataGridDynamic.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+                dataGridDynamic.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
+                //dataGridDynamic.CellStyle = (Style)FindResource("dataGridCellStyle");
+                //dataGridDynamic.RowStyle = (Style)FindResource("dataGridRowStyle");
+                currentDataGrid = dataGridDynamic;
+                if (lastEntityID is int)
+                {
+                    if (lastEntityID != -1)
+                    {
+                        scrollDataGrid();
+                    }
+                }
+                else scrollDataGrid();
+                mainDataGrid.Children.Add(dataGridDynamic);
             }
             catch (Exception exc)
             {
                 System.Text.StringBuilder message = new System.Text.StringBuilder();
                 message.Append(exc.Message);
+                if (exc.InnerException != null)
+                {
+                    message.Append("\n" + exc.InnerException.Message);
+                }
                 displayText(message.ToString(), false);
             }
             finally
@@ -136,7 +170,7 @@ namespace LeposWPF.UI
         /// Retrieve current connection to database
         /// </summary>
         /// <returns>Current connection</returns>
-        public WODVPEntities getConn()
+        public LeposWPFModel getConn()
         {
             return conn;
         }
@@ -152,6 +186,41 @@ namespace LeposWPF.UI
 
         #endregion
         #region UI Events
+        /// <summary>
+        /// Handle click within TextBlock
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event of sender object</param>
+        private void AccountStatus_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock textBlock = sender as TextBlock;
+            int ID = int.Parse(textBlock.Tag.ToString());
+            var client = conn.Clients.Where(a=> a.ID == ID).FirstOrDefault();
+            if (client != null)
+            {
+                Window window = new AccountStatus(this, client);
+                Hide();
+                window.ShowDialog();
+                ShowDialog();
+            }
+            else displayText("Error: El cliente aún no es guardado en la base de datos",false);
+        }
+        /// <summary>
+        /// Window loaded event
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event of sender object</param>
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            collectionViewSource = (CollectionViewSource)FindResource("collectionViewSource");
+            auxiliarCollectionViewSource = (CollectionViewSource)FindResource("auxiliarCollectionViewSource");
+            conn = new LeposWPFModel();
+            storyBoard = (Storyboard)FindResource("animate");
+            initInterface();
+            dataGridTag = productsButton.Tag.ToString();
+            displayText("Obteniendo información...");
+            fillDataGrid();
+        }
         /// <summary>
         /// Updates progress bar when value is changed
         /// </summary>
@@ -202,7 +271,7 @@ namespace LeposWPF.UI
                 lastEntityID = -1;
                 Button button = sender as Button;
                 dataGridTag = button.Tag.ToString();
-                displayText("Getting Data...");
+                displayText("Obteniendo información...");
                 fillDataGrid();
             }
             catch (Exception exc)
@@ -222,56 +291,6 @@ namespace LeposWPF.UI
         }
         #endregion
         #region Handle DataGrid
-        /// <summary>
-        /// Fill DataGrid according to the selected item
-        /// </summary>
-        /// <returns>New DataGrid created</returns>
-        private DataGrid getGridForTable()
-        {
-            DataGrid dataGridDynamic = this.dataGrid;
-            try
-            {
-                dataGridDynamic.Height = dataGridContainerViewBox.ActualHeight;
-                dataGridDynamic.Width = ActualWidth;
-                dataGridDynamic.HeadersVisibility = DataGridHeadersVisibility.Column;
-                dataGridDynamic.SelectionMode = DataGridSelectionMode.Single;
-                dataGridDynamic.Background = Brushes.White;
-                dataGridDynamic.AlternationCount = 2;
-                dataGridDynamic.AutoGeneratingColumn += DataGridHelper.dataGrid_AutoGeneratingColumn;
-                dataGridDynamic.RowEditEnding += dataGridDynamic_RowEditEnding;
-                dataGridDynamic.CellEditEnding += dataGridDynamic_CellEditEnding;
-                setContentDG(ref dataGridDynamic);
-                dataGridDynamic.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
-                dataGridDynamic.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
-                //dataGridDynamic.CellStyle = (Style)FindResource("dataGridCellStyle");
-                //dataGridDynamic.RowStyle = (Style)FindResource("dataGridRowStyle");
-                currentDataGrid = dataGridDynamic;
-                if (lastEntityID is int)
-                {
-                    if (lastEntityID != -1)
-                    {
-                        scrollDataGrid();
-                    }
-                }
-                else scrollDataGrid();
-            }
-            catch (Exception exc)
-            {
-                System.Text.StringBuilder message = new System.Text.StringBuilder();
-                message.Append(exc.Message);
-                if (exc.InnerException != null)
-                {
-                    message.Append("\n" + exc.InnerException.Message);
-                }
-                displayText(message.ToString(), false);
-            }
-            finally
-            {
-                GC.Collect();
-            }
-
-            return dataGridDynamic;
-        }
 
         /// <summary>
         /// Scroll into last record added in DataGrid
@@ -300,66 +319,46 @@ namespace LeposWPF.UI
         /// <summary>
         /// Set primary content to display
         /// </summary>
-        /// <param name="dataGridDynamic">Data grid to be filled</param>
-        private void setContentDG(ref DataGrid dataGridDynamic)
+        private void setContentDataGrid()
         {
             try
             {
-                dataGridDynamic.Tag = dataGridTag;
-                var source = new List<Test>();
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-         
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-                dataGridDynamic.ItemsSource = source;
+                currentDataGrid.Tag = dataGridTag;
                 dynamic obj = null;
                 dynamic sourceDataGrid = null;
                 switch (dataGridTag)
                 {
-                    //case "SourceFileLayouts":
-                    //    var sourceFileLayouts = conn.SourceFileLayouts.ToList();
-                    //    dataGridDynamic.ItemsSource = sourceDataGrid = sourceFileLayouts;
-                    //    //Fill ComboBoxes
-                    //    collectionViewSource.Source = conn.SourceFiles.Select(a => new { ID = a.ID, Name = a.Name }).OrderBy(a => a.Name).ToList();
-                    //    auxiliarCollectionViewSource.Source = conn.BranchSourceFiles.Select(a => new { ID = a.ID, Name = a.SourceFile.Name }).OrderBy(a => a.Name).ToList();
-                    //    obj = new SourceFileLayout();
-                    //    break;
-                    //case "FormulaTypes":
-                    //    dataGridDynamic.ItemsSource = conn.FormulaTypes.OrderBy(a => a.Name).ToList();
-                    //    obj = new FormulaType();
-                    //    break;
+                    case "Products":
+                        var products = conn.Products.Where(a=> a.IsAlive).ToList();
+                        currentDataGrid.ItemsSource = sourceDataGrid = products;
+                        obj = new Product();
+                        break;
+                    case "Clients":
+                        var clients = conn.Clients.Where(a => a.IsAlive).ToList();
+                        currentDataGrid.ItemsSource = sourceDataGrid = clients;
+                        obj = new Client();
+                        break;
+                    case "Providers":
+                        var providers = conn.Providers.Where(a => a.IsAlive).ToList();
+                        currentDataGrid.ItemsSource = sourceDataGrid = providers;
+                        obj = new Provider();
+                        break;
+                    case "Users":
+                        var users = conn.Users.Where(a => a.IsAlive).ToList();
+                        currentDataGrid.ItemsSource = sourceDataGrid = users;
+                        collectionViewSource.Source = new[]
+                            {
+                                new { ID = 0 , Name = "Administrador"  },
+                                new { ID = 1 , Name = "Vendedor de mostrador"  }
+                            }.ToList();
+                        obj = new User();
+                        break;
                 }
-                //if (dataGridDynamic.Items.Count <= 1)
-                //{
-                //    sourceDataGrid = dataGridDynamic.ItemsSource;
-                //    sourceDataGrid.Add(obj);
-                //}
+                if (currentDataGrid.Items.Count <= 1)
+                {
+                    sourceDataGrid = currentDataGrid.ItemsSource;
+                    sourceDataGrid.Add(obj);
+                }
             }
             catch (Exception exc)
             {
@@ -420,7 +419,6 @@ namespace LeposWPF.UI
                                     String property = comboBox.Tag.ToString();
                                     object ID = comboBox.SelectedValue;
                                     EF.SetProperty(selectedItem, name, ID);
-                                    DataGridHelper.setValueToProperty(selectedItem, property, DataGridHelper.getFirstorDefaultEntity(ID, dbSet));
                                     break;
                                 }
                             }
@@ -477,26 +475,63 @@ namespace LeposWPF.UI
                         object[] values = new object[] { };
                         String[] properties = new String[] { };
                         String[] propertiesForeign = new String[] { };
-                        //if (dynamicObject is SourceFileLayout)
-                        //{
-                        //    var sourceColumn = DataGridHelper.getTextDG(dataGrid, row, 1);
-                        //    var sourceColumnStart = DataGridHelper.getIntegerOrNull(dataGrid, row, 2, lastValueEdited, lastIndex);
-                        //    var sourceColumnSize = DataGridHelper.getIntegerOrNull(dataGrid, row, 3, lastValueEdited, lastIndex);
-                        //    var destinationFieldName = DataGridHelper.getTextDG(dataGrid, row, 4);
-                        //    values = new object[] { sourceColumn, sourceColumnStart, sourceColumnSize, destinationFieldName };
-                        //    properties = new String[] { "SourceColumn", "SourceColumnStart", "SourceColumnSize", "DestinationFieldName" };
-                        //    propertiesForeign = new String[] { "BranchSourceFile_ID", "SourceFile_ID" };
-                        //    DataGridHelper.HandleAddUpdate(values, properties, propertiesForeign, e, flagNew, dynamicObject, objectEntity, false, 0, 5);
-                        //}
-                        //else
-                        //{
-                        //    String name = DataGridHelper.getTextDG(dataGrid, row, 0);
-                        //    values = new object[] { name };
-                        //    properties = new String[] { "Name" };
-                        //    propertiesForeign = new String[] { };
-                        //    DataGridHelper.HandleAddUpdate(values, properties, propertiesForeign, e, flagNew, dynamicObject, objectEntity, false);
-                        //}
-                        if (flagNew)
+                        if (dynamicObject is Client)
+                        {
+                            var name = DataGridHelper.getTextDG(dataGrid, row, 0);
+                            var rfc = DataGridHelper.getTextDG(dataGrid, row, 1);
+                            var address = DataGridHelper.getTextDG(dataGrid, row, 2);
+                            var phone = DataGridHelper.getTextDG(dataGrid, row, 3);
+                            var email = DataGridHelper.getTextDG(dataGrid, row, 4);
+                            values = new object[] { name, rfc, address, phone, email};
+                            properties = new String[] { "Name", "RFC", "Address", "Phone", "Email" };
+                            propertiesForeign = new String[] { };
+                            DataGridHelper.HandleAddUpdate(values, properties, propertiesForeign, e, flagNew, dynamicObject, objectEntity, false);
+                        }
+                        else if (dynamicObject is Provider)
+                        {
+                            var name = DataGridHelper.getTextDG(dataGrid, row, 0);
+                            var rfc = DataGridHelper.getTextDG(dataGrid, row, 1);
+                            var address = DataGridHelper.getTextDG(dataGrid, row, 2);
+                            var phone = DataGridHelper.getTextDG(dataGrid, row, 3);
+                            var email = DataGridHelper.getTextDG(dataGrid, row, 4);
+                            values = new object[] { name, rfc, address, phone, email };
+                            properties = new String[] { "Name", "RFC", "Address", "Phone", "Email" };
+                            propertiesForeign = new String[] { };
+                            DataGridHelper.HandleAddUpdate(values, properties, propertiesForeign, e, flagNew, dynamicObject, objectEntity, false);
+                        }
+                        else if (dynamicObject is User)
+                        {
+                            var ID = DataGridHelper.getTextDG(dataGrid, row, 0);
+                            var type = dynamicObject.Type;
+                            var password = flagNew ? UserHelper.generateRandomPassword() : dynamicObject.Password;
+                            values = new object[] {ID,type ,password};
+                            properties = new String[] { "ID","Type","Password" };
+                            propertiesForeign = new String[] { };
+                            DataGridHelper.HandleAddUpdate(values, properties, propertiesForeign, e, flagNew, dynamicObject, objectEntity, false, 1);
+                        }
+                        else if (dynamicObject is Product)
+                        {
+                            var ID = DataGridHelper.getTextDG(dataGrid, row, 0);
+                            var price = DataGridHelper.getDoubleDG(dataGrid, row, 1);
+                            var wholeSalePrice = DataGridHelper.getDoubleDG(dataGrid, row, 2);
+                            var cost = DataGridHelper.getDoubleDG(dataGrid, row, 3);
+                            var quantity = DataGridHelper.getDoubleDG(dataGrid, row, 4);
+                            var minimumQuantity = DataGridHelper.getDoubleDG(dataGrid, row, 5);
+                            var description = DataGridHelper.getTextDG(dataGrid, row, 6);
+                            values = new object[] { ID, price,wholeSalePrice,cost,quantity,minimumQuantity,description };
+                            properties = new String[] { "ID", "Price","WholeSalePrice","Cost","Quantity", "MinimumQuanity", "Description"};
+                            propertiesForeign = new String[] { };
+                            DataGridHelper.HandleAddUpdate(values, properties, propertiesForeign, e, flagNew, dynamicObject, objectEntity, false); 
+                        }
+                        if (!e.Cancel)
+                        {
+                            displayText("Información Guardada");
+                        }
+                        else
+                        {
+                            dataGridScrollViewer.Focus();     
+                        }
+                        if (flagNew  && !e.Cancel)
                         {
                             lastEntityID = objectEntity.ID;
                             fillDataGrid();
@@ -524,7 +559,6 @@ namespace LeposWPF.UI
                 GC.Collect();
             }
         }
-
         #endregion
 
         #region Helpers

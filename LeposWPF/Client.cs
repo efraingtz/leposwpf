@@ -27,6 +27,9 @@ namespace LeposWPF.Model
             this.Sales = new HashSet<Sale>();
             this.Birth = DateTime.Now;
             this.IsAlive = true;
+            this.IsGeneralPublic = false;
+            this.IsEditable = true;
+            this.IsErasable = true;
         }
         #endregion
         #region Definition
@@ -70,6 +73,21 @@ namespace LeposWPF.Model
         /// </summary>
         [Display(AutoGenerateField = false)]
         public System.DateTime Death { get; set; }
+        /// <summary>
+        /// Flag that indicates if the client is erasable
+        /// </summary>
+        [Display(AutoGenerateField = false)]
+        public bool IsErasable { get; set; }
+        /// <summary>
+        /// Flag that indicates if the client is editable
+        /// </summary>
+        [Display(AutoGenerateField = false)]
+        public bool IsEditable { get; set; }
+        /// <summary>
+        /// Flag that indicates if the client is general public
+        /// </summary>
+        [Display(AutoGenerateField = false)]
+        public bool IsGeneralPublic { get; set; }
         /// <summary>
         /// Flag that indicates if the client is still active
         /// </summary>

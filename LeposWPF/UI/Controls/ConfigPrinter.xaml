@@ -29,9 +29,9 @@
                 </ListView>
             </GroupBox>
             <Label Grid.Row="1" Grid.Column="0" Content="Carácteres por línea ticket:" Foreground="gray" />
-            <wpfTool:IntegerUpDown Value="10" Grid.Row="1" Grid.Column="1" ></wpfTool:IntegerUpDown>
+            <wpfTool:IntegerUpDown AllowTextInput="False" Name="charsPerLineIntegerUpDown" Value="10" Grid.Row="1" Grid.Column="1" ></wpfTool:IntegerUpDown>
             <Label Grid.Row="2" Grid.Column="0" Content="Tamaño de fuente ticket:" Foreground="gray"  />
-            <wpfTool:IntegerUpDown Value="10" Grid.Row="2" Grid.Column="1" ></wpfTool:IntegerUpDown>
+            <wpfTool:IntegerUpDown AllowTextInput="False" Name="fontIntegerUpDown" Value="10" Grid.Row="2" Grid.Column="1" ></wpfTool:IntegerUpDown>
             <Button Margin="6" Grid.Column="0" Grid.Row="5" Name="cancelButton" Click="cancelButton_Click"  Content="Cancelar"/>
             <Button Margin="6" Grid.Column="1" Grid.Row="5" Name="saveButton" Click="saveButton_Click"  Content="Guardar"/>
             <Image Name="logoImage"
@@ -43,7 +43,7 @@
                    ToolTip="Logo" 
                    Source="/Lepos;component/LocalResources/default_logo.png"
                    />
-            <TextBlock TextAlignment="Center" Grid.Row="5" Grid.Column="2" TextWrapping="Wrap"  Name="errorTextBlock" Foreground="Red" Text="error" />
+            <TextBlock TextAlignment="Center" Grid.Row="5" Grid.Column="2" TextWrapping="Wrap"  Name="messageTextBlock" Foreground="Red" Text="" />
         </Grid>
     </Viewbox>
 </UserControl>

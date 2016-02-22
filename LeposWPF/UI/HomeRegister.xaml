@@ -14,7 +14,7 @@
                       FontWeight="Bold"
                       WindowStartupLocation="CenterScreen"
                       Closed="MetroWindow_Closed"
-                      ResizeMode="CanMinimize"
+                      ResizeMode="CanMinimize" Loaded="MetroWindow_Loaded"
                       >
     <Window.Resources>
     </Window.Resources>
@@ -27,10 +27,12 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Content="Dinero Inicial en Caja:" Grid.ColumnSpan="2" Foreground="#41b1e1"  />
-            <TextBox Margin="6" Width="100" TextChanged="initialMoneyTextbox_TextChanged" Text="0"  Grid.Column="0"   Grid.Row="1" x:Name="initialMoneyTextbox" TextAlignment="Center" />
+            <TextBox Margin="6" Width="100" Text="0"  Grid.Column="0"   Grid.Row="1" x:Name="initialMoneyTextbox" TextAlignment="Center" KeyDown="initialMoneyTextbox_KeyDown" />
             <Button Margin="6" Grid.Column="1" Grid.Row="1" Name="initialMoneyButton" Click="initialMoneyButton_Click" Content="Ok"/>
+            <Label Name="errorLabel" Grid.Row="2" Content="" Grid.ColumnSpan="2" Foreground="Red"  />
         </Grid>
     </Viewbox>
 

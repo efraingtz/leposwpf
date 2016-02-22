@@ -34,8 +34,12 @@
             <Label Grid.Row="4" Grid.Column="0" Content="Código Postal:" Foreground="gray"  />
             <TextBox Margin="6" Width="100" Grid.Column="1" Grid.Row="4" x:Name="zipTextBox" TextAlignment="Center" />
             <Label Grid.Row="5" Grid.Column="0" Content="Tipo de IVA:" Foreground="gray"  />
-            <ComboBox Margin="6" MaxWidth="220" Grid.Column="1" Grid.ColumnSpan="2"  Grid.Row="5" x:Name="ivaComboBox"  />
-            <TextBlock TextAlignment="Center" Grid.Row="6" Grid.Column="2" TextWrapping="Wrap" Name="errorTextBlock" Foreground="Red" Text="error" />
+            <ComboBox Margin="6" MaxWidth="220" Grid.Column="1" Grid.ColumnSpan="2"  Grid.Row="5" x:Name="ivaComboBox"  >
+                <ComboBoxItem Content="No tomar IVA para cálculos" HorizontalAlignment="Left" Width="218"/>
+                <ComboBoxItem Content="Los productos ya incluyen IVA" HorizontalAlignment="Left" Width="218"/>
+                <ComboBoxItem Content="Agregar IVA a cada cálculo" HorizontalAlignment="Left" Width="218"/>
+            </ComboBox>
+            <TextBlock TextAlignment="Center" Grid.Row="6" Grid.Column="2" TextWrapping="Wrap" Name="messageTextBlock" Foreground="Red" Text="" />
             <Button Margin="6" Grid.Column="0" Grid.Row="6" Name="cancelButton" Click="cancelButton_Click"  Content="Cancelar"/>
             <Button Margin="6" Grid.Column="1" Grid.Row="6" Name="saveButton" Click="saveButton_Click"  Content="Guardar"/>
             <Image Name="logoImage"

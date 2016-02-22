@@ -44,5 +44,10 @@ namespace LeposWPF.Model
         /// </summary>
         [Display(AutoGenerateField = false)]
         public virtual Purchase Purchase { get; set; }
+        /// <summary>
+        /// Map foreign instance of sale
+        /// </summary>
+        [Display(AutoGenerateField = false)]
+        public virtual Product Product { get; set; }
     }
 }

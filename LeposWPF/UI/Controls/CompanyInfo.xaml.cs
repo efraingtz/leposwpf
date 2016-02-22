@@ -18,15 +18,15 @@ using System.Windows.Shapes;
 namespace LeposWPF.UI.Controls
 {
     /// <summary>
-    /// Interaction logic for ConfigPrinter.xaml
+    /// Interaction logic for CompanyInfo.xaml
     /// </summary>
-    public partial class ConfigPrinter : UserControl
+    public partial class CompanyInfo : UserControl
     {
         #region Constructors
         /// <summary>
         /// Initialize current instance
         /// </summary>
-        public ConfigPrinter()
+        public CompanyInfo()
         {
             InitializeComponent();
         }
@@ -39,8 +39,9 @@ namespace LeposWPF.UI.Controls
         /// <param name="e">Event of sender object</param>
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-            resetValues();
+            displayCurrentSavedValues();
         }
+
         /// <summary>
         /// Loaded event
         /// </summary>
@@ -48,10 +49,9 @@ namespace LeposWPF.UI.Controls
         /// <param name="e">Event of sender object</param>
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            logoImage.Source = WindowHelper.getLogo(CompanyHelper.getLogoPath());
-            printersListView.ItemsSource = System.Drawing.Printing.PrinterSettings.InstalledPrinters;
-            resetValues();
             messageTextBlock.Width = logoImage.ActualWidth;
+            displayCurrentSavedValues();
+            logoImage.Source = WindowHelper.getLogo(CompanyHelper.getLogoPath());
         }
         /// <summary>
         /// Saving event
@@ -60,31 +60,38 @@ namespace LeposWPF.UI.Controls
         /// <param name="e">Event of sender object</param>
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (printersListView.SelectedIndex >= 0)
+            if (WindowHelper.validateEmptyTextBoxes(addressTextBox,descriptionTextBox,nameTextBox,rfcTextBox,zipTextBox))
             {
-                CompanyHelper.currentCompany.FontSize = fontIntegerUpDown.Value.Value.ToString();
-                CompanyHelper.currentCompany.CharsPerLine = charsPerLineIntegerUpDown.Value.Value.ToString();
-                CompanyHelper.currentCompany.Printer = printersListView.SelectedValue.ToString();
+                CompanyHelper.currentCompany.Address = addressTextBox.Text;
+                CompanyHelper.currentCompany.Description = descriptionTextBox.Text;
+                CompanyHelper.currentCompany.Name = nameTextBox.Text;
+                CompanyHelper.currentCompany.RFC = rfcTextBox.Text;
+                CompanyHelper.currentCompany.ZIP = zipTextBox.Text;
+                CompanyHelper.currentCompany.IVAType = ivaComboBox.SelectedIndex;
                 CompanyHelper.updateCompany();
-                messageTextBlock.Foreground = Brushes.Green;
-                messageTextBlock.Text = "La impresora y sus datos han sido guardada";
+                messageTextBlock.Foreground = Brushes.LightBlue;
+                messageTextBlock.Text = "Información Guardada";
             }
             else
             {
                 messageTextBlock.Foreground = Brushes.Red;
-                messageTextBlock.Text = " No ha seleccionado una impresora";
+                messageTextBlock.Text = "Hay campos vacíos";
             }
         }
         #endregion
         #region Helpers
+
         /// <summary>
-        /// Select saved values
+        /// Display the values of company stored in the database
         /// </summary>
-        private void resetValues()
+        private void displayCurrentSavedValues()
         {
-            charsPerLineIntegerUpDown.Value = int.Parse(CompanyHelper.currentCompany.CharsPerLine);
-            fontIntegerUpDown.Value = int.Parse(CompanyHelper.currentCompany.FontSize);
-            printersListView.SelectedIndex = printersListView.Items.IndexOf(CompanyHelper.currentCompany.Printer); ;
+            addressTextBox.Text = CompanyHelper.currentCompany.Address;
+            descriptionTextBox.Text = CompanyHelper.currentCompany.Description;
+            nameTextBox.Text = CompanyHelper.currentCompany.Name;
+            rfcTextBox.Text = CompanyHelper.currentCompany.RFC;
+            zipTextBox.Text = CompanyHelper.currentCompany.ZIP;
+            ivaComboBox.SelectedIndex = CompanyHelper.currentCompany.IVAType;
         }
         #endregion
     }

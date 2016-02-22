@@ -7,7 +7,6 @@
                       xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                      xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
                       xmlns:vsm="clr-namespace:System.Windows;assembly=WPFToolkit"
                       Title="Settings"
                       Width="1150"
@@ -15,7 +14,7 @@
                       FontSize="16"
                       FontWeight="Bold"
                       WindowStartupLocation="CenterOwner"
-                      WindowState="Maximized"
+                      WindowState="Maximized" Loaded="MetroWindow_Loaded"
                       >
     <Window.Resources>
         <!--  Alert Fade Animation  -->
@@ -76,6 +75,41 @@
             <Setter Property="Margin" Value="6" />
             <Setter Property="MaxHeight" Value="14" />
         </Style>
+        <Style TargetType="TextBlock" x:Key="Coloring">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                    <Setter Property="TextDecorations" Value="Underline" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <DataTemplate x:Key="AccountStatusCellTemplate">
+            <TextBlock Style="{StaticResource Coloring}" MouseDown="AccountStatus_MouseDown" Tag="{Binding Path=ID}">Ver</TextBlock>
+        </DataTemplate>
+        <DataTemplate x:Key="AccountStatusCellEditingTemplate">
+            <TextBlock Style="{StaticResource Coloring}" MouseDown="AccountStatus_MouseDown" Tag="{Binding Path=ID}">Ver</TextBlock>
+        </DataTemplate>
+        <DataTemplate x:Key="TypeCellTemplate">
+            <TextBlock Text="{Binding Path=TypeName}"></TextBlock>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TypeCellEditingTemplate">
+            <ComboBox x:Name="Type"
+                      Tag="Type"
+                      Uid="Users"
+                      Height="23"
+                      VerticalAlignment="Top"
+                      BorderBrush="Black"
+                      DisplayMemberPath="Name"
+                      Foreground="Black"
+                      ItemsSource="{Binding Source={StaticResource collectionViewSource}}"
+                      SelectedValue="{Binding Path=Type,
+                                              Mode=TwoWay}"
+                      SelectedValuePath="ID"  >
+            </ComboBox>
+        </DataTemplate>
     </Window.Resources>
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
         <Grid.RowDefinitions>
@@ -121,10 +155,10 @@
                                 Grid.Column="0"
                                 Click="deleteButton_Click"
                                 Style="{StaticResource AccentedSquareButtonStyle}"
-                                ToolTip="Delete">
+                                ToolTip="Eliminar">
                             <StackPanel Orientation="Horizontal">
                                 <fa:ImageAwesome Icon="Trash" Style="{StaticResource styleIA}" />
-                                <fa:FontAwesome Style="{StaticResource styleFA}" Text="Delete" />
+                                <fa:FontAwesome Style="{StaticResource styleFA}" Text="Eliminar" />
                             </StackPanel>
                         </Button>
                         <Button Name="importCatalogButton"
@@ -144,19 +178,20 @@
                                 Grid.Column="2"
                         Click="closeSettingsWindows"
                         Style="{StaticResource AccentedSquareButtonStyle}"
-                        ToolTip="Close"
+                        ToolTip="Cerrar"
                                 >
 
                             <StackPanel Orientation="Horizontal">
 
                                 <fa:ImageAwesome Icon="Close" Style="{StaticResource styleIA}" />
 
-                                <fa:FontAwesome Style="{StaticResource styleFA}" Text="Close" />
+                                <fa:FontAwesome Style="{StaticResource styleFA}" Text="Cerrar" />
                             </StackPanel>
 
                         </Button>
 
                         <TextBlock Name="alertTextBlock"
+                                   TextWrapping="Wrap"
                                Grid.Column="3"
                                FontSize="16"
                                Foreground="Green" />
@@ -179,10 +214,10 @@
                       VerticalScrollBarVisibility="Auto">
                 <WrapPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Name="accordionWrapPanel">
 
-                    <Button Name="branchesButton"
+                    <Button Name="productsButton"
                         Click="button_Click"
                         Style="{StaticResource styleMistyRose}"
-                        Tag="Branches">
+                        Tag="Products">
 
                         <StackPanel Orientation="Horizontal">
                             <fa:ImageAwesome Icon="CodeFork" Style="{StaticResource styleIA}" />
@@ -191,10 +226,10 @@
 
                     </Button>
 
-                    <Button Name="sapWageTypesButton"
+                    <Button Name="clientsButton"
                         Click="button_Click"
                         Style="{StaticResource styleLightCyan}"
-                        Tag="SAPWageTypes">
+                        Tag="Clients">
 
                         <StackPanel Orientation="Horizontal">
                             <fa:ImageAwesome Icon="Sellsy" Style="{StaticResource styleIA}" />
@@ -204,10 +239,10 @@
 
                     </Button>
 
-                    <Button Name="hourWageTypesButton"
+                    <Button Name="providersButton"
                         Click="button_Click"
                         Style="{StaticResource styleGhostWhite}"
-                        Tag="HourWageTypes">
+                        Tag="Providers">
 
                         <StackPanel Orientation="Horizontal">
                             <fa:ImageAwesome Style="{StaticResource styleIA}" Icon="Backward" />
@@ -216,10 +251,10 @@
 
                     </Button>
 
-                    <Button Name="sourceFilesButton"
+                    <Button Name="usersButton"
                         Click="button_Click"
                         Style="{StaticResource styleLavender}"
-                        Tag="SourceFiles">
+                        Tag="Users">
 
                         <StackPanel Orientation="Horizontal">
                             <fa:ImageAwesome Icon="File" Style="{StaticResource styleIA}" />
@@ -234,14 +269,13 @@
         </Viewbox>
         <Viewbox ScrollViewer.HorizontalScrollBarVisibility="Auto" Name="dataGridContainerViewBox" Grid.Row="2"  HorizontalAlignment="Left"  VerticalAlignment="Stretch">
             <ScrollViewer 
+                      Name="dataGridScrollViewer"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto">
-                <DataGrid 
-                    Margin="10,10,10,10"
-                    x:Name="dataGrid"
-                    MaxColumnWidth="200"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"/>
+                <Grid Name="mainDataGrid"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  Margin="10,10,10,10"/>
             </ScrollViewer>
         </Viewbox>
     </Grid>

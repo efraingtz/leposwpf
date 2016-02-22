@@ -17,9 +17,16 @@
                       WindowStartupLocation="CenterOwner"
                       WindowState="Maximized"
                       Loaded="MetroWindow_Loaded"
-                      KeyDown="MetroWindow_KeyDown"
+                      KeyUp="MetroWindow_KeyUp"
                       >
     <Window.Resources>
+        <DataTemplate x:Key="RemoveCellTemplate">
+            <Image Tag="{Binding Product_ID}" Name="removeImage" MouseDown="removeImage_MouseDown" Width="32" Height="32" Source="/Lepos;component/LocalResources/cancel.png"  />
+        </DataTemplate>
+        <DataTemplate x:Key="RemoveCellEditingTemplate">
+            <Image Tag="{Binding Product_ID}" Name="removeImage" MouseDown="removeImage_MouseDown" Width="32" Height="32" Source="/Lepos;component/LocalResources/cancel.png"  />
+        </DataTemplate>
+
         <!--  Alert Fade Animation  -->
         <Storyboard x:Key="animate">
 
@@ -48,7 +55,7 @@
                         <ColumnDefinition Width="10*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBlock Margin="5,0,5,0"  Foreground="Gray" Grid.Row="0" Grid.ColumnSpan="3">Ingresar Producto (F5) :</TextBlock>
-                    <TextBox FontSize="23" Foreground="Gray" Margin="5,0,5,0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch"/>
+                    <TextBox Name="searchTextBox" KeyDown="searchTextBox_KeyDown" FontSize="23" Foreground="Gray" Margin="5,0,5,0" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch"/>
                     <ProgressBar Grid.Row="2" Grid.Column="0" Name="loadingProgressBar"
                              Margin="5"
                              HorizontalAlignment="Stretch"
@@ -74,23 +81,26 @@
                     <ColumnDefinition Width="80*"></ColumnDefinition>
                     <ColumnDefinition Width="20*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <DataGrid Name="saleDataGrid" 
+                <DataGrid Name="purchaseDataGrid" 
+                          KeyUp="purchaseDataGrid_KeyUp"
+                          CanUserAddRows="False"
                           BorderBrush="Gray"
                           BorderThickness="2"
-                      Margin="6,0,6,0"
-                      Grid.Column="0"
-                      MaxColumnWidth="200"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch"/>
-                <Grid  Margin="20,0,6,0" Name="controlGrid" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                          Margin="6,0,6,0"
+                          Grid.Column="0"
+                          MaxColumnWidth="200"
+                          HorizontalAlignment="Stretch"
+                          CellEditEnding="purchaseDataGrid_CellEditEnding"
+                          VerticalAlignment="Stretch" >
+                </DataGrid>
+                <Grid Height="500" Margin="20,0,6,0" Name="controlGrid" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="8*"></RowDefinition>
-                        <RowDefinition Height="8*"></RowDefinition>
-                        <RowDefinition Height="8*"></RowDefinition>
-                        <RowDefinition Height="8*"></RowDefinition>
-                        <RowDefinition Height="20*"></RowDefinition>
-                        <RowDefinition Height="30*"></RowDefinition>
                         <RowDefinition Height="12*"></RowDefinition>
+                        <RowDefinition Height="12*"></RowDefinition>
+                        <RowDefinition Height="13*"></RowDefinition>
+                        <RowDefinition Height="13*"></RowDefinition>
+                        <RowDefinition Height="25*"></RowDefinition>
+                        <RowDefinition Height="25*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition ></ColumnDefinition>
@@ -106,7 +116,7 @@
                         <ComboBox 
                                 HorizontalAlignment="Stretch" 
                                 VerticalAlignment="Stretch" 
-                                Name="clientComboBox" 
+                                Name="providerComboBox" 
                                 Margin="3,6,3,6" 
                                 >
                         </ComboBox>
@@ -124,6 +134,7 @@
                     </Border>
                     <Border BorderBrush="Gray" BorderThickness="0 0 2 2" Grid.Row="2" Grid.Column="0">
                         <RadioButton IsChecked="True" 
+                                     GroupName="purchase"
                                      Name="liquidRadioButton"
                                      Margin="3,6,3,6" 
                                      HorizontalAlignment="Stretch" 
@@ -132,28 +143,26 @@
                     </Border>
                     <Border BorderBrush="Gray" BorderThickness="2 0 0 2" Grid.Row="2" Grid.Column="1">
                         <RadioButton Margin="3,6,3,6"
+                                     GroupName="purchase"
+                                     HorizontalAlignment="Stretch" 
+                                     VerticalAlignment="Stretch"
                                      Name="creditRadioButton">Crédito</RadioButton>
                     </Border>
                     <Border BorderBrush="Gray" BorderThickness="0 0 2 2" Grid.Row="3" Grid.Column="0">
                         <CheckBox Margin="3,6,3,6"
                                   Checked="costCheckBox_Checked"
+                                  Unchecked="costCheckBox_Checked"
                                   Name="costCheckBox">Actualizar Costos</CheckBox>
                     </Border>
                     <Border BorderBrush="Gray" BorderThickness="2 0 0 2" Grid.Row="3" Grid.Column="1">
                         <CheckBox Margin="3,6,3,6"
                                   Checked="priceCheckBox_Checked"
+                                  Unchecked="priceCheckBox_Checked"
                                   Name="priceCheckBox">
                             <TextBlock TextWrapping="Wrap">Actualizar Precios</TextBlock>
                         </CheckBox>
                     </Border>
-                    <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Grid.ColumnSpan="2" Grid.Row="4" >
-                        <TextBlock FontSize="30" 
-                                   Name="subTotalTextBlock" 
-                                   Margin="3,6,3,6"
-                                   TextWrapping="Wrap"
-                                   Text="Subtotal:"></TextBlock>
-                    </Border>
-                    <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Grid.ColumnSpan="2" Grid.Row="5">
+                    <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Grid.ColumnSpan="2" Grid.Row="4">
                         <TextBlock FontSize="40" 
                                    Foreground="Red" 
                                    TextWrapping="Wrap" 
@@ -162,8 +171,8 @@
                                    Text="Total : ">
                         </TextBlock>
                     </Border>
-                    <Border BorderBrush="Gray" BorderThickness="0 0 0 0" Grid.Row="6" Grid.ColumnSpan="2" >
-                        <Button  Click="purchaseButton_Click"
+                    <Border BorderBrush="Gray" BorderThickness="0 0 0 0" Grid.Row="5"  Grid.ColumnSpan="2" >
+                        <Button Click="purchaseButton_Click"
                                 Margin="20,10,20,10" 
                                 Name="purchaseButton" 
                                 Content="Compra (F6)" 

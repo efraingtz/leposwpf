@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -16,9 +17,31 @@ namespace LeposWPF.Helpers
     /// from Geeks with blogs - New Things I Learned
     /// http://geekswithblogs.net/NewThingsILearned/archive/2008/08/25/refresh--update-wpf-controls.aspx
     /// </summary>
-    public static class WPFUIUtils
+    public static class WindowHelper
     {
         #region UI Actions
+        /// <summary>
+        /// Validate if all fields have a text written in
+        /// </summary>
+        /// <param name="textBoxes">Array of text boxes</param>
+        /// <returns>Whether or not all the text boxes have text written in</returns>
+        internal static Boolean validateEmptyTextBoxes(params TextBox[] textBoxes)
+        {
+            foreach (var textBox in textBoxes)
+                if (textBox.Text == string.Empty)
+                    return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Find the current logo image stored in a specific path
+        /// </summary>
+        /// <param name="path">Path to find the image</param>
+        /// <returns>Logo image</returns>
+        internal static System.Windows.Media.Imaging.BitmapImage getLogo(String path)
+        {
+            return new System.Windows.Media.Imaging.BitmapImage(new Uri(path));
+        }
 
         private static Action EmptyDelegate = delegate () { };
 
@@ -74,8 +97,8 @@ namespace LeposWPF.Helpers
                         loadingProgressBar.IsIndeterminate = good;
                         loadingProgressBar.Value = 100;
                         doubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(duration));
-                        WPFUIUtils.fadeOutControl(alertTextBlock, storyBoard);
-                        WPFUIUtils.fadeOutControl(loadingProgressBar, storyBoard);
+                        WindowHelper.fadeOutControl(alertTextBlock, storyBoard);
+                        WindowHelper.fadeOutControl(loadingProgressBar, storyBoard);
                     }
                 )
             );
@@ -97,6 +120,23 @@ namespace LeposWPF.Helpers
                     }
                 )
             );
+        }
+        /// <summary>
+        /// Valide input for only numeric / decimal values
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event of sender object</param>
+        internal static void validateTextBok_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            Boolean isDigit = !(e.Key < System.Windows.Input.Key.D0 || e.Key > System.Windows.Input.Key.D9);
+            Boolean singleDot = textBox.Text.Where(a => a.Equals('.')).Count() == 0;
+            Boolean isDot = e.Key == System.Windows.Input.Key.OemPeriod;
+            Boolean isBackSpace = e.Key == System.Windows.Input.Key.Back;
+            if (!((isDot && singleDot) || isBackSpace || isDigit))
+            {
+                e.Handled = true;
+            }
         }
 
         #endregion UI Actions

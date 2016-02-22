@@ -31,9 +31,9 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Usuario:" Foreground="gray"  />
-            <TextBox Margin="6" Width="100" Grid.Column="1" Grid.Row="0" x:Name="userTextBox" TextAlignment="Center" />
+            <TextBox Text="payo" Margin="6" Width="100" Grid.Column="1" Grid.Row="0" x:Name="userTextBox" TextAlignment="Center" />
             <Label Grid.Row="1" Grid.Column="0" Content="Password:" Foreground="gray"  />
-            <PasswordBox Margin="6" Width="100" Grid.Column="1" Grid.Row="1" x:Name="passwordTextBox" TextBlock.TextAlignment="Center" />
+            <PasswordBox Password="payo" Margin="6" Width="100" Grid.Column="1" Grid.Row="1" x:Name="passwordTextBox" TextBlock.TextAlignment="Center" />
             <Button Margin="6" Grid.ColumnSpan="2" Grid.Row="2" Name="logInButton" Click="logInButton_Click" Content="Ok"/>
             <TextBlock TextAlignment="Center" Grid.Row="3" Grid.ColumnSpan="2" TextWrapping="Wrap" Name="errorTextBlock" Foreground="Red" />
             <Image Name="logoImage"

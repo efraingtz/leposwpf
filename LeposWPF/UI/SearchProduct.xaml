@@ -55,7 +55,7 @@
                             Icon="Search" />
                         <TextBlock Margin="5,0,5,0" FontSize="24"  Foreground="Gray" >Buscar :</TextBlock>
                     </DockPanel>
-                    <TextBox Grid.Row="1" Grid.ColumnSpan="2" Background="Transparent" FontSize="23" Foreground="Gray" Margin="5,5,5,0" HorizontalAlignment="Stretch" />
+                    <TextBox Name="searchTextBox" KeyDown="searchTextBox_KeyDown" Grid.Row="1" Grid.ColumnSpan="2" Background="Transparent" FontSize="23" Foreground="Gray" Margin="5,5,5,0" HorizontalAlignment="Stretch" />
                     <ProgressBar Grid.Row="2" Grid.Column="0" Name="loadingProgressBar"
                              Margin="5"
                              HorizontalAlignment="Stretch"
@@ -77,10 +77,10 @@
         <!--Area for DataGrid and Control Panel-->
         <Viewbox Name="dataGridContainerViewBox" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Stretch">
             <DataGrid Name="productsDataGrid" 
+                          MouseDoubleClick="productsDataGrid_MouseDoubleClick"
                           BorderBrush="Gray"
                           BorderThickness="2"
                           Margin="6,0,6,0"
-                          MaxColumnWidth="200"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"/>
         </Viewbox>

@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LeposWPF.Helpers;
+using LeposWPF.Helpers.Clases;
+using System;
+using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LeposWPF.UI.Controls
 {
@@ -20,6 +13,24 @@ namespace LeposWPF.UI.Controls
     /// </summary>
     public partial class Logo : UserControl
     {
+        #region Declaration
+        /// <summary>
+        /// Name of the path to browsed logo
+        /// </summary>
+        private string fileName
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Name of the path to browsed logo
+        /// </summary>
+        private string fullFileName
+        {
+            get;
+            set;
+        }
+        #endregion
         #region Constructors
         /// <summary>
         /// Initialize current instance
@@ -37,7 +48,8 @@ namespace LeposWPF.UI.Controls
         /// <param name="e">Event of sender object</param>
         private void cancelButton_Click(object sender, RoutedEventArgs e)
         {
-
+            displayCurrentLogo(actualImage, browseImage);
+            fileName = string.Empty;
         }
         /// <summary>
         /// Loaded event
@@ -46,6 +58,7 @@ namespace LeposWPF.UI.Controls
         /// <param name="e">Event of sender object</param>
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            displayCurrentLogo(actualImage, browseImage);
         }
         /// <summary>
         /// Saving event
@@ -54,7 +67,30 @@ namespace LeposWPF.UI.Controls
         /// <param name="e">Event of sender object</param>
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                try
+                {
+                    var destinyPath = System.IO.Directory.GetCurrentDirectory() + "/" + fileName;
+                    System.IO.File.Copy(fullFileName, destinyPath, true);
+                    CompanyHelper.currentCompany.Logo = fileName;
+                    CompanyHelper.updateCompany();
+                    messageTextBlock.Foreground = System.Windows.Media.Brushes.Green;
+                    messageTextBlock.Text = "Logo guardado";
+                    displayCurrentLogo(actualImage, browseImage);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception.ToString());
+                    messageTextBlock.Foreground = System.Windows.Media.Brushes.Red;
+                    messageTextBlock.Text = "Error: el logo no ha sido actualizado, verifique que los archivos no se encuentran en uso";
+                }
+            }
+            else
+            {
+                messageTextBlock.Foreground = System.Windows.Media.Brushes.Red;
+                messageTextBlock.Text = "Error: el logo no ha sido actualizado";
+            }
         }
         /// <summary>
         /// Browse new logo's iage
@@ -63,7 +99,21 @@ namespace LeposWPF.UI.Controls
         /// <param name="e">Event of sender object</param>
         private void browseButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png)";
+            //openFileDialog.AddExtension = true;
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                fullFileName = openFileDialog.FileName;
+                fileName = System.IO.Path.GetFileName(openFileDialog.FileName);
+                browseImage.Source = WindowHelper.getLogo(fullFileName);
+            }
+        }
+        #endregion
+        #region Helpers
+        private void displayCurrentLogo(params System.Windows.Controls.Image[] controlsImage)
+        {
+            controlsImage.ToList().ForEach(a=> a.Source = WindowHelper.getLogo(CompanyHelper.getLogoPath()));
         }
         #endregion
     }

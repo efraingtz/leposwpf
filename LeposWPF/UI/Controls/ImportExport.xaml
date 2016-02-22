@@ -40,7 +40,7 @@
             <ProgressBar Margin="6" Grid.ColumnSpan="3" Grid.Row="2" Name="importProgressBar" />
             <ProgressBar Margin="6" Grid.ColumnSpan="3" Grid.Row="4" Name="exportProgressBar" />
 
-            <TextBlock TextAlignment="Center" Grid.Row="5" Grid.ColumnSpan="3" TextWrapping="Wrap" Name="errorTextBlock" Foreground="Red" Text="error" />
+            <TextBlock TextAlignment="Center" Grid.Row="5" Grid.ColumnSpan="3" TextWrapping="Wrap" Name="messageTextBlock" Foreground="Red" />
             <Image Name="logoImage"
                    Grid.Row="0"
                    Grid.Column="2"

@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="integer" Nullable="false" />
+          <Property Name="ID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="RFC" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
@@ -17,13 +17,16 @@
           <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Birth" Type="datetime" Nullable="false" />
           <Property Name="Death" Type="datetime" Nullable="false" />
+          <Property Name="IsEditable" Type="bit" Nullable="false" />
+          <Property Name="IsErasable" Type="bit" Nullable="false" />
+          <Property Name="IsGeneralPublic" Type="bit" Nullable="false" />
           <Property Name="IsAlive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="integer" Nullable="false" />
+          <Property Name="ID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="RFC" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" Nullable="false" />
@@ -58,7 +61,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="integer" Nullable="false" />
+          <Property Name="ID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Product_ID" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="User_ID" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Purchase_ID" Type="integer" />
@@ -69,7 +72,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="integer" Nullable="false" />
+          <Property Name="ID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="RFC" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
@@ -83,7 +86,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="integer" Nullable="false" />
+          <Property Name="ID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Provider_ID" Type="integer" Nullable="false" />
           <Property Name="User_ID" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="IsCredit" Type="bit" Nullable="false" />
@@ -96,7 +99,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="integer" Nullable="false" />
+          <Property Name="ID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Purchase_ID" Type="integer" Nullable="false" />
           <Property Name="User_ID" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
@@ -116,7 +119,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="integer" Nullable="false" />
+          <Property Name="ID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Client_ID" Type="integer" Nullable="false" />
           <Property Name="User_ID" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
@@ -132,7 +135,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="integer" Nullable="false" />
+          <Property Name="ID" Type="integer" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Sale_ID" Type="integer" Nullable="false" />
           <Property Name="User_ID" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
@@ -157,21 +160,11 @@
           <Property Name="Type" Type="int" Nullable="false" />
           <Property Name="Birth" Type="datetime" Nullable="false" />
           <Property Name="Death" Type="datetime" Nullable="false" />
+          <Property Name="IsEditable" Type="bit" Nullable="false" />
+          <Property Name="IsErasable" Type="bit" Nullable="false" />
           <Property Name="IsAlive" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_ProductPrice_0_0">
-          <End Role="Purchase" Type="Self.Purchase" Multiplicity="0..1" />
-          <End Role="ProductPrice" Type="Self.ProductPrice" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Purchase">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ProductPrice">
-              <PropertyRef Name="Purchase_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProductPrice_1_0">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="ProductPrice" Type="Self.ProductPrice" Multiplicity="*" />
           <ReferentialConstraint>
@@ -183,7 +176,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProductPrice_2_0">
+        <Association Name="FK_ProductPrice_1_0">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="ProductPrice" Type="Self.ProductPrice" Multiplicity="*" />
           <ReferentialConstraint>
@@ -220,18 +213,6 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PurchasePayment_0_0">
-          <End Role="Purchase" Type="Self.Purchase" Multiplicity="1" />
-          <End Role="PurchasePayment" Type="Self.PurchasePayment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Purchase">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="PurchasePayment">
-              <PropertyRef Name="Purchase_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PurchasePayment_1_0">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="PurchasePayment" Type="Self.PurchasePayment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -243,7 +224,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PurchasePayment_1_0">
+          <End Role="Purchase" Type="Self.Purchase" Multiplicity="1" />
+          <End Role="PurchasePayment" Type="Self.PurchasePayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Purchase">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchasePayment">
+              <PropertyRef Name="Purchase_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PurchaseProduct_0_0">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="PurchaseProduct" Type="Self.PurchaseProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseProduct">
+              <PropertyRef Name="Product_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PurchaseProduct_1_0">
           <End Role="Purchase" Type="Self.Purchase" Multiplicity="1" />
           <End Role="PurchaseProduct" Type="Self.PurchaseProduct" Multiplicity="*" />
           <ReferentialConstraint>
@@ -256,6 +261,18 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Sale_0_0">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sale">
+              <PropertyRef Name="User_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sale_1_0">
           <End Role="Client" Type="Self.Client" Multiplicity="1" />
           <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
           <ReferentialConstraint>
@@ -267,19 +284,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Sale_1_0">
+        <Association Name="FK_SalePayment_0_0">
           <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
+          <End Role="SalePayment" Type="Self.SalePayment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Sale">
+            <Dependent Role="SalePayment">
               <PropertyRef Name="User_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SalePayment_0_0">
+        <Association Name="FK_SalePayment_1_0">
           <End Role="Sale" Type="Self.Sale" Multiplicity="1" />
           <End Role="SalePayment" Type="Self.SalePayment" Multiplicity="*" />
           <ReferentialConstraint>
@@ -291,15 +308,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SalePayment_1_0">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="SalePayment" Type="Self.SalePayment" Multiplicity="*" />
+        <Association Name="FK_SaleProduct_0_0">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="SaleProduct" Type="Self.SaleProduct" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="User">
+            <Principal Role="Product">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="SalePayment">
-              <PropertyRef Name="User_ID" />
+            <Dependent Role="SaleProduct">
+              <PropertyRef Name="Product_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -329,14 +346,10 @@
           <EntitySet Name="SaleProduct" EntityType="Self.SaleProduct" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" store:Type="Tables" />
           <AssociationSet Name="FK_ProductPrice_0_0" Association="Self.FK_ProductPrice_0_0">
-            <End Role="Purchase" EntitySet="Purchase" />
-            <End Role="ProductPrice" EntitySet="ProductPrice" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProductPrice_1_0" Association="Self.FK_ProductPrice_1_0">
             <End Role="Product" EntitySet="Product" />
             <End Role="ProductPrice" EntitySet="ProductPrice" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProductPrice_2_0" Association="Self.FK_ProductPrice_2_0">
+          <AssociationSet Name="FK_ProductPrice_1_0" Association="Self.FK_ProductPrice_1_0">
             <End Role="User" EntitySet="User" />
             <End Role="ProductPrice" EntitySet="ProductPrice" />
           </AssociationSet>
@@ -349,32 +362,40 @@
             <End Role="Purchase" EntitySet="Purchase" />
           </AssociationSet>
           <AssociationSet Name="FK_PurchasePayment_0_0" Association="Self.FK_PurchasePayment_0_0">
-            <End Role="Purchase" EntitySet="Purchase" />
-            <End Role="PurchasePayment" EntitySet="PurchasePayment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PurchasePayment_1_0" Association="Self.FK_PurchasePayment_1_0">
             <End Role="User" EntitySet="User" />
             <End Role="PurchasePayment" EntitySet="PurchasePayment" />
           </AssociationSet>
+          <AssociationSet Name="FK_PurchasePayment_1_0" Association="Self.FK_PurchasePayment_1_0">
+            <End Role="Purchase" EntitySet="Purchase" />
+            <End Role="PurchasePayment" EntitySet="PurchasePayment" />
+          </AssociationSet>
           <AssociationSet Name="FK_PurchaseProduct_0_0" Association="Self.FK_PurchaseProduct_0_0">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="PurchaseProduct" EntitySet="PurchaseProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PurchaseProduct_1_0" Association="Self.FK_PurchaseProduct_1_0">
             <End Role="Purchase" EntitySet="Purchase" />
             <End Role="PurchaseProduct" EntitySet="PurchaseProduct" />
           </AssociationSet>
           <AssociationSet Name="FK_Sale_0_0" Association="Self.FK_Sale_0_0">
-            <End Role="Client" EntitySet="Client" />
+            <End Role="User" EntitySet="User" />
             <End Role="Sale" EntitySet="Sale" />
           </AssociationSet>
           <AssociationSet Name="FK_Sale_1_0" Association="Self.FK_Sale_1_0">
-            <End Role="User" EntitySet="User" />
+            <End Role="Client" EntitySet="Client" />
             <End Role="Sale" EntitySet="Sale" />
           </AssociationSet>
           <AssociationSet Name="FK_SalePayment_0_0" Association="Self.FK_SalePayment_0_0">
-            <End Role="Sale" EntitySet="Sale" />
+            <End Role="User" EntitySet="User" />
             <End Role="SalePayment" EntitySet="SalePayment" />
           </AssociationSet>
           <AssociationSet Name="FK_SalePayment_1_0" Association="Self.FK_SalePayment_1_0">
-            <End Role="User" EntitySet="User" />
+            <End Role="Sale" EntitySet="Sale" />
             <End Role="SalePayment" EntitySet="SalePayment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleProduct_0_0" Association="Self.FK_SaleProduct_0_0">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="SaleProduct" EntitySet="SaleProduct" />
           </AssociationSet>
           <AssociationSet Name="FK_SaleProduct_1_0" Association="Self.FK_SaleProduct_1_0">
             <End Role="Sale" EntitySet="Sale" />
@@ -389,7 +410,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RFC" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
@@ -397,14 +418,17 @@
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Birth" Type="DateTime" Nullable="false" />
           <Property Name="Death" Type="DateTime" Nullable="false" />
-          <Property Name="IsAlive" Type="Boolean" Nullable="false" />
+          <Property Name="IsAlive" Type="Boolean" Nullable="false" DefaultValue="True" />
           <NavigationProperty Name="Sales" Relationship="Self.FK_Sale_0_0" FromRole="Client" ToRole="Sale" />
+          <Property Name="IsEditable" Type="Boolean" Nullable="false" />
+          <Property Name="IsErasable" Type="Boolean" Nullable="false" />
+          <Property Name="IsGeneralPublic" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RFC" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
@@ -435,12 +459,14 @@
           <Property Name="Death" Type="DateTime" Nullable="false" />
           <Property Name="IsAlive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="ProductPrices" Relationship="Self.FK_ProductPrice_1_0" FromRole="Product" ToRole="ProductPrice" />
+          <NavigationProperty Name="PurchaseProducts" Relationship="LeposWPF.Model.FK_PurchaseProduct_0_01" FromRole="Product" ToRole="PurchaseProduct" />
+          <NavigationProperty Name="SaleProducts" Relationship="LeposWPF.Model.FK_SaleProduct_0_0" FromRole="Product" ToRole="SaleProduct" />
         </EntityType>
         <EntityType Name="ProductPrice">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Product_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="User_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Purchase_ID" Type="Int64" />
@@ -454,7 +480,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RFC" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
@@ -469,7 +495,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Provider_ID" Type="Int64" Nullable="false" />
           <Property Name="User_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsCredit" Type="Boolean" Nullable="false" />
@@ -487,7 +513,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Purchase_ID" Type="Int64" Nullable="false" />
           <Property Name="User_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" />
@@ -505,12 +531,13 @@
           <Property Name="Quantity" Type="Double" Nullable="false" />
           <Property Name="Price" Type="Double" Nullable="false" />
           <NavigationProperty Name="Purchase" Relationship="Self.FK_PurchaseProduct_0_0" FromRole="PurchaseProduct" ToRole="Purchase" />
+          <NavigationProperty Name="Product" Relationship="LeposWPF.Model.FK_PurchaseProduct_0_01" FromRole="PurchaseProduct" ToRole="Product" />
         </EntityType>
         <EntityType Name="Sale">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Client_ID" Type="Int64" Nullable="false" />
           <Property Name="User_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" />
@@ -530,7 +557,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Sale_ID" Type="Int64" Nullable="false" />
           <Property Name="User_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" />
@@ -548,6 +575,7 @@
           <Property Name="Quantity" Type="Double" Nullable="false" />
           <Property Name="Price" Type="Double" Nullable="false" />
           <NavigationProperty Name="Sale" Relationship="Self.FK_SaleProduct_1_0" FromRole="SaleProduct" ToRole="Sale" />
+          <NavigationProperty Name="Product" Relationship="LeposWPF.Model.FK_SaleProduct_0_0" FromRole="SaleProduct" ToRole="Product" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -564,6 +592,8 @@
           <NavigationProperty Name="PurchasePayments" Relationship="Self.FK_PurchasePayment_1_0" FromRole="User" ToRole="PurchasePayment" />
           <NavigationProperty Name="Sales" Relationship="Self.FK_Sale_1_0" FromRole="User" ToRole="Sale" />
           <NavigationProperty Name="SalePayments" Relationship="Self.FK_SalePayment_1_0" FromRole="User" ToRole="SalePayment" />
+          <Property Name="IsEditable" Type="Boolean" Nullable="false" />
+          <Property Name="IsErasable" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Sale_0_0">
           <End Role="Client" Type="Self.Client" Multiplicity="1" />
@@ -786,7 +816,39 @@
             <End Role="User" EntitySet="Users" />
             <End Role="SalePayment" EntitySet="SalePayments" />
           </AssociationSet>
+          <AssociationSet Name="FK_PurchaseProduct_0_01" Association="LeposWPF.Model.FK_PurchaseProduct_0_01">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="PurchaseProduct" EntitySet="PurchaseProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleProduct_0_0" Association="LeposWPF.Model.FK_SaleProduct_0_0">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="SaleProduct" EntitySet="SaleProducts" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_PurchaseProduct_0_01">
+          <End Type="LeposWPF.Model.Product" Role="Product" Multiplicity="1" />
+          <End Type="LeposWPF.Model.PurchaseProduct" Role="PurchaseProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PurchaseProduct">
+              <PropertyRef Name="Product_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleProduct_0_0">
+          <End Type="LeposWPF.Model.Product" Role="Product" Multiplicity="1" />
+          <End Type="LeposWPF.Model.SaleProduct" Role="SaleProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SaleProduct">
+              <PropertyRef Name="Product_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -796,6 +858,9 @@
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="LeposWPF.Model.Client">
               <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="IsGeneralPublic" ColumnName="IsGeneralPublic" />
+                <ScalarProperty Name="IsErasable" ColumnName="IsErasable" />
+                <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="RFC" ColumnName="RFC" />
@@ -948,6 +1013,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="LeposWPF.Model.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="IsErasable" ColumnName="IsErasable" />
+                <ScalarProperty Name="IsEditable" ColumnName="IsEditable" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Type" ColumnName="Type" />

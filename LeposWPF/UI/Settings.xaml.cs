@@ -39,6 +39,17 @@ namespace LeposWPF.UI
         {
             mainViewBox.Height = ActualHeight;
         }
+        /// <summary>
+        /// Closed window
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event of sender object</param>
+        private void MetroWindow_Closed(object sender, EventArgs e)
+        {
+            MainWindow mainWindow = Owner as MainWindow;
+            mainWindow.setLogoImage();
+            base.Close();
+        }
         #endregion
     }
 }
