@@ -436,6 +436,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Lepos_Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="DB\lepos_DB" />
     <None Include="Lepos_Model.edmx.diagram">
       <DependentUpon>Lepos_Model.edmx</DependentUpon>
     </None>
@@ -477,6 +478,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DB\DB_21_02_2016.sql" />
     <Content Include="Lepos_Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Lepos_Model.edmx</DependentUpon>
