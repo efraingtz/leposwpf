@@ -313,6 +313,7 @@ namespace LeposWPF.UI
                 providerComboBox.SelectedIndex = 0;
             liquidRadioButton.IsChecked = true;
             setTextBoxesValues(0);
+            folioTextBox.Text = String.Empty;
             purchaseHelperSource.Clear();
             refresDataGridSource();
             searchTextBox.Focus();
@@ -388,7 +389,7 @@ namespace LeposWPF.UI
         /// </summary>
         /// <param name="isCredit">Flag that indicates whether is a credi purchase or not</param>
         /// <param name="creditDays">Number of credit days</param>
-        private void doPurchase(Boolean isCredit, int creditDays)
+        internal void doPurchase(Boolean isCredit, int creditDays)
         {
             Purchase purchase = new Purchase();
             dynamic selectedprovider = providerComboBox.SelectedItem;
@@ -452,6 +453,16 @@ namespace LeposWPF.UI
         /// </summary>
         private void creditPurchase()
         {
+           if (purchaseDataGrid.Items.Count > 0)
+           {
+               Hide();
+               new CreditWindow(this).ShowDialog();
+               ShowDialog();
+           }
+           else
+           {
+               displayText("Error: la compra esta vacía", false);
+           }
         }
         #endregion
     }

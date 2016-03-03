@@ -21,12 +21,12 @@ namespace LeposWPF.Model
         /// <summary>
         /// Foreign ID of the purchase
         /// </summary>
-        [Display(Name="ID Compra",AutoGenerateField = false, Description = "Template")]
+        [Display(Name="ID Compra",AutoGenerateField = false)]
         public long Purchase_ID { get; set; }
         /// <summary>
         /// Foreign ID of the product
         /// </summary>
-        [Display(Name="Producto", AutoGenerateField = true, Description = "Template")]
+        [Display(Name="Producto", AutoGenerateField = true)]
         public string Product_ID { get; set; }
         /// <summary>
         /// Quantity purchased
@@ -36,8 +36,30 @@ namespace LeposWPF.Model
         /// <summary>
         /// Price of the product
         /// </summary>
-        [Display(Name = "Precio", AutoGenerateField = true)]
+        [Display(Name = "Precio", AutoGenerateField = false)]
         public double Price { get; set; }
+        /// <summary>
+        /// Price of product
+        /// </summary>
+        [Display(Name = "Precio", AutoGenerateField = true)]
+        public String PriceFormatted
+        {
+            get
+            {
+                return Price.ToString("C");
+            }
+        }
+        /// <summary>
+        /// Current amount value
+        /// </summary>
+        [Display(Name = "Importe", AutoGenerateField = true)]
+        public String Amount
+        {
+            get
+            {
+                return (Price * Quantity).ToString("C");
+            }
+        }
         #endregion
         /// <summary>
         /// Mapped instace of purchase

@@ -381,7 +381,7 @@ namespace LeposWPF.UI
         /// </summary>
         /// <param name="isCredit">Flag that indicates whether is a credi sale or not</param>
         /// <param name="creditDays">Number of credit days</param>
-        private void doSale(Boolean isCredit, int creditDays)
+        internal void doSale(Boolean isCredit, int creditDays)
         {
             Sale sale = new Sale();
             dynamic selectedClient = clientComboBox.SelectedItem;
@@ -456,7 +456,7 @@ namespace LeposWPF.UI
                 }
                 else
                 {
-                    displayText("Error: el total de la venta es cero", false);
+                    displayText("Error: la venta esta vacía", false);
                 }
             }
             else
@@ -469,6 +469,23 @@ namespace LeposWPF.UI
         /// </summary>
         private void creditSale()
         {
+            if (quantityParseFlag)
+            {
+                if (saleDataGrid.Items.Count > 0)
+                {
+                    Hide();
+                    new CreditWindow(this).ShowDialog();
+                    ShowDialog();
+                }
+                else
+                {
+                    displayText("Error: la venta esta vacía", false);
+                }
+            }
+            else
+            {
+                displayText("Error: no todas las cantidades de la venta tienen valores correctos", false);
+            }
         }
         #endregion 
     }

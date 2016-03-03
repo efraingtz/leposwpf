@@ -10,6 +10,7 @@
 namespace LeposWPF.Model
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     /// <summary>
@@ -33,7 +34,7 @@ namespace LeposWPF.Model
         /// <summary>
         /// Identifier of current instance
         /// </summary>
-        [Display(AutoGenerateField = false)]
+        [Display(AutoGenerateField = true, Name ="ID")]
         public long ID { get; set; }
         /// <summary>
         /// Foreign ID of provider
@@ -43,7 +44,7 @@ namespace LeposWPF.Model
         /// <summary>
         /// Foreign ID of user
         /// </summary>
-        [Display(Name = "Registrado", AutoGenerateField = true, Description = "Template")]
+        [Display(Name = "Cajero", AutoGenerateField = true)]
         public string User_ID { get; set; }
         /// <summary>
         /// Flag that indicates if the sell was on credit
@@ -53,7 +54,7 @@ namespace LeposWPF.Model
         /// <summary>
         /// Days to liquidate the credit sell
         /// </summary>
-        [Display(Name = "Días Crédito", AutoGenerateField = true)]
+        [Display(Name = "Días Crédito", AutoGenerateField = false)]
         public int CreditDays { get; set; }
         /// <summary>
         /// Folio provided
@@ -63,14 +64,47 @@ namespace LeposWPF.Model
         /// <summary>
         /// Date of the purchase
         /// </summary>
-        [Display(Name = "Fecha", AutoGenerateField = true)]
+        [Display(Name = "Fecha", AutoGenerateField = true, Description ="Template")]
         public System.DateTime Date { get; set; }
         /// <summary>
-        /// Total of the purchase
+        /// Date of the purchase
         /// </summary>
-        [Display(Name="Total",AutoGenerateField = true)]
+        [Display(Name = "Fecha de Pago", AutoGenerateField = true, Description = "Validate")]
+        public DateTime PayDate
+        {
+            get
+            {
+                return DateTime.Parse(Date.ToShortDateString()).AddDays(CreditDays);
+            }
+        }
+        /// <summary>
+        /// Total value
+        /// </summary>
+        [Display(AutoGenerateField = true, Name ="Costo Total", Description = "Template")]
         public double Total { get; set; }
-    
+        /// <summary>
+        /// Payment done to the sale
+        /// </summary>
+        [Display(AutoGenerateField = true, Description = "Validate",Name ="Abonos")]
+        public Double Payments
+        {
+            get
+            {
+                double payments = 0;
+                PurchasePayments.ToList().ForEach(a=> payments+= a.Payment);
+                return payments;
+            }
+        }
+        /// <summary>
+        /// Total value
+        /// </summary>
+        [Display(AutoGenerateField = true, Description = "Validate", Name = "Abonar")]
+        public String Pay { get; set; }
+        /// <summary>
+        /// Total value
+        /// </summary>
+        [Display(AutoGenerateField = true, Description = "Template", Name = "Ver compra")]
+        public String View { get; set; }
         /// <summary>
         /// List of ProductPrice of current products
         /// </summary>

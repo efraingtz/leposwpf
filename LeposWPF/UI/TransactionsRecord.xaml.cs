@@ -1,6 +1,10 @@
-﻿using MahApps.Metro.Controls;
+﻿using LeposWPF.Helpers;
+using LeposWPF.Model;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +14,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -20,6 +25,16 @@ namespace LeposWPF.UI
     /// </summary>
     public partial class TransactionsRecord : MetroWindow
     {
+        #region Declaration
+        /// <summary>
+        /// Used to animate content
+        /// </summary>
+        public Storyboard storyBoard { get; set; }
+        /// <summary>
+        /// Connection to entity framework model
+        /// </summary>
+        private LeposWPFModel model = new LeposWPFModel();
+        #endregion
         #region Constructors
         /// <summary>
         /// Inititalize new instance of current window
@@ -37,36 +52,127 @@ namespace LeposWPF.UI
         /// <param name="e">Event of sender object</param>
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            var source = new List<Test>();
-            source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-            source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-            source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-            source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-            salesDataGrid.ItemsSource = purchasesDataGrid.ItemsSource = source;
+            storyBoard = (Storyboard)FindResource("animate");
+            salesDataGrid.AutoGeneratingColumn += dataGrid_AutoGeneratingColumn;
+            purchasesDataGrid.AutoGeneratingColumn += dataGrid_AutoGeneratingColumn;
+            var now = DateTime.Now;
             salesDataGrid.Width = purchasesDataGrid.Width = ActualWidth;
             salesDataGrid.Height = purchasesDataGrid.Height = dataGridContainerViewBox.ActualHeight;
+            salesProgressBar.Width = ActualWidth;
+            purchasesProgressBar.Width = ActualWidth;
+            salesStartDatePicker.SelectedDate = purchasesStartDatePicker.SelectedDate = new DateTime(now.Year, now.Month,1);
+            salesEndDatePicker.SelectedDate = purchasesEndDatePicker.SelectedDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year,now.Month));
+            displayText("Cargando información");
+            fillSales();
+            fillPurchases();
         }
-        private void purchasesDetail_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Hanlde view sale event
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event of sender object</param>
+        private void viewTextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            new PurchaseDetail(this).ShowDialog();
+            int ID = int.Parse((sender as TextBlock).Tag.ToString());
+            if (salesTabItem.IsSelected)
+            {
+                Sale sale = model.Sales.Where(a => a.ID == ID).FirstOrDefault();
+                if (sale != null)
+                {
+                    Hide();
+                    new SaleDetail(this, sale).ShowDialog();
+                    ShowDialog();
+                }
+            }
+            else if (purchasesTabItem.IsSelected)
+            {
+                Purchase purchase = model.Purchases.Where(a => a.ID == ID).FirstOrDefault();
+                if (purchase != null)
+                {
+                    Hide();
+                    new PurchaseDetail(this, purchase).ShowDialog();
+                    ShowDialog();
+                }
+            }
         }
-
-        private void salesDetail_Click(object sender, RoutedEventArgs e)
+        
+        /// <summary>
+        /// Handle search sales event
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event of sender object</param>
+        private void sales_Click(object sender, RoutedEventArgs e)
         {
-            new SaleDetail(this).ShowDialog();
+            if (salesStartDatePicker.SelectedDate <= salesEndDatePicker.SelectedDate)
+            {
+                displayText("Cargando información");
+                fillSales();
+            }
+            else displayText("Error: verificar fechas",false);
         }
-
-        private void payDebtPurchaseButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Handle search purchases event
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event of sender object</param>
+        private void purchasesButton_Click(object sender, RoutedEventArgs e)
         {
-            new PaymentsPurchase(this).ShowDialog();
-        }
-
-        private void payDebtSale_Click(object sender, RoutedEventArgs e)
-        {
-            new PaymentsSale(this).ShowDialog();
+            if (purchasesStartDatePicker.SelectedDate <= purchasesEndDatePicker.SelectedDate)
+            {
+                displayText("Cargando información");
+                fillPurchases();
+            }
+            else displayText("Error: verificar fechas",false);
         }
         #endregion
+        #region Helpers
+        /// <summary>
+        /// Fill sales DataGrid with current information
+        /// </summary>
+        private void fillSales()
+        {
+            DateTime start = salesStartDatePicker.SelectedDate.Value;
+            DateTime end = salesEndDatePicker.SelectedDate.Value;
+            var sales = model.Sales.Where(a=> a.Date >= start && a.Date <= end).OrderByDescending(a=> a.ID).ToList();
+            salesDataGrid.ItemsSource = sales;
+            double salesTotal = 0;
+            sales.ForEach(a=> salesTotal+= a.Total);
+            salesTextBlock.Text = "Ventas : " + salesTotal.ToString("C");
+        }
+        /// <summary>
+        /// Fill purchases DataGrid with current information
+        /// </summary>
+        private void fillPurchases()
+        {
+            DateTime start = purchasesStartDatePicker.SelectedDate.Value;
+            DateTime end = purchasesEndDatePicker.SelectedDate.Value;
+            var purchases = model.Purchases.Where(a => a.Date >= start && a.Date <= end).OrderByDescending(a => a.ID).ToList();
+            purchasesDataGrid.ItemsSource = purchases;
+            double purchasesTotal = 0;
+            purchases.ForEach(a => purchasesTotal += a.Total);
+            purchasesTextBlock.Text = "Compras : " + purchasesTotal.ToString("C");
+        }
 
-       
+        /// <summary>
+        /// AutoGeneratingColumn handler for DataGrid
+        /// </summary>
+        /// <param name="sender">DataGrid object.</param>
+        /// <param name="e">Event of sender object.</param>
+        private void dataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            DataGridHelper.dataGrid_AutoGeneratingColumn(sender, e, this);
+        }
+        /// <summary>
+        /// Display alert messages for the user
+        /// </summary>
+        /// <param name="text">Text to display to the user</param>
+        /// <param name="good">Define text color, when true it is green, when bad it is red</param>
+        public void displayText(string text, bool good = true)
+        {
+            var textBlock = salesTabItem.IsSelected ? salesAlertTextBlock : purchasesAlertTextBlock;
+            var progressBar = salesTabItem.IsSelected ? salesProgressBar : purchasesProgressBar;
+            WindowHelper.displayText(textBlock, progressBar, storyBoard, text, good);
+        }
+        #endregion
     }
 }

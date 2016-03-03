@@ -16,6 +16,7 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using LeposWPF.Model;
+using LeposWPF.UI;
 
 namespace LeposWPF.Helpers
 {
@@ -84,7 +85,84 @@ namespace LeposWPF.Helpers
         internal static DataGridInterface dataGrid;
         #endregion
         #region DataGrid Manipulation
+        /// <summary>
+        /// AutoGeneratingColumn handler for DataGrid
+        /// </summary>
+        /// <param name="sender">DataGrid object.</param>
+        /// <param name="e">Event of sender object.</param>
+        /// <param name="window">Window to search templates from.</param>
+        internal static void dataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e,Window window)
+        {
+            try
+            {
+                PropertyDescriptor propertyDescriptor = (PropertyDescriptor)e.PropertyDescriptor;
+                DisplayAttribute displayAttribute = (DisplayAttribute)propertyDescriptor.Attributes[typeof(DisplayAttribute)];
 
+                if (displayAttribute.AutoGenerateField)
+                {
+                    e.Column.Header = displayAttribute.Name;
+                    if (displayAttribute.Description == "Validate")
+                    {
+                        if (window is TransactionsRecord)
+                        {
+                            if (e.PropertyName.Equals("Payments") || e.PropertyName.Equals("Pay") || e.PropertyName.Equals("PayDate"))
+                            {
+                                e.Cancel = true;
+                                return;
+                            }
+                            else
+                            {
+                                // Create counter new template column.
+                                DataGridTemplateColumn templateColumn = new DataGridTemplateColumn();
+                                templateColumn.Header = displayAttribute.Name;
+                                templateColumn.CellTemplate = (DataTemplate)window.Resources[e.PropertyName + "CellTemplate"];
+                                templateColumn.CellEditingTemplate = (DataTemplate)window.Resources[e.PropertyName + "CellEditingTemplate"];
+                                templateColumn.SortMemberPath = e.PropertyName;
+                                e.Column = templateColumn;
+                            }
+                        }
+                        else
+                        {
+                            // Create counter new template column.
+                            DataGridTemplateColumn templateColumn = new DataGridTemplateColumn();
+                            templateColumn.Header = displayAttribute.Name;
+                            templateColumn.CellTemplate = (DataTemplate)window.Resources[e.PropertyName + "CellTemplate"];
+                            templateColumn.CellEditingTemplate = (DataTemplate)window.Resources[e.PropertyName + "CellEditingTemplate"];
+                            templateColumn.SortMemberPath = e.PropertyName;
+                            e.Column = templateColumn;
+                        }
+                    }
+                    if (displayAttribute.Description == "Template")
+                    {
+                        // Create counter new template column.
+                        DataGridTemplateColumn templateColumn = new DataGridTemplateColumn();
+                        templateColumn.Header = displayAttribute.Name;
+                        templateColumn.CellTemplate = (DataTemplate)window.Resources[e.PropertyName + "CellTemplate"];
+                        templateColumn.CellEditingTemplate = (DataTemplate)window.Resources[e.PropertyName + "CellEditingTemplate"];
+                        templateColumn.SortMemberPath = e.PropertyName;
+                        e.Column = templateColumn;
+                    }
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+            catch (Exception exc)
+            {
+                System.Text.StringBuilder message = new System.Text.StringBuilder();
+                message.Append(exc.Message);
+                if (exc.InnerException != null)
+                {
+                    message.Append("\n" + exc.InnerException.Message);
+                }
+                Console.WriteLine(message.ToString(), false);
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
         /// <summary>
         /// Get value from TextBlock contained on DataGrid
         /// </summary>
@@ -702,6 +780,8 @@ namespace LeposWPF.Helpers
                 GC.Collect();
             }
         }
+
+
 
         /// <summary>
         /// PreviewKeyDown handler for DataGrid

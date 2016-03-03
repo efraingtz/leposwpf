@@ -224,6 +224,9 @@
     <Compile Include="UI\ActivateProduct.xaml.cs">
       <DependentUpon>ActivateProduct.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\CreditWindow.xaml.cs">
+      <DependentUpon>CreditWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\LogIn.xaml.cs">
       <DependentUpon>LogIn.xaml</DependentUpon>
     </Compile>
@@ -239,14 +242,8 @@
     <Compile Include="UI\PaymentsPurchase.xaml.cs">
       <DependentUpon>PaymentsPurchase.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\ReduceDebtPurchase.xaml.cs">
-      <DependentUpon>ReduceDebtPurchase.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\PaymentsSale.xaml.cs">
       <DependentUpon>PaymentsSale.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\ReduceDebtSale.xaml.cs">
-      <DependentUpon>ReduceDebtSale.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\PurchaseDetail.xaml.cs">
       <DependentUpon>PurchaseDetail.xaml</DependentUpon>
@@ -321,6 +318,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UI\CreditWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UI\LogIn.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -365,17 +366,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UI\ReduceDebtPurchase.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="UI\PaymentsSale.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UI\ReduceDebtSale.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\PurchaseDetail.xaml">
       <Generator>MSBuild:Compile</Generator>

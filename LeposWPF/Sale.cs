@@ -11,6 +11,7 @@ namespace LeposWPF.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     /// <summary>
     /// Class that maps a Sale to the database
@@ -32,42 +33,45 @@ namespace LeposWPF.Model
         /// <summary>
         /// Identifier of current instance
         /// </summary>
-        [Display(AutoGenerateField = false)]
+        [Display(AutoGenerateField = true, Name = "ID")]
         public long ID { get; set; }
         /// <summary>
         /// Foreign ID of client
         /// </summary>
+        [ReadOnly(true)]
         [Display(Name = "Cliente", AutoGenerateField = true, Description = "Template")]
         public long Client_ID { get; set; }
         /// <summary>
         /// Foreign ID of user
         /// </summary>
-        [Display(Name = "Registrado", AutoGenerateField = true, Description = "Template")]
+        [ReadOnly(true)]
+        [Display(Name = "Cajero", AutoGenerateField = true)]
         public string User_ID { get; set; }
         /// <summary>
         /// Date of transaction
         /// </summary>
-        [Display(Name = "Fecha", AutoGenerateField = true)]
-        public System.DateTime Date { get; set; }
+        [Display(AutoGenerateField = true, Name = "Fecha", Description = "Template")]
+        public System.DateTime Date{ get; set; }
         /// <summary>
         /// Flag that indicates if it's wholesale price
         /// </summary>
+        [ReadOnly(true)]
         [Display(Name = "Mayoreo", AutoGenerateField = true)]
         public bool IsWholeSale { get; set; }
         /// <summary>
         /// Flag that indicates if the sale's been sold on credit
         /// </summary>
-        [Display(Name = "Crédito", AutoGenerateField = true)]
+        [Display(Name = "Crédito", AutoGenerateField = false)]
         public bool IsCredit { get; set; }
         /// <summary>
         /// Days to liquidate the sell if it's been done on credit
         /// </summary>
-        [Display(Name = "Días Crédito", AutoGenerateField = true)]
+        [Display(Name = "Días Crédito", AutoGenerateField = false)]
         public int CreditDays { get; set; }
         /// <summary>
         /// Value of discount
         /// </summary>
-        [Display(Name = "Descuento", AutoGenerateField = true)]
+        [Display(Name = "Descuento", AutoGenerateField = false)]
         public double Discount { get; set; }
         /// <summary>
         /// Type of IVA
@@ -77,13 +81,18 @@ namespace LeposWPF.Model
         /// <summary>
         /// SubtTotal value
         /// </summary>
-        [Display(Name = "SubTotal", AutoGenerateField = true)]
+        [Display(Name = "SubTotal", AutoGenerateField = true, Description = "Template")]
         public double SubTotal { get; set; }
         /// <summary>
         /// Total value
         /// </summary>
-        [Display(Name="Total",AutoGenerateField = true)]
+        [Display(AutoGenerateField = true, Name ="Total", Description = "Template")]
         public double Total { get; set; }
+        /// <summary>
+        /// Total value
+        /// </summary>
+        [Display(AutoGenerateField = true, Description ="Template",Name ="Ver venta")]
+        public String View{ get; set; }
 
         /// <summary>
         /// Map foreign instance of Client

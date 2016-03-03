@@ -29,7 +29,7 @@
         <Viewbox Stretch="Uniform"  HorizontalAlignment="Left"  VerticalAlignment="Stretch"  Grid.Column="0" Grid.Row="0">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" Margin="5,5,5,5" >
-                    <TextBlock FontSize="15" Margin="2" Foreground="Gray">Vendedor :</TextBlock>
+                    <TextBlock FontSize="15" Margin="2" Foreground="Gray">Cajero :</TextBlock>
                     <TextBox Name="sellerTextBox" Margin="2" IsEnabled="False" TextAlignment="Justify" Width="184" TextWrapping="Wrap" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5,5,5,5" >
@@ -70,6 +70,8 @@
                   Stretch="Uniform" Name="dataGridContainerViewBox"  HorizontalAlignment="Left"  VerticalAlignment="Stretch">
             <DataGrid Name="productsDataGrid" 
                       BorderBrush="Gray"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
                       BorderThickness="2"
                       Margin="6,0,6,0"
                       Grid.Column="0"

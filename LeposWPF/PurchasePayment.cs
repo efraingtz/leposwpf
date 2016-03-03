@@ -31,7 +31,7 @@ namespace LeposWPF.Model
         /// <summary>
         /// Foreign user ID
         /// </summary>
-        [Display(Name="Registrado", AutoGenerateField = true, Description = "Template")]
+        [Display(Name="Registrado", AutoGenerateField = true)]
         public string User_ID { get; set; }
         /// <summary>
         /// Date of the transaction
@@ -41,8 +41,19 @@ namespace LeposWPF.Model
         /// <summary>
         /// Value of payment done
         /// </summary>
-        [Display(Name = "Abono", AutoGenerateField = true)]
+        [Display(Name = "Abono", AutoGenerateField = false)]
         public double Payment { get; set; }
+        /// <summary>
+        /// Value of payment done formatted
+        /// </summary>
+        [Display(Name = "Abono", AutoGenerateField = true)]
+        public String PaymentFormatted
+        {
+            get
+            {
+                return Payment.ToString("C");
+            }
+        }
 
         /// <summary>
         /// Mapped instace of purchase
