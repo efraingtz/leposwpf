@@ -117,8 +117,8 @@
                                 </StackPanel>
                             </Button>
                         </StackPanel>
-                        <TextBlock Margin="6,10,6,0" Grid.Column="0" Grid.Row="1" Background="Yellow" Foreground="Gray">Fecha próxima de pago</TextBlock>
-                        <TextBlock Margin="6,10,6,0" Grid.Column="1" Grid.Row="1" Background="Red" Foreground="Black" >Fecha expirada de pago</TextBlock>
+                        <TextBlock Margin="6,10,6,0" Grid.Column="0" Grid.Row="1" Background="Green" Foreground="White">Fecha próxima de pago</TextBlock>
+                        <TextBlock Margin="6,10,6,0" Grid.Column="1" Grid.Row="1" Background="Red" Foreground="White" >Fecha expirada de pago</TextBlock>
                         <StackPanel Orientation ="Vertical" Grid.Row="2" Grid.ColumnSpan="2">
                             <TextBlock FontSize="22" Foreground="Red" IsEnabled="False" TextWrapping="Wrap" Name="alertTextBlock" HorizontalAlignment="Stretch" />
                             <ProgressBar Name="loadingProgressBar"

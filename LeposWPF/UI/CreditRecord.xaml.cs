@@ -101,6 +101,29 @@ namespace LeposWPF.UI
                 ShowDialog();
             }
         }
+        /// <summary>
+        /// Color DataGrid according to rule business
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event of sender object</param>
+        private void debtsDataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            DataGridRow row = e.Row;
+            dynamic item = row.Item;
+            if (item.Total > item.Payments)
+            {
+                DateTime payDate = DateTime.Parse(item.Date.ToShortDateString()).AddDays(item.CreditDays);
+                int differenceDays = (payDate - DateTime.Parse(DateTime.Now.ToShortDateString())).Days;
+                if (differenceDays <= 0)
+                {
+                    row.Background = Brushes.Red;
+                }
+                else if (differenceDays <= 5)
+                {
+                    row.Background = Brushes.Green;
+                }
+            }
+        }
         #endregion
         #region Helpers
         /// <summary>
@@ -142,20 +165,5 @@ namespace LeposWPF.UI
             WindowHelper.displayText(alertTextBlock, loadingProgressBar, storyBoard, text, good);
         }
         #endregion
-
-        private void debtsDataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
-        {
-            DataGridRow row = e.Row;
-            dynamic item = row.Item;
-            if (item.Total > item.Payments)
-            {
-                DateTime payDate = DateTime.Parse(item.Date.ToShortDateString()).AddDays(item.CreditDays);
-                int differenceDays = (payDate - DateTime.Parse(DateTime.Now.ToShortDateString())).Days;
-                if (differenceDays <= 0)
-                    row.Background = Brushes.Red;
-                else if (differenceDays <= 5)
-                    row.Background = Brushes.Yellow; 
-            }
-        }
     }
 }

@@ -54,25 +54,34 @@ namespace LeposWPF.UI
             Boolean parseFlag = double.TryParse(paymentTextBox.Text, out parseValue);
             if (parseFlag)
             {
-                if (parseValue <= (Purchase.Total - Purchase.Payments))
+                if (parseValue > 0)
                 {
-                    PurchasePayment payment = new PurchasePayment();
-                    payment.Date = DateTime.Now;
-                    payment.Payment = parseValue;
-                    payment.Purchase_ID = Purchase.ID;
-                    payment.User_ID = UserHelper.loggedUser.ID;
-                    Purchase.PurchasePayments.Add(payment);
-                    Model.SaveChanges();
-                    paymentsDataGrid.Items.Refresh();
-                    errorTextBlock.Foreground = Brushes.Green;
-                    paymentTextBox.Text = String.Empty;
-                    errorTextBlock.Text = "Información guardada";
-                    fillDetails();
+                    float debt = (float)(Purchase.Total - Purchase.Payments);
+                    if (parseValue <= debt)
+                    {
+                        PurchasePayment payment = new PurchasePayment();
+                        payment.Date = DateTime.Now;
+                        payment.Payment = parseValue;
+                        payment.Purchase_ID = Purchase.ID;
+                        payment.User_ID = UserHelper.loggedUser.ID;
+                        Purchase.PurchasePayments.Add(payment);
+                        Model.SaveChanges();
+                        paymentsDataGrid.Items.Refresh();
+                        errorTextBlock.Foreground = Brushes.Green;
+                        paymentTextBox.Text = String.Empty;
+                        errorTextBlock.Text = "Información guardada";
+                        fillDetails();
+                    }
+                    else
+                    {
+                        errorTextBlock.Foreground = Brushes.Red;
+                        errorTextBlock.Text = "Error: el abono es superior a la deuda";
+                    }
                 }
                 else
                 {
                     errorTextBlock.Foreground = Brushes.Red;
-                    errorTextBlock.Text = "Error: el abono es superior a la deuda";
+                    errorTextBlock.Text = "Error: el abono debe ser mayor a cero";
                 }
             }
             else
@@ -96,8 +105,6 @@ namespace LeposWPF.UI
             paymentsDataGrid.Height = dataGridContainerViewBox.ActualHeight;
             paymentsDataGrid.Width = ActualWidth;
         }
-        #endregion
-        #region Helpers
         /// <summary>
         /// AutoGeneratingColumn handler for DataGrid
         /// </summary>

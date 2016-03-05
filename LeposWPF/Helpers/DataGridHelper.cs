@@ -103,9 +103,10 @@ namespace LeposWPF.Helpers
                     e.Column.Header = displayAttribute.Name;
                     if (displayAttribute.Description == "Validate")
                     {
-                        if (window is TransactionsRecord)
+                       if (window is TransactionsRecord || window is AccountStatus)
                         {
-                            if (e.PropertyName.Equals("Payments") || e.PropertyName.Equals("Pay") || e.PropertyName.Equals("PayDate"))
+                            if ((window is TransactionsRecord && (e.PropertyName.Equals("Payments") || e.PropertyName.Equals("Pay") || e.PropertyName.Equals("PayDate"))) 
+                                || (window is AccountStatus && e.PropertyName.Equals("Client_ID")))
                             {
                                 e.Cancel = true;
                                 return;

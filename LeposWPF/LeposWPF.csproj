@@ -239,11 +239,11 @@
     <Compile Include="UI\NewSale.xaml.cs">
       <DependentUpon>NewSale.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\PaymentsPurchase.xaml.cs">
-      <DependentUpon>PaymentsPurchase.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\PaymentsSale.xaml.cs">
       <DependentUpon>PaymentsSale.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PaymentsPurchase.xaml.cs">
+      <DependentUpon>PaymentsPurchase.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\PurchaseDetail.xaml.cs">
       <DependentUpon>PurchaseDetail.xaml</DependentUpon>
@@ -362,11 +362,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\PaymentsPurchase.xaml">
+    <Page Include="UI\PaymentsSale.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UI\PaymentsSale.xaml">
+    <Page Include="UI\PaymentsPurchase.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

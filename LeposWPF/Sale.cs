@@ -12,6 +12,7 @@ namespace LeposWPF.Model
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.ComponentModel.DataAnnotations;
     /// <summary>
     /// Class that maps a Sale to the database
@@ -39,7 +40,7 @@ namespace LeposWPF.Model
         /// Foreign ID of client
         /// </summary>
         [ReadOnly(true)]
-        [Display(Name = "Cliente", AutoGenerateField = true, Description = "Template")]
+        [Display(Name = "Cliente", AutoGenerateField = true, Description = "Validate")]
         public long Client_ID { get; set; }
         /// <summary>
         /// Foreign ID of user
@@ -52,6 +53,17 @@ namespace LeposWPF.Model
         /// </summary>
         [Display(AutoGenerateField = true, Name = "Fecha", Description = "Template")]
         public System.DateTime Date{ get; set; }
+        /// <summary>
+        /// Date of the purchase
+        /// </summary>
+        [Display(Name = "Fecha de Pago", AutoGenerateField = true, Description = "Validate")]
+        public DateTime PayDate
+        {
+            get
+            {
+                return DateTime.Parse(Date.ToShortDateString()).AddDays(CreditDays);
+            }
+        }
         /// <summary>
         /// Flag that indicates if it's wholesale price
         /// </summary>
@@ -89,11 +101,28 @@ namespace LeposWPF.Model
         [Display(AutoGenerateField = true, Name ="Total", Description = "Template")]
         public double Total { get; set; }
         /// <summary>
+        /// Payment done to the sale
+        /// </summary>
+        [Display(AutoGenerateField = true, Description = "Validate", Name = "Abonos")]
+        public Double Payments
+        {
+            get
+            {
+                double payments = 0;
+                SalePayments.ToList().ForEach(a => payments += a.Payment);
+                return payments;
+            }
+        }
+        /// <summary>
+        /// Total value
+        /// </summary>
+        [Display(AutoGenerateField = true, Description = "Validate", Name = "Abonar")]
+        public String Pay { get; set; }
+        /// <summary>
         /// Total value
         /// </summary>
         [Display(AutoGenerateField = true, Description ="Template",Name ="Ver venta")]
         public String View{ get; set; }
-
         /// <summary>
         /// Map foreign instance of Client
         /// </summary>
