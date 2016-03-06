@@ -21,7 +21,7 @@
     </Window.Resources>
     <Grid>
         <TabControl Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Stretch">
-            <TabItem Header="Caja">
+            <TabItem Header="Caja" MouseDown="TabItem_MouseLeftButtonDown">
                 <Viewbox Stretch="Uniform"  HorizontalAlignment="Left"  VerticalAlignment="Stretch">
                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                         <Grid.ColumnDefinitions>
@@ -37,12 +37,14 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Border Margin="2,5,0,0" Grid.Row="0" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2">
                             <CheckBox IsChecked="True"
+                                  Name="initialMoneyCheckBox"
                                   Checked="checkBox_Checked"
                                   Unchecked="checkBox_Checked"
-                                  Tag="0" Height="18" VerticalAlignment="Top">
+                                  Tag="0" Margin="0,0,0.333,2.667">
                                 <TextBlock TextWrapping="Wrap">Dinero Inicial en Caja:</TextBlock>
                             </CheckBox>
                         </Border>
@@ -51,6 +53,7 @@
                         </Border>
                         <Border Margin="2,5,0,0" Grid.Row="1" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2">
                             <CheckBox 
+                                  Name="salesCheckBox"
                                   Checked="checkBox_Checked"
                                   Unchecked="checkBox_Checked"
                                   IsChecked="True"
@@ -66,6 +69,7 @@
                                   Checked="checkBox_Checked"
                                   Unchecked="checkBox_Checked"
                                   IsChecked="True"
+                                  Name="paymentsCreditSalesCheckBox"
                                   Tag="2">
                                 <TextBlock TextWrapping="Wrap">Abonos a Ventas Crédito:</TextBlock>
                             </CheckBox>
@@ -78,24 +82,26 @@
                                   Checked="checkBox_Checked"
                                   Unchecked="checkBox_Checked"
                                   IsChecked="True"
+                                  Name="purchasesCheckBox"
                                   Tag="3">
                                 <TextBlock TextWrapping="Wrap">Compras:</TextBlock>
                             </CheckBox>
                         </Border>
                         <Border Margin="0,5,2,0" Grid.Row="3" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2">
-                            <TextBlock Name="purchasesTextBlock" IsEnabled="False"></TextBlock>
+                            <TextBlock Name="purchasesTextBlock" IsEnabled="False" Height="21" Margin="0,0,-0.333,-0.333" VerticalAlignment="Top"></TextBlock>
                         </Border>
                         <Border Margin="2,5,0,0" Grid.Row="4" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2">
                             <CheckBox 
                                   Checked="checkBox_Checked"
                                   Unchecked="checkBox_Checked"
                                   IsChecked="True"
+                                  Name="paymentsPurchasesCheckBox"
                                   Tag="4">
                                 <TextBlock TextWrapping="Wrap">Abonos a Compras:</TextBlock>
                             </CheckBox>
                         </Border>
                         <Border Margin="0,5,2,0" Grid.Row="4" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2">
-                            <TextBlock Name="depositSalesTextBlock" IsEnabled="False"></TextBlock>
+                            <TextBlock Name="paymentsPurchasesTextBlock" IsEnabled="False"></TextBlock>
                         </Border>
                         <Border Margin="2,5,0,0" Grid.Row="5" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2">
                             <TextBlock TextAlignment="Center" TextWrapping="Wrap">Caja:</TextBlock>
@@ -103,7 +109,7 @@
                         <Border Margin="0,5,2,0" Grid.Row="5" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2">
                             <TextBlock Name="cashRegisterTextBlock" IsEnabled="False"></TextBlock>
                         </Border>
-                        <Border Margin="0,5,0,0" Grid.Row="5" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 0 0">
+                        <Border Margin="0,5,0,0" Grid.Row="6" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 0 0">
                             <Button Name="boxCutButton" Margin="0,4,8,4" Click="boxCutButton_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:ImageAwesome Icon="Money" Style="{StaticResource styleImageAwesome}" />
@@ -111,7 +117,7 @@
                                 </StackPanel>
                             </Button>
                         </Border>
-                        <Border Margin="0,5,0,0" Grid.Row="5" Grid.Column="1" BorderBrush="Gray" BorderThickness="0 0 0 0">
+                        <Border Margin="0,5,0,0" Grid.Row="6" Grid.Column="1" BorderBrush="Gray" BorderThickness="0 0 0 0">
                             <Button Name="boxCutZeroButton" Margin="8,4,0,4" Click="boxCutZeroButton_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <fa:ImageAwesome Icon="Money" Style="{StaticResource styleImageAwesome}" />
@@ -127,78 +133,75 @@
                                 </StackPanel>
                             </Button>
                         </Border>
+                        <Border Margin="0,5,0,0" Grid.Row="8" Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="0 0 0 0">
+                            <TextBlock Name="messageTextBlock" FontSize="20"></TextBlock>
+                        </Border>
                     </Grid>
                 </Viewbox>
             </TabItem>
-            <TabItem Header="Utilidad">
-                <Viewbox Stretch="Uniform" HorizontalAlignment="Left"  VerticalAlignment="Stretch">
+            <TabItem Header="Utilidad" MouseDown="TabItem_MouseLeftButtonDown">
+                <Viewbox Stretch="Uniform"  HorizontalAlignment="Left"  VerticalAlignment="Stretch">
                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="16.878"/>
-                            <ColumnDefinition Width="152.456"/>
+                            <ColumnDefinition Width="250"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Border Margin="2,5,0.334,0" Grid.Row="0" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2" Grid.ColumnSpan="2">
-                            <CheckBox 
-                                  IsChecked="True"
-                                  Checked="checkBoxUtiliy_Checked"
-                                  Unchecked="checkBoxUtiliy_Checked"
-                                  Tag="0" Height="18" VerticalAlignment="Top">
-                                <TextBlock TextWrapping="Wrap">Ventas Contado:</TextBlock>
-                            </CheckBox>
-                        </Border>
-                        <Border Margin="152.122,5,1.667,0"  Grid.Row="0" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2" Grid.ColumnSpan="2">
-                            <TextBlock Name="liquidSalesTextBlock" IsEnabled="False"></TextBlock>
-                        </Border>
-                        <Border Margin="2,5,0.334,112" Grid.Row="1" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2" Grid.ColumnSpan="2">
-                            <TextBlock FontSize="10" TextAlignment="Right" TextWrapping="Wrap">Costo Ventas Contado:</TextBlock>
-                        </Border>
-                        <Border Margin="152.122,5,1.667,112" Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2" Grid.ColumnSpan="2">
-                            <TextBlock Name="costLiquidSalesTextBlock" IsEnabled="False"></TextBlock>
-                        </Border>
-                        <Border Margin="2,33,0.334,84" Grid.Row="1" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2" Grid.ColumnSpan="2">
+                        <Border Margin="2,5,0,0" Grid.Row="0" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2">
                             <CheckBox 
                                   Checked="checkBoxUtiliy_Checked"
                                   Unchecked="checkBoxUtiliy_Checked"
                                   IsChecked="True"
-                                  Tag="1">
-                                <TextBlock TextWrapping="Wrap">Ventas Crédito:</TextBlock>
+                                  Name="totalSalesCheckBox"
+                                  Tag="3">
+                                <TextBlock TextWrapping="Wrap">Ventas al Contado:</TextBlock>
                             </CheckBox>
                         </Border>
-                        <Border Margin="152.122,33,1.667,84" Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2" Grid.ColumnSpan="2">
-                            <TextBlock IsEnabled="False" Name="creditSalesTextBlock"></TextBlock>
+                        <Border Margin="0,5,2,0" Grid.Row="0" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2">
+                            <TextBlock Name="totalSalesTextBlock" IsEnabled="False"></TextBlock>
                         </Border>
-                        <Border Margin="2,61,0.334,56" Grid.Row="1" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2" Grid.ColumnSpan="2">
+                        <Border Margin="2,5,0,0" Grid.Row="1" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2">
+                            <TextBlock TextWrapping="Wrap" FontSize="14" Text="Costo de ventas al contado" IsEnabled="False"></TextBlock>
+                        </Border>
+                        <Border Margin="0,5,2,0" Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2">
+                            <TextBlock TextWrapping="Wrap" FontSize="14" Name="costSalesTextBlock" IsEnabled="False"></TextBlock>
+                        </Border>
+
+                        <Border Margin="2,5,0,0" Grid.Row="2" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2">
                             <CheckBox 
-                                  Checked="checkBox_Checked"
-                                  Unchecked="checkBox_Checked"
+                                  Checked="checkBoxUtiliy_Checked"
+                                  Unchecked="checkBoxUtiliy_Checked"
                                   IsChecked="True"
-                                  Tag="2">
-                                <TextBlock TextWrapping="Wrap">Abonos a Ventas Crédito:</TextBlock>
+                                  Name="totalCreditSalesCheckBox"
+                                  Tag="3">
+                                <TextBlock TextWrapping="Wrap">Ventas a Crédito:</TextBlock>
                             </CheckBox>
                         </Border>
-                        <Border Margin="152.122,61,1.667,56" Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2" Grid.ColumnSpan="2">
-                            <TextBlock  IsEnabled="False"></TextBlock>
+                        <Border Margin="0,5,2,0" Grid.Row="2" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2">
+                            <TextBlock TextWrapping="Wrap" FontSize="14" Name="totalCreditSalesTextBlock" IsEnabled="False"></TextBlock>
                         </Border>
-                        <Border Margin="2,89,0.334,28" Grid.Row="1" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2" Grid.ColumnSpan="2">
-                            <TextBlock FontSize="10" TextAlignment="Right" TextWrapping="Wrap">Costo Ventas Crédito:</TextBlock>
+
+                        <Border Margin="2,5,0,0" Grid.Row="3" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2">
+                            <TextBlock TextWrapping="Wrap" FontSize="14" Text="Costo de ventas a crédito" IsEnabled="False"></TextBlock>
                         </Border>
-                        <Border Margin="152.122,89,1.667,28" Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2" Grid.ColumnSpan="2">
-                            <TextBlock Name="costCreditSalesTextBlock" IsEnabled="False"></TextBlock>
+                        <Border Margin="0,5,2,0" Grid.Row="3" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2">
+                            <TextBlock TextWrapping="Wrap" FontSize="14" Name="costCreditSalesTextBlock" IsEnabled="False"></TextBlock>
                         </Border>
-                        <Border Margin="2,117,0.334,238.667" Grid.Row="1" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 0" Grid.ColumnSpan="2" Grid.RowSpan="2">
-                            <TextBlock TextAlignment="Center" TextWrapping="Wrap">Utilidad:</TextBlock>
+                        
+                        <Border Margin="2,5,0,0" Grid.Row="4" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 2 2">
+                            <TextBlock TextWrapping="Wrap" FontSize="14" TextAlignment="Center">Utilidad:</TextBlock>
                         </Border>
-                        <Border Margin="152.122,117,1.667,238.667" Grid.Row="1" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 0" Grid.ColumnSpan="2" Grid.RowSpan="2">
-                            <TextBlock Margin="5" Name="utilityTextBlock" Text="23423423"  IsEnabled="False"></TextBlock>
+                        <Border Margin="0,5,2,0" Grid.Row="4" Grid.Column="1" BorderBrush="Gray" BorderThickness="2 0 0 2">
+                            <TextBlock TextWrapping="Wrap" FontSize="14" Name="utilityTextBlock" IsEnabled="False"></TextBlock>
+                        </Border>
+                        <Border Margin="0,5,0,0" Grid.Row="5" Grid.ColumnSpan="2" BorderBrush="Gray" BorderThickness="0 0 0 0">
+                            <TextBlock TextWrapping="Wrap" FontSize="14" Name="utilityMessageTextBlock"></TextBlock>
                         </Border>
                     </Grid>
                 </Viewbox>

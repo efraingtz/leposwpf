@@ -167,7 +167,7 @@ namespace LeposWPF.UI
                 if (purchasesStartDatePicker.SelectedDate <= purchasesEndDatePicker.SelectedDate)
                 {
                     DateTime start = purchasesStartDatePicker.SelectedDate.Value;
-                    DateTime end = purchasesEndDatePicker.SelectedDate.Value;
+                    DateTime end = purchasesEndDatePicker.SelectedDate.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
                     var debts = model.Sales.Where(a => a.Date >= start && a.Date <= end && a.IsCredit && a.Client_ID == Client.ID).OrderByDescending(a => a.ID).ToList();
                     debtsDataGrid.ItemsSource = debts;
                     double totalDebt = 0;

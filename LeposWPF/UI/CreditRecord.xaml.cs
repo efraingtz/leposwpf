@@ -135,7 +135,7 @@ namespace LeposWPF.UI
             {
                 displayText("Obteniendo información");
                 DateTime start = purchasesStartDatePicker.SelectedDate.Value;
-                DateTime end = purchasesEndDatePicker.SelectedDate.Value;
+                DateTime end = purchasesEndDatePicker.SelectedDate.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
                 var debts = model.Purchases.Where(a => a.Date >= start && a.Date <= end && a.IsCredit).OrderByDescending(a => a.ID).ToList();
                 debtsDataGrid.ItemsSource = debts;
                 double totalDebt = 0;

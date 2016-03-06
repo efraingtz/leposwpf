@@ -155,7 +155,7 @@ namespace LeposWPF.UI
             if (salesStartDatePicker.SelectedDate <= salesEndDatePicker.SelectedDate)
             {
                 Hide();
-                new SalesPeriodNote(this, salesStartDatePicker.SelectedDate.Value, salesEndDatePicker.SelectedDate.Value).ShowDialog();
+                new SalesPeriodNote(this, salesStartDatePicker.SelectedDate.Value, salesEndDatePicker.SelectedDate.Value.AddHours(23).AddMinutes(59).AddSeconds(59)).ShowDialog();
                 ShowDialog();
             }
             else displayText("Error: verificar fechas", false);
@@ -168,7 +168,7 @@ namespace LeposWPF.UI
         private void fillSales()
         {
             DateTime start = salesStartDatePicker.SelectedDate.Value;
-            DateTime end = salesEndDatePicker.SelectedDate.Value;
+            DateTime end = salesEndDatePicker.SelectedDate.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
             var sales = model.Sales.Where(a=> a.Date >= start && a.Date <= end).OrderByDescending(a=> a.ID).ToList();
             salesDataGrid.ItemsSource = sales;
             decimal salesTotal = 0;
@@ -181,7 +181,7 @@ namespace LeposWPF.UI
         private void fillPurchases()
         {
             DateTime start = purchasesStartDatePicker.SelectedDate.Value;
-            DateTime end = purchasesEndDatePicker.SelectedDate.Value;
+            DateTime end = purchasesEndDatePicker.SelectedDate.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
             var purchases = model.Purchases.Where(a => a.Date >= start && a.Date <= end).OrderByDescending(a => a.ID).ToList();
             purchasesDataGrid.ItemsSource = purchases;
             double purchasesTotal = 0;
