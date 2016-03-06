@@ -29,7 +29,15 @@ namespace LeposWPF.UI
         /// <summary>
         /// Used to animate content
         /// </summary>
-        public Storyboard storyBoard { get; set; }
+        private Storyboard storyBoard
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Flag that indicates if the purchases tab has been clicked
+        /// </summary>
+        private Boolean purchasesTabFlag = false;
         /// <summary>
         /// Connection to entity framework model
         /// </summary>
@@ -64,7 +72,20 @@ namespace LeposWPF.UI
             salesEndDatePicker.SelectedDate = purchasesEndDatePicker.SelectedDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year,now.Month));
             displayText("Cargando información");
             fillSales();
-            fillPurchases();
+        }
+        /// <summary>
+        /// Handle selection tab clicked
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event of sender object</param>
+        private void purchasesTabItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!purchasesTabFlag)
+            {
+                displayText("Cargando información");
+                fillPurchases();
+                purchasesTabFlag = true;
+            }
         }
         /// <summary>
         /// Hanlde view sale event
@@ -124,6 +145,21 @@ namespace LeposWPF.UI
             }
             else displayText("Error: verificar fechas",false);
         }
+        /// <summary>
+        /// Handle sale note event
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event of sender object</param>
+        private void saleNoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (salesStartDatePicker.SelectedDate <= salesEndDatePicker.SelectedDate)
+            {
+                Hide();
+                new SalesPeriodNote(this, salesStartDatePicker.SelectedDate.Value, salesEndDatePicker.SelectedDate.Value).ShowDialog();
+                ShowDialog();
+            }
+            else displayText("Error: verificar fechas", false);
+        }
         #endregion
         #region Helpers
         /// <summary>
@@ -135,9 +171,9 @@ namespace LeposWPF.UI
             DateTime end = salesEndDatePicker.SelectedDate.Value;
             var sales = model.Sales.Where(a=> a.Date >= start && a.Date <= end).OrderByDescending(a=> a.ID).ToList();
             salesDataGrid.ItemsSource = sales;
-            double salesTotal = 0;
-            sales.ForEach(a=> salesTotal+= a.Total);
-            salesTextBlock.Text = "Ventas : " + salesTotal.ToString("C");
+            decimal salesTotal = 0;
+            sales.ForEach(a=> salesTotal+= (decimal)a.Total);
+            salesTextBlock.Text = "Ventas : " + salesTotal.ToString("C4");
         }
         /// <summary>
         /// Fill purchases DataGrid with current information
@@ -150,7 +186,7 @@ namespace LeposWPF.UI
             purchasesDataGrid.ItemsSource = purchases;
             double purchasesTotal = 0;
             purchases.ForEach(a => purchasesTotal += a.Total);
-            purchasesTextBlock.Text = "Compras : " + purchasesTotal.ToString("C");
+            purchasesTextBlock.Text = "Compras : " + purchasesTotal.ToString("C4");
         }
 
         /// <summary>

@@ -323,7 +323,7 @@ namespace LeposWPF.UI
         private void updateInfoDataGrid()
         {
             var isWholeSale = wholesaleCheckBox.IsChecked.Value;
-            var preTotal = 0;
+            double preTotal = 0;
             quantityParseFlag = true;
             for (int x = 0; x < saleDataGrid.Items.Count; x++)
             {
@@ -331,9 +331,9 @@ namespace LeposWPF.UI
                 double quantity = 0;
                 if(!double.TryParse(DataGridHelper.getTextDG(saleDataGrid, x, 2), out quantity))
                     quantityParseFlag = false;
-                var price = isWholeSale ? product.WholeSalePrice : product.Price;
+                double price = isWholeSale ? product.WholeSalePrice : product.Price;
                 DataGridHelper.setTextDG(saleDataGrid, x, 3, price.ToString("C"));
-                var amount = price * quantity;
+                double amount = price * quantity;
                 preTotal += amount;
                 DataGridHelper.setTextDG(saleDataGrid, x, 4, amount.ToString("C"));
             }
@@ -363,16 +363,15 @@ namespace LeposWPF.UI
                     SubTotal = Total - IVA;
                     break;
                 case 2: // Add IVA
-                    IVA = (preTotal * 1.16) - preTotal;
-                    Total += preTotal + IVA;
-                    Total = Total * ((double)(100.0 - discountIntegerUpDown.Value.Value) / 100.0);
+                    Total = (preTotal * 1.16)*((double)(100.0 - discountIntegerUpDown.Value.Value) / 100.0);
+                    IVA = (Total / 1.16) * 0.16;
                     SubTotal = Total - IVA;
                     break;
             }
             if (ivaTextBlock !=null && totalTextBlock != null && subTotalTextBlock != null)
             {
-                ivaTextBlock.Text = "IVA : " + IVA.ToString("C");
-                totalTextBlock.Text = "Total : " + Total.ToString("C");
+                ivaTextBlock.Text = "IVA : " + IVA.ToString("C4");
+                totalTextBlock.Text = "Total : " + Total.ToString("C4");
                 subTotalTextBlock.Text = "Subtotal : " + SubTotal.ToString("C");
             }
         }

@@ -123,7 +123,7 @@
                         <Border Margin="2,2,2,2" BorderBrush="Gray" BorderThickness="0 0 0 0">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Name="salesTextBlock" HorizontalAlignment="Stretch" FontSize="28" TextWrapping="Wrap" Foreground="Gray">Ventas : $25,000.00</TextBlock>
-                                <Button Margin="20,4,0,4">
+                                <Button Margin="20,4,0,4" Name="saleNoteButton" Click="saleNoteButton_Click">
                                     <StackPanel Orientation="Horizontal">
                                         <fa:ImageAwesome Icon="FileArchiveOutline" Style="{StaticResource styleImageAwesome}" />
                                         <fa:FontAwesome  Style="{StaticResource styleFontAwesome}" Text="Ver Nota del Período" />
@@ -134,7 +134,7 @@
                     </Viewbox>
                 </Grid>
             </TabItem>
-            <TabItem Name="purchasesTabItem" Header="Compras">
+            <TabItem Name="purchasesTabItem" Header="Compras" MouseLeftButtonUp="purchasesTabItem_MouseLeftButtonUp">
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20*" />
