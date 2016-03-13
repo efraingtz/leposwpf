@@ -161,18 +161,7 @@
                                 <fa:FontAwesome Style="{StaticResource styleFA}" Text="Eliminar" />
                             </StackPanel>
                         </Button>
-                        <Button Name="importCatalogButton"
-                                Margin="6,0,6,0"
-                                Grid.Column="1"
-                                Click="importCatalogButton_Click"
-                                Style="{StaticResource AccentedSquareButtonStyle}"
-                                ToolTip="Importar Catálogo">
-                            <StackPanel Orientation="Horizontal">
-                                <fa:ImageAwesome Icon="FileExcelOutline" Style="{StaticResource styleIA}" />
-                                <fa:FontAwesome Style="{StaticResource styleFA}" Text="Importar Catálogo" />
-                            </StackPanel>
-                        </Button>
-
+                        
                         <Button Name="closeButton"
                                 Margin="6,0,6,0"
                                 Grid.Column="2"

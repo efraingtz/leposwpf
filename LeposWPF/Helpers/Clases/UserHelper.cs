@@ -34,6 +34,16 @@ namespace LeposWPF.Helpers.Clases
             return loggedUser != null;
         }
         /// <summary>
+        /// Save user's password
+        /// </summary>
+        public static void savePassword()
+        {
+            LeposWPFModel model = new LeposWPFModel();
+            var searchUser = model.Users.Where(a => a.ID == loggedUser.ID).FirstOrDefault();
+            searchUser.Password = loggedUser.Password;
+            model.SaveChanges();
+        }
+        /// <summary>
         /// Obtain random password
         /// </summary>
         /// <param name="length">Length of password</param>

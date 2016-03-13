@@ -125,23 +125,34 @@
                 <!--  Settings  -->
                 <Button Name="settingsButton"
                         Tag="LeposWPF.UI.Settings"
-                        Click="openWindow"
+                        Click="settingsButton_Click"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Background="Transparent"
                         Cursor="Hand"
                         ToolTip="Configurar Catálogos">
-                    <!--<Button.ContextMenu>
+                    <Button.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Name="menuItemSettings"
-                                  Tag="LeposWPF.UI.SettingsWindow"
+                            <MenuItem Name="settingsMenuItem"
+                                  Tag="LeposWPF.UI.Settings"
                                   Click="openWindow"
                                   Command="{Binding OnOpen}"
-                                  Header="General Settings" />
+                                  Header="Ajustes Generales" />
                             <Separator />
+                            <MenuItem Name="passwordMenuItem"
+                                  Tag="LeposWPF.UI.ChangePassword"
+                                  Click="openWindow"
+                                  Command="{Binding OnOpen}"
+                                  Header="Cambiar Contraseña" />
+                            <Separator />
+                            <MenuItem Name="importMenuItem"
+                                  Tag="LeposWPF.UI.ImportCatalog"
+                                  Click="openWindow"
+                                  Command="{Binding OnOpen}"
+                                  Header="Importar Catálogo de Excel" />
                         </ContextMenu>
-                    </Button.ContextMenu>-->
+                    </Button.ContextMenu>
 
                     <fa:ImageAwesome Width="38"
                                  Height="38"

@@ -1,6 +1,9 @@
 ﻿using LeposWPF.Model;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,6 +71,43 @@ namespace LeposWPF.Helpers.Clases
                 default:
                     return "Agregar IVA a cada cálculo";
             }
+        }
+        /// <summary>
+        /// Validate if an imported file is correct
+        /// </summary>
+        /// <param name="pathDataBase">Path to new database</param>
+        /// <returns>True / False</returns>
+        internal static bool validateImportDataBase(String pathDataBase)
+        {
+            SQLiteConnection sqlLiteConnection = new SQLiteConnection("Data Source="+pathDataBase+ ";password=un2CeJr8VSmnxKPq"); ;
+            try
+            {
+                String[] tables = new String[] { "Client","Company",
+                                                 "Product","ProductPrice",
+                                                 "Provider","Purchase",
+                                                 "PurchasePayment","PurchaseProduct",
+                                                 "Sale","SalePayment",
+                                                 "SaleProduct","User",
+                };
+                sqlLiteConnection.Open();
+                foreach (var table in tables)
+                {
+                    SQLiteCommand sqlCommand;
+                    sqlCommand = sqlLiteConnection.CreateCommand();
+                    sqlCommand.CommandText = "select count(*) from " +table;
+                    sqlCommand.ExecuteNonQuery();
+                }
+            }
+            catch (SQLiteException sqLiteException)
+            {
+                Console.WriteLine(sqLiteException);
+                return false;
+            }
+            finally
+            {
+                sqlLiteConnection.Close();
+            }
+            return true;
         }
     }
 }

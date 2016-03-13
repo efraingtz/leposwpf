@@ -34,11 +34,8 @@
                     <TextBox IsEnabled="False" BorderThickness="0 0 0 0" TextAlignment="Justify" Text="Al hacer click en las opciones de importar/exportar se cargará/guardará un archivo con la información" TextWrapping="Wrap" FontSize="14" HorizontalAlignment="Stretch" Background="Transparent"/>
                 </DockPanel>
             </Border>
-            <Button Margin="6" MaxWidth="220" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Name="importButton" Click="importButton_Click"  Content="Importar"/>
-            <Button Margin="6" MaxWidth="220" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Name="exportButton" Click="exportButton_Click"  Content="Exportar"/>
-
-            <ProgressBar Margin="6" Grid.ColumnSpan="3" Grid.Row="2" Name="importProgressBar" />
-            <ProgressBar Margin="6" Grid.ColumnSpan="3" Grid.Row="4" Name="exportProgressBar" />
+            <Button Margin="6" MaxWidth="220" Grid.Column="0"  Grid.Row="1" Name="importButton" Click="importButton_Click"  Content="Importar"/>
+            <Button Margin="6" MaxWidth="220" Grid.Column="1"  Grid.Row="1" Name="exportButton" Click="exportButton_Click"  Content="Exportar"/>
 
             <TextBlock TextAlignment="Center" Grid.Row="5" Grid.ColumnSpan="3" TextWrapping="Wrap" Name="messageTextBlock" Foreground="Red" />
             <Image Name="logoImage"

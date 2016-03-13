@@ -8,49 +8,59 @@
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:sys="clr-namespace:System;assembly=mscorlib"
                       Title="Importar Excel"
-                   
+                      Loaded="MetroWindow_Loaded"
                       FontSize="16"
                       FontWeight="Bold"
-                      WindowStartupLocation="CenterScreen"
-                      ResizeMode="CanMinimize"
+                      WindowStartupLocation="CenterOwner"
+                      WindowState="Maximized"
                       >
     <Window.Resources>
     </Window.Resources>
-    <Viewbox Stretch="Uniform" Name="dataGridContainerViewBox"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <GroupBox Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">
-                <StackPanel Orientation="Vertical">
-                    <TextBox IsEnabled="False" TextAlignment="Justify" Width="200" TextWrapping="Wrap">Seleccionar el Archivo Excel del catálogo de productos a importar, el archivo Excel debe mantener el formato establecido en el manual de usuario, para importarlo correctamente.</TextBox>
-                    <Button Margin="6" HorizontalAlignment="Center" Name="browseButton" Click="browseButton_Click" Content="Examinar"/>
-                    <TextBlock TextAlignment="Center" TextWrapping="Wrap" Name="pathTextBlock" Foreground="LightBlue" />
-                </StackPanel>
-            </GroupBox>
-            <Button Margin="6" Grid.Row="1" Grid.ColumnSpan="2" Name="importButton" IsEnabled="False" Click="importButton_Click" Content="Importar"/>
-           <ProgressBar Name="loadingProgressBar"
+    <Grid  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40*"></RowDefinition>
+            <RowDefinition Height="60*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Viewbox Grid.Row="0" Stretch="Uniform"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <GroupBox Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Vertical">
+                        <TextBox IsEnabled="False" TextAlignment="Justify" Width="480" TextWrapping="Wrap">Seleccionar el Archivo Excel del catálogo de productos a importar, el archivo Excel debe mantener el formato establecido en el manual de usuario, para importarlo correctamente.</TextBox>
+                        <Button Margin="6" HorizontalAlignment="Center" Name="browseButton" Click="browseButton_Click" Content="Examinar"/>
+                        <TextBlock TextAlignment="Center" TextWrapping="Wrap" Name="pathTextBlock" Foreground="LightBlue" />
+                    </StackPanel>
+                </GroupBox>
+                <ProgressBar Name="loadingProgressBar"
                         Grid.Row="2" 
                         Margin="5"
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         IsIndeterminate="False"/>
-           <Image   Name="logoImage"
+                <Image   Name="logoImage"
                     Grid.RowSpan="1"
                     Grid.Column="1"
                     Margin="20"
                     Height="80"
                     ToolTip="Logo" 
                     Source="/Lepos;component/LocalResources/default_logo.png" />
-
-        </Grid>
-    </Viewbox>
-
+                <TextBlock Name="alertTextBlock" Grid.Row="3" Grid.ColumnSpan="2" Foreground="Red"  />
+            </Grid>
+        </Viewbox>
+        <Viewbox Grid.Row="1" Stretch="Uniform"  Name="dataGridContainerViewBox" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
+            <DataGrid Name="excelDataGrid" IsReadOnly="True">
+                
+            </DataGrid>
+        </Viewbox>
+    </Grid>
 </Controls:MetroWindow>

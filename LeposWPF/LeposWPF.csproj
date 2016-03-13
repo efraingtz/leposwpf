@@ -69,6 +69,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.99.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.99.0\lib\net45\System.Data.SQLite.dll</HintPath>
@@ -145,6 +146,7 @@
     <Compile Include="Helpers\DataGridHelper.cs" />
     <Compile Include="Helpers\Dialogs.cs" />
     <Compile Include="Helpers\ExcelHelper.cs" />
+    <Compile Include="Helpers\ImportExcelHelper.cs" />
     <Compile Include="Helpers\KeyEventUtily.cs" />
     <Compile Include="Helpers\Lepos.cs" />
     <Compile Include="Helpers\Paths.cs" />
@@ -218,6 +220,9 @@
     </Compile>
     <Compile Include="UI\CreditRecord.xaml.cs">
       <DependentUpon>CreditRecord.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ChangePassword.xaml.cs">
+      <DependentUpon>ChangePassword.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\ImportCatalog.xaml.cs">
       <DependentUpon>ImportCatalog.xaml</DependentUpon>
@@ -308,6 +313,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\AccountStatus.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\ChangePassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

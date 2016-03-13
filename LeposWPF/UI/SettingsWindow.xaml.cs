@@ -250,18 +250,6 @@ namespace LeposWPF.UI
             DataGridHelper.deleteItem(currentDataGrid);
         }
         /// <summary>
-        /// Open import catalog window
-        /// </summary>
-        /// <param name="sender">Sender object</param>
-        /// <param name="e">Event of sender object</param>
-        private void importCatalogButton_Click(object sender, RoutedEventArgs e)
-        {
-            Window window = new ImportCatalog(this);
-            Hide();
-            window.ShowDialog();
-            ShowDialog();
-        }
-        /// <summary>
         /// Change content of DataGrid according to an entity
         /// </summary>
         private void button_Click(object sender, RoutedEventArgs e)
