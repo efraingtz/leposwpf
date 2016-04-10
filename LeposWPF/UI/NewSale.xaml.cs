@@ -414,7 +414,8 @@ namespace LeposWPF.UI
             if (ticketCheckBox.IsChecked.Value)
             {
                 //do ticket shit
-
+                String clientName = selectedClient.Name;
+                TicketPOS.TicketVenta(sale, clientName);
             }
             displayText("La venta se ha guardado satisfactoriamente");
             resetSale();

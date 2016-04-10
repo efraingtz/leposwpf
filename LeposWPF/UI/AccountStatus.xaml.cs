@@ -154,7 +154,7 @@ namespace LeposWPF.UI
                 Boolean textBoxBoolean = int.TryParse(saleIDTextBox.Text, out ID);
                 if (textBoxBoolean)
                 {
-                    var debts = model.Sales.Where(a => a.ID == ID).OrderByDescending(a => a.ID).ToList();
+                    var debts = model.Sales.Where(a => a.ID == ID && a.IsCredit).OrderByDescending(a => a.ID).ToList();
                     debtsDataGrid.ItemsSource = debts;
                     double totalDebt = 0;
                     debts.ForEach(a => totalDebt += (a.Total - a.Payments));

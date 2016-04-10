@@ -44,8 +44,9 @@ namespace LeposWPF.UI
             //Display UI per type of user
             if (UserHelper.loggedUser.Type == 1) //Seller user
             {
-                settingsButton.IsEnabled =
-                    reportsButton.IsEnabled = false;
+                reportsButton.IsEnabled = 
+                    importMenuItem.IsEnabled =
+                        settingsMenuItem.IsEnabled = false;
             }
             setLogoImage();
         }

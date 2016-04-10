@@ -110,8 +110,10 @@ namespace LeposWPF.UI
                 setContentDataGrid();
                 dataGridDynamic.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
                 dataGridDynamic.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
-                //dataGridDynamic.CellStyle = (Style)FindResource("dataGridCellStyle");
-                //dataGridDynamic.RowStyle = (Style)FindResource("dataGridRowStyle");
+                if (UserHelper.loggedUser.Type == 1)
+                {
+                    dataGridDynamic.IsReadOnly = true;
+                }
                 currentDataGrid = dataGridDynamic;
                 if (lastEntityID is int)
                 {
@@ -194,16 +196,19 @@ namespace LeposWPF.UI
         private void AccountStatus_MouseDown(object sender, MouseButtonEventArgs e)
         {
             TextBlock textBlock = sender as TextBlock;
-            int ID = int.Parse(textBlock.Tag.ToString());
-            var client = conn.Clients.Where(a=> a.ID == ID).FirstOrDefault();
-            if (client != null)
+            if (textBlock.Tag != null)
             {
-                Window window = new AccountStatus(this, client);
-                Hide();
-                window.ShowDialog();
-                ShowDialog();
+                int ID = int.Parse(textBlock.Tag.ToString());
+                var client = conn.Clients.Where(a => a.ID == ID).FirstOrDefault();
+                if (client != null)
+                {
+                    Window window = new AccountStatus(this, client);
+                    Hide();
+                    window.ShowDialog();
+                    ShowDialog();
+                }
+                else displayText("Error: El cliente aún no es guardado en la base de datos", false);
             }
-            else displayText("Error: El cliente aún no es guardado en la base de datos",false);
         }
         /// <summary>
         /// Window loaded event
@@ -220,6 +225,10 @@ namespace LeposWPF.UI
             dataGridTag = productsButton.Tag.ToString();
             displayText("Obteniendo información...");
             fillDataGrid();
+            if (UserHelper.loggedUser.Type == 1)
+            {
+                deleteButton.IsEnabled = false;
+            }
         }
         /// <summary>
         /// Updates progress bar when value is changed
@@ -463,6 +472,7 @@ namespace LeposWPF.UI
                         object[] values = new object[] { };
                         String[] properties = new String[] { };
                         String[] propertiesForeign = new String[] { };
+                        var password = string.Empty;
                         if (dynamicObject is Client)
                         {
                             var name = DataGridHelper.getTextDG(dataGrid, row, 0);
@@ -491,11 +501,12 @@ namespace LeposWPF.UI
                         {
                             var ID = DataGridHelper.getTextDG(dataGrid, row, 0);
                             var type = dynamicObject.Type;
-                            var password = flagNew ? UserHelper.generateRandomPassword() : dynamicObject.Password;
+                            password = flagNew ? UserHelper.generateRandomPassword() : dynamicObject.Password;
                             values = new object[] {ID,type ,password};
                             properties = new String[] { "ID","Type","Password" };
                             propertiesForeign = new String[] { };
                             DataGridHelper.HandleAddUpdate(values, properties, propertiesForeign, e, flagNew, dynamicObject, objectEntity, false, 1);
+
                         }
                         else if (dynamicObject is Product)
                         {
@@ -513,6 +524,10 @@ namespace LeposWPF.UI
                         }
                         if (!e.Cancel)
                         {
+                            if(dynamicObject is User)
+                            {
+                                MessageBox.Show("La contraseña asignada al nuevo usuario es : " + password,"Nuevo Usuario",MessageBoxButton.OK,MessageBoxImage.Information);
+                            }
                             displayText("Información Guardada");
                         }
                         else
@@ -567,36 +582,4 @@ namespace LeposWPF.UI
         }
         #endregion
     }
-}
-public class Test
-{
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String name { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String name2 { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String name3 { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String name4 { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String name25 { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String name33 { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String name25235235 { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String name3323 { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String A { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String B { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String C { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String D { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String E { get; set; }
-    [Display(Name = "Price", AutoGenerateField = true)]
-    public String F { get; set; }
-
 }

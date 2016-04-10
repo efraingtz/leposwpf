@@ -65,7 +65,13 @@
         <DataTemplate x:Key="PayCellEditingTemplate">
             <TextBlock Tag="{Binding Path=ID}" Text="Abonar" MouseDown="payTextBlock_MouseDown" />
         </DataTemplate>
+        <DataTemplate x:Key="SubTotalCellTemplate">
+            <TextBlock Text="{Binding Path=SubTotal, StringFormat=c}"></TextBlock>
+        </DataTemplate>
 
+        <DataTemplate x:Key="SubTotalCellEditingTemplate">
+            <TextBlock Text="{Binding Path=SubTotal, StringFormat=c}"></TextBlock>
+        </DataTemplate>
         <DataTemplate x:Key="TotalCellTemplate">
             <TextBlock Text="{Binding Path=Total, StringFormat=c}"></TextBlock>
         </DataTemplate>

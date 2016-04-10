@@ -151,6 +151,8 @@
     <Compile Include="Helpers\Lepos.cs" />
     <Compile Include="Helpers\Paths.cs" />
     <Compile Include="Helpers\ReflectionHelper.cs" />
+    <Compile Include="Helpers\Ticket.cs" />
+    <Compile Include="Helpers\TicketPOS.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="Lepos_Model.Context.cs">
       <AutoGen>True</AutoGen>

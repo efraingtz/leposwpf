@@ -56,8 +56,14 @@
                 <TextBox IsReadOnly="True" Margin="6" Width="100" Grid.Column="1" Grid.Row="6" x:Name="debtTextBox" TextAlignment="Center" />
                 <Label Grid.Row="0" Grid.Column="2" Content="Abonar:" Foreground="gray"  />
                 <TextBox Margin="6" KeyDown="paymentTextbox_KeyDown" Width="100" Grid.Column="3" Grid.Row="0" x:Name="paymentTextBox" TextAlignment="Center" />
-                <Button Margin="6" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" Name="payButton" Click="payButton_Click"  Content="Abonar"/>
-                <TextBlock TextAlignment="Center" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" TextWrapping="Wrap" Name="errorTextBlock" Foreground="Red" Text="" />
+                <CheckBox Margin="6"
+                          Grid.Column="2" Grid.ColumnSpan="2" 
+                          Grid.Row="1"
+                                  Name="ticketCheckBox">
+                    <TextBlock TextWrapping="Wrap">Imprimir Ticket</TextBlock>
+                </CheckBox>
+                <Button Margin="6" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" Name="payButton" Click="payButton_Click"  Content="Abonar"/>
+                <TextBlock TextAlignment="Center" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" TextWrapping="Wrap" Name="errorTextBlock" Foreground="Red" Text="" />
 
                 <Image Name="logoImage"
                    Grid.Row="0"

@@ -37,12 +37,6 @@ namespace LeposWPF.UI.Reports
         /// <param name="e">Event of sender object</param>
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            var source = new List<Test>();
-            source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-            source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-            source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-            source.Add(new Test { name = "Name", name2 = "A", name3 = "ADG" });
-            debtsDataGrid.ItemsSource = source;
             debtsDataGrid.Width = ActualWidth;
             debtsDataGrid.Height = dataGridContainerViewBox.ActualHeight;
         }

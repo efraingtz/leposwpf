@@ -71,6 +71,12 @@ namespace LeposWPF.UI
                         paymentTextBox.Text = String.Empty;
                         errorTextBlock.Text = "Información guardada";
                         fillDetails();
+                        if (ticketCheckBox.IsChecked.Value)
+                        {
+                            //do ticket shit
+                            String clientName = Sale.Client.Name;
+                            TicketPOS.TicketAbonoVentaCredito(payment, Sale, debt , clientName);
+                        }
                     }
                     else
                     {
