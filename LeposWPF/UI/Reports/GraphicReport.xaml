@@ -1,0 +1,61 @@
+﻿<Controls:MetroWindow x:Class="LeposWPF.UI.Reports.GraphicReport"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:chart="clr-namespace:De.LarsHildebrandt.WpfControls.WpfSimpleChart;assembly=De.LarsHildebrandt.WpfControls.WpfSimpleChart"
+    Height="400" Width="600"
+    Loaded="frmMain_Loaded"
+    x:Name="frmMain">
+    <Window.Resources>
+        <RadialGradientBrush x:Key="ChartBackground">
+            <RadialGradientBrush.RelativeTransform>
+                <TransformGroup>
+                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.15" ScaleY="1.15"/>
+                    <TranslateTransform X="-0.08" Y="-0.08"/>
+                </TransformGroup>
+            </RadialGradientBrush.RelativeTransform>
+            <GradientStop Color="#FFEEE8C8" Offset="1"/>
+            <GradientStop Color="#FFDDD5AC" Offset="0"/>
+        </RadialGradientBrush>
+        <LinearGradientBrush x:Key="IsMouseOver" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="#FFDC9314"/>
+            <GradientStop Offset="0.564" Color="#FFD6CA79"/>
+            <GradientStop Color="#FFE6A03A" Offset="0.982"/>
+        </LinearGradientBrush>
+    </Window.Resources>
+
+    <TabControl SelectedIndex="0">
+        <TabItem Header="Barras">
+            <chart:BarChart 
+                    Caption="Estadísticas"
+                    Grid.Row="0" 
+                    x:Name="chartTest" 
+                    ChartLegend="{Binding Path=BarLegend, ElementName=frmMain}"
+                    DataContext="{Binding Path=BarRows, ElementName=frmMain}"
+                    ChartBackground="{StaticResource ChartBackground}"
+                    ChartScrollBarVisibility="Disabled"
+                    ChartMargin="5"
+                    ChartCaptionVisibility="Collapsed"
+                    ChartColorMouseOver="{StaticResource IsMouseOver}"
+                    Margin="20"
+                >
+            </chart:BarChart>
+
+
+        </TabItem>
+        <TabItem Header="Pie">
+            <Grid>
+                <chart:PieChart 
+                    x:Name="pieChart"
+                    Caption="Estadísticas"
+                    ChartBackground="{StaticResource ChartBackground}"
+                    ChartLegend="{Binding Path=PieLegend, ElementName=frmMain}"
+                    DataContext="{Binding Path=PieRows, ElementName=frmMain}"
+                    ChartColorMouseOver="{StaticResource IsMouseOver}"
+                    Margin="20">
+                </chart:PieChart>
+            </Grid>
+        </TabItem>
+    </TabControl>
+
+</Controls:MetroWindow>
