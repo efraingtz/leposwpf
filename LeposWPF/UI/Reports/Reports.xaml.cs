@@ -2,6 +2,7 @@
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,13 +49,13 @@ namespace LeposWPF.UI.Reports
         /// </summary>
         private String reportName = string.Empty;
         /// <summary>
-        /// Index for ID column
+        /// Name for ID column
         /// </summary>
-        private int IDColumn = 0;
+        private String IDColumn = string.Empty;
         /// <summary>
-        /// Index for value column
+        /// Name for value column
         /// </summary>
-        private int valueColumn = 0;
+        private String valueColumn = string.Empty;
         #endregion
         #region Constructors
         /// <summary>
@@ -102,7 +103,17 @@ namespace LeposWPF.UI.Reports
                 graphics = new List<dynamic>();
                 for (int x = 0; x < reportDataGrid.Items.Count; x++)
                 {
-                    graphics.Add(new { ID = DataGridHelper.getTextDG(reportDataGrid, x, IDColumn), Value = double.Parse(DataGridHelper.getTextDG(reportDataGrid, x, valueColumn)) });
+                    dynamic rowItem = reportDataGrid.Items[x];
+                    var valueIDName = IDColumn;
+                    var propertyInfo = rowItem.GetType().GetProperty(valueIDName);
+                    String ID= propertyInfo.GetValue(rowItem, null).ToString();
+
+                    var valueColumnName = valueColumn;
+                    propertyInfo = rowItem.GetType().GetProperty(valueColumnName);
+                    String strValue = propertyInfo.GetValue(rowItem, null).ToString();
+                    double Value = double.Parse(strValue);
+
+                    graphics.Add(new { ID = ID, Value = Value});
                 }
                 var chart = new GraphicReport(graphics, " Reporte: " + reportName + " Período : " + startDate + " : " + endDate,reportName);
                 Hide();
@@ -131,15 +142,15 @@ namespace LeposWPF.UI.Reports
         /// <param name="e">Event of sender object</param>
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
-            graphics = new List<dynamic>();
-            for (int x = 0; x < reportDataGrid.Items.Count; x++)
-            {
-                graphics.Add(new { ID = DataGridHelper.getTextDG(reportDataGrid, x, IDColumn), Value = DataGridHelper.getTextDG(reportDataGrid, x, valueColumn) });
-            }
-            var chart = new GraphicReport(graphics, " Reporte: " + reportName + " Período : " + startDate + " : " + endDate,reportName);
-            Hide();
-            chart.ShowDialog();
-            ShowDialog();
+            //graphics = new List<dynamic>();
+            //for (int x = 0; x < reportDataGrid.Items.Count; x++)
+            //{
+            //    graphics.Add(new { ID = DataGridHelper.getTextDG(reportDataGrid, x, IDColumn), Value = DataGridHelper.getTextDG(reportDataGrid, x, valueColumn) });
+            //}
+            //var chart = new GraphicReport(graphics, " Reporte: " + reportName + " Período : " + startDate + " : " + endDate, reportName);
+            //Hide();
+            //chart.ShowDialog();
+            //ShowDialog();
         }
         /// <summary>
         /// Value changed event
@@ -169,6 +180,7 @@ namespace LeposWPF.UI.Reports
             if (reportDataGrid == null)
                 return;
             reportDataGrid.Columns.Clear();
+            reportDataGrid.ItemsSource = null;
             DateTime start = startDatePicker.SelectedDate.Value;
             DateTime end = endDatePicker.SelectedDate.Value;
             if (start < end)
@@ -178,6 +190,17 @@ namespace LeposWPF.UI.Reports
                 {
                     //General
                     case 1:
+
+                        double totalSales = model.Sales.Where(a => a.Date >= start && a.Date <= end).Select(a=> a.Total).DefaultIfEmpty(0).Sum();
+                        double totalPurchases= model.Purchases.Where(a => a.Date >= start && a.Date <= end).Select(a => a.Total).DefaultIfEmpty(0).Sum();
+                        var products = model.SaleProducts.Where(a => a.Sale.Date >= start && a.Sale.Date <= end).GroupBy(a => a.Product).Select(a => new { Producto = a.Key.ID, Cantidad = a.Sum(c => c.Quantity) })
+                                         .OrderByDescending(a => a.Cantidad).Take(10).ToList();
+                        List<GeneralReportProduct> generalReportProduct = new List<GeneralReportProduct>();
+                        products.ForEach(a=> generalReportProduct.Add(new GeneralReportProduct() { ProductID = a.Producto, Quantity = a.Cantidad}));
+                        var generalReport = new GeneralReport(start,end, generalReportProduct, totalSales,totalPurchases);
+                        Hide();
+                        generalReport.ShowDialog();
+                        ShowDialog();
                         return;
                     //Products
                     case 2:
@@ -201,14 +224,22 @@ namespace LeposWPF.UI.Reports
                                 return;
                             //Per year
                             case 1:
+                                IDColumn = "Año";
+                                valueColumn = "Total_Compras";
                                 reportData = model.Purchases.Where(a => a.Date >= start && a.Date <= end).GroupBy(a => a.Date.Year).Select(a => new { Año = a.Key, Total_Compras = a.Sum(c => c.Total) }).OrderByDescending(a => a.Total_Compras).ToList();
                                 break;
                             //Per month
                             case 2:
-                                reportData = model.Purchases.Where(a => a.Date >= start && a.Date <= end).GroupBy(a => new { a.Date.Month, a.Date.Year }).Select(a => new { Mes = a.Key.Month + "/" + a.Key.Year, Total_Compras = a.Sum(c => c.Total) }).OrderByDescending(a => a.Total_Compras).ToList();
+                                IDColumn = "Mes";
+                                valueColumn = "Total_Compras";
+                                reportData = model.Purchases.Where(a => a.Date >= start && a.Date <= end).GroupBy(a => new { a.Date.Month, a.Date.Year })
+                                            .Select(a => new { Mes = a.Key.Month, Año = a.Key.Year, Total_Compras = a.Sum(c => c.Total) }).OrderByDescending(a => a.Total_Compras).ToList()
+                                            .Select(a => new { Mes = getMonthDate(a.Mes, a.Año), Total_Compras = a.Total_Compras }).ToList();
                                 break;
                             //Per day
                             case 3:
+                                IDColumn = "Fecha";
+                                valueColumn = "Total_Compras";
                                 reportData = model.Purchases.Where(a => a.Date >= start && a.Date <= end).GroupBy(a => new { a.Date.Day, a.Date.Month, a.Date.Year }).Select(a => new { Fecha = a.Key.Day + "/" + a.Key.Month + "/" + a.Key.Year, Total_Compras = a.Sum(c => c.Total) }).OrderByDescending(a => a.Total_Compras).ToList();
                                 break;
                         }
@@ -222,14 +253,22 @@ namespace LeposWPF.UI.Reports
                                 return;
                             //Per year
                             case 1:
+                                IDColumn = "Año";
+                                valueColumn = "Total_Ventas";
                                 reportData = model.Sales.Where(a => a.Date >= start && a.Date <= end).GroupBy(a => a.Date.Year).Select(a => new { Año = a.Key, Total_Ventas = a.Sum(c => c.Total) }).OrderByDescending(a => a.Total_Ventas).ToList();
                                 break;
                             //Per month
                             case 2:
-                                reportData = model.Sales.Where(a => a.Date >= start && a.Date <= end).GroupBy(a => new { a.Date.Month, a.Date.Year }).Select(a => new { Mes = a.Key.Month + "/" + a.Key.Year, Total_Ventas = a.Sum(c => c.Total) }).OrderByDescending(a => a.Total_Ventas).ToList();
+                                IDColumn = "Mes";
+                                valueColumn = "Total_Ventas";
+                                reportData = model.Sales.Where(a => a.Date >= start && a.Date <= end).GroupBy(a => new { a.Date.Month, a.Date.Year })
+                                             .Select(a => new { Mes = a.Key.Month, Año = a.Key.Year, Total_Ventas = a.Sum(c => c.Total) }).OrderByDescending(a => a.Total_Ventas).ToList()
+                                             .Select(a=> new { Mes = getMonthDate(a.Mes, a.Año) , Total_Ventas = a.Total_Ventas }).ToList();
                                 break;
                             //Per day
                             case 3:
+                                IDColumn = "Fecha";
+                                valueColumn = "Total_Ventas";
                                 reportData = model.Sales.Where(a => a.Date >= start && a.Date <= end).GroupBy(a => new { a.Date.Day, a.Date.Month, a.Date.Year }).Select(a => new { Fecha = a.Key.Day + "/" + a.Key.Month + "/" + a.Key.Year, Total_Ventas = a.Sum(c => c.Total) }).OrderByDescending(a => a.Total_Ventas).ToList();
                                 break;
                         }
@@ -247,29 +286,28 @@ namespace LeposWPF.UI.Reports
                 }
                 reportDataGrid.ItemsSource = reportData;
                 // Create counter new template column.
-                DataGridTemplateColumn templateColumn = new DataGridTemplateColumn();
-                templateColumn.Header = "Analizar";
-                templateColumn.CellTemplate = (DataTemplate)Resources["analizeTemplate"];
-                reportDataGrid.Columns.Add(templateColumn);
+                //DataGridTemplateColumn templateColumn = new DataGridTemplateColumn();
+                //templateColumn.Header = "Analizar";
+                //templateColumn.CellTemplate = (DataTemplate)Resources["analizeTemplate"];
+                //reportDataGrid.Columns.Add(templateColumn);
                 filterIntegerUpDown.IsEnabled = (reportDataGrid.Items.Count > 0);
                 chartButton.IsEnabled = (reportDataGrid.Items.Count > 0) && typeReportComboBox.SelectedIndex > 1;
                 switch (typeReportComboBox.SelectedIndex)
                 {
-                    //Providers and Clients
+                    //Products
+                    case 2:
+                        IDColumn = "Producto";
+                        valueColumn = "Cantidad";
+                        break;
+                    //Providers
                     case 3:
+                        IDColumn = "Nombre";
+                        valueColumn = "Total_Compras";
+                        break;
+                    //Clientes
                     case 4:
-                        IDColumn = 1;
-                        valueColumn = 2;
-                        break;
-                    case 5:
-                    case 6:
-                        IDColumn = 0;
-                        valueColumn = 1;
-                        break;
-                    //Products, Sales, Purchases
-                    default:
-                        IDColumn = 0;
-                        valueColumn = 2;
+                        IDColumn = "Nombre";
+                        valueColumn = "Total_Ventas";
                         break;
                 }
                 this.startDate = start.ToShortDateString();
@@ -280,6 +318,11 @@ namespace LeposWPF.UI.Reports
             {
                 displayText("La fecha inicial no puede ser superior a la final", false);
             }
+        }
+
+        private String getMonthDate(int month, int year)
+        {
+            return (CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
         }
         #endregion
     }

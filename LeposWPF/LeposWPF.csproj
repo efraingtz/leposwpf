@@ -155,6 +155,7 @@
     <Compile Include="Helpers\DataGridHelper.cs" />
     <Compile Include="Helpers\Dialogs.cs" />
     <Compile Include="Helpers\ExcelHelper.cs" />
+    <Compile Include="Helpers\GeneralReportProduct.cs" />
     <Compile Include="Helpers\ImportExcelHelper.cs" />
     <Compile Include="Helpers\KeyEventUtily.cs" />
     <Compile Include="Helpers\Lepos.cs" />
@@ -264,6 +265,9 @@
     </Compile>
     <Compile Include="UI\PurchaseDetail.xaml.cs">
       <DependentUpon>PurchaseDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Reports\GeneralReport.xaml.cs">
+      <DependentUpon>GeneralReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Reports\Reports.xaml.cs">
       <DependentUpon>Reports.xaml</DependentUpon>
@@ -398,6 +402,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UI\Reports\GeneralReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Reports\Reports.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -453,6 +461,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Reports\GeneralReport.rdlc" />
     <EntityDeploy Include="Lepos_Model.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Lepos_Model.Designer.cs</LastGenOutput>
@@ -465,6 +474,8 @@
       <DependentUpon>Lepos_Model.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\LeposWPF.Helpers.GeneralReportProduct.datasource" />
+    <None Include="Properties\DataSources\LeposWPF.Model.Product.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
