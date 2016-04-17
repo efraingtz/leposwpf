@@ -30,7 +30,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Content="Código de Activación:" Foreground="gray"  />
-            <TextBox Margin="6" Width="100" Grid.Column="1" Grid.Row="0" x:Name="codeTextBox" TextAlignment="Center" />
+            <PasswordBox Margin="6" Width="100" Grid.Column="1" Grid.Row="0" x:Name="codeTextBox" TextBlock.TextAlignment="Center" />
             <Button Margin="6" Grid.ColumnSpan="2" Grid.Row="1" Name="activateButton" Click="activateButton_Click" Content="Ok"/>
             <TextBlock TextAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2" TextWrapping="Wrap" Name="errorTextBlock" Foreground="Red" />
             <Image Name="logoImage"

@@ -10,6 +10,7 @@
                       Title="Ingreso"
                       Height="436"
                       Width="714"
+                      KeyUp="MetroWindow_KeyUp"
                       FontSize="16"
                       FontWeight="Bold"
                       WindowStartupLocation="CenterScreen"

@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using LeposWPF.Helpers.Clases;
+using MahApps.Metro.Controls;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,15 +28,24 @@ namespace LeposWPF.UI
         /// <param name="e">Event of sender object</param>
         private void activateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (false)
+            if (codeTextBox.Password == string.Empty)
             {
                 errorTextBlock.Visibility = Visibility.Visible;
                 errorTextBlock.Text = "Campos Incompletos";
             }
             else
             {
-                Hide();
-                new HomeRegister(this).ShowDialog();
+                if (codeTextBox.Password == "cartman")
+                {
+                    CompanyHelper.currentCompany.IsActivated = true;
+                    CompanyHelper.updateCompany();
+                    Close();
+                }
+                else
+                {
+                    errorTextBlock.Visibility = Visibility.Visible;
+                    errorTextBlock.Text = "Código inválido";
+                }
             }
         }
         #endregion

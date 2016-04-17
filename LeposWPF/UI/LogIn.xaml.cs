@@ -20,6 +20,9 @@ namespace LeposWPF.UI
         {
             InitializeComponent();
             logoImage.Source = WindowHelper.getLogo(CompanyHelper.getLogoPath());
+            CompanyHelper.companyExists();
+            CompanyHelper.currentCompany.IsActivated = false;
+            CompanyHelper.updateCompany();
         }
         #endregion
         #region UI Events
@@ -36,12 +39,41 @@ namespace LeposWPF.UI
             }
             else if (UserHelper.isUser(userTextBox.Text, passwordTextBox.Password))
             {
-                Hide();
-                new HomeRegister(this).ShowDialog();
+                if (CompanyHelper.companyExists())
+                {
+                    if (CompanyHelper.currentCompany.IsActivated)
+                    {
+                        Hide();
+                        new HomeRegister(this).ShowDialog();
+                    }
+                    else
+                    {
+                        errorTextBlock.Text = "Error : el producto no esta activado.";
+                    }
+                }
+                else
+                {
+                    errorTextBlock.Text = "Error : la base de datos esta dañada.";
+                }
             }
             else
             {
-                errorTextBlock.Text = "Datos incorrecto";
+                errorTextBlock.Text = "Datos incorrectos";
+            }
+        }
+        /// <summary>
+        /// Listen to keyboard
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">Event of sender object</param>
+        private void MetroWindow_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.F12)
+            {
+                Window window = new ActivateProduct();
+                Hide();
+                window.ShowDialog();
+                ShowDialog();
             }
         }
         #endregion
