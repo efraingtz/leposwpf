@@ -20,9 +20,6 @@ namespace LeposWPF.UI
         {
             InitializeComponent();
             logoImage.Source = WindowHelper.getLogo(CompanyHelper.getLogoPath());
-            CompanyHelper.companyExists();
-            CompanyHelper.currentCompany.IsActivated = false;
-            CompanyHelper.updateCompany();
         }
         #endregion
         #region UI Events
