@@ -34,10 +34,6 @@ namespace LeposWPF.UI
         /// </summary>
         private Model.LeposWPFModel model = new Model.LeposWPFModel();
         /// <summary>
-        /// Flag that indicates if a parsing error has happened
-        /// </summary>
-        private Boolean quantityParseFlag = true;
-        /// <summary>
         /// Flag that indicates if an event has happened within the DataGrid object
         /// </summary>
         private Boolean dataGridFuntionFlag = false;
@@ -361,7 +357,6 @@ namespace LeposWPF.UI
         private void updateInfoDataGrid()
         {
             double preTotal = 0;
-            quantityParseFlag = true;
             foreach (var item in purchaseHelperSource)
             {
                 item.Amount = item.Quantity * item.Cost;

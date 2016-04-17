@@ -31,10 +31,6 @@ namespace LeposWPF.UI
         /// </summary>
         private Model.LeposWPFModel model = new Model.LeposWPFModel();
         /// <summary>
-        /// Indicates if there is an error loading
-        /// </summary>
-        private Boolean errorsFlag = false;
-        /// <summary>
         /// List of products ids
         /// </summary>
         private List<String> IDProducts;
@@ -241,7 +237,6 @@ namespace LeposWPF.UI
         /// <param name="col">Column index</param>
         private void setErrorDataGridCell(System.Data.DataRowView dataRowView, int col)
         {
-            errorsFlag = true;
             var shit = dataRowView.Row[col];
         }
         /// <summary>

@@ -32,7 +32,6 @@
         private ObservableCollection<ChartLegendItem> m_stackedLegend = new ObservableCollection<ChartLegendItem>();
         private ObservableCollection<StackedChartRow> m_stackedRows = new ObservableCollection<StackedChartRow>();
         private List<dynamic> valores;
-        private String currentTitle;
         #endregion Fields
 
         #region Constructors

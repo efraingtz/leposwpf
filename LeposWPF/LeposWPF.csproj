@@ -53,6 +53,9 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>default_logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="De.LarsHildebrandt.WpfControls.WpfSimpleChart">
       <HintPath>DLLS\De.LarsHildebrandt.WpfControls.WpfSimpleChart.dll</HintPath>
@@ -514,6 +517,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DB\DB_21_02_2016.sql" />
+    <Resource Include="default_logo.ico" />
     <Content Include="Lepos_Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Lepos_Model.edmx</DependentUpon>
