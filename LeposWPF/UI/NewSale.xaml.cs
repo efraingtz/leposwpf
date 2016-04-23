@@ -145,7 +145,8 @@ namespace LeposWPF.UI
                 char code = KeyEventUtility.GetCharFromKey(e.Key);
                 if(isBackSpace)
                 {
-                    DataGridHelper.setTextDG(saleDataGrid, saleDataGrid.SelectedIndex, 2, text.Substring(0,text.Length-1));
+                    if(text.Length > 0)
+                        DataGridHelper.setTextDG(saleDataGrid, saleDataGrid.SelectedIndex, 2, text.Substring(0,text.Length-1));
                 }
                 else
                     DataGridHelper.setTextDG(saleDataGrid, saleDataGrid.SelectedIndex, 2, text + code);

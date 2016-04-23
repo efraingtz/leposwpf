@@ -173,8 +173,12 @@ namespace LeposWPF.Helpers
         /// <returns>Text from TextBlock</returns>
         internal static String getTextDG(DataGrid dataGrid, int row, int column)
         {
-            var data = dataGrid.Columns[column].GetCellContent(dataGrid.Items[row]);
-            return (data != null) ? (data as TextBlock).Text : String.Empty;
+            if (row >= 0 && column >= 0 && dataGrid != null)
+            {
+                var data = dataGrid.Columns[column].GetCellContent(dataGrid.Items[row]);
+                return (data != null) ? (data as TextBlock).Text : String.Empty;
+            }
+            return string.Empty;
         }
 
         /// <summary>
@@ -240,16 +244,17 @@ namespace LeposWPF.Helpers
         /// <param name="text">New text that will be displayed inside the TextBlock</param>
         internal static void setTextDG(DataGrid dataGrid, int row, int column, String text)
         {
-            var data = dataGrid.Columns[column].GetCellContent(dataGrid.Items[row]);
-            if (data != null)
+            if (row >= 0 && column >= 0 && dataGrid != null)
             {
-                if (data is TextBox)
-                    (data as TextBox).Text = text;
-                else if (data is TextBlock)
-                    (data as TextBlock).Text = text;
+                var data = dataGrid.Columns[column].GetCellContent(dataGrid.Items[row]);
+                if (data != null)
+                {
+                    if (data is TextBox)
+                        (data as TextBox).Text = text;
+                    else if (data is TextBlock)
+                        (data as TextBlock).Text = text;
+                }
             }
-
-
         }
 
         /// <summary>
