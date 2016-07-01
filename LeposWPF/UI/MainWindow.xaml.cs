@@ -49,6 +49,7 @@ namespace LeposWPF.UI
                         settingsMenuItem.IsEnabled = false;
             }
             setLogoImage();
+            versionFontAwesome.Text = "Versión Actual: " + WindowHelper.GetVersion();
         }
         /// <summary>
         /// Event to handle clicking settings button

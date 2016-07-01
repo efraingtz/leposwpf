@@ -122,10 +122,11 @@ namespace LeposWPF.UI
         private void paymentTextbox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             Boolean isDigit = !(e.Key < System.Windows.Input.Key.D0 || e.Key > System.Windows.Input.Key.D9);
+            Boolean isDigitNumericPad = !(e.Key < System.Windows.Input.Key.NumPad0 || e.Key > System.Windows.Input.Key.NumPad9);
             Boolean singleDot = paymentTextBox.Text.Where(a => a.Equals('.')).Count() == 0;
             Boolean isDot = e.Key == System.Windows.Input.Key.OemPeriod;
             Boolean isBackSpace = e.Key == System.Windows.Input.Key.Back;
-            if (!((isDot && singleDot) || isBackSpace || isDigit))
+            if (!((isDot && singleDot) || isBackSpace || isDigit || isDigitNumericPad))
             {
                 e.Handled = true;
             }

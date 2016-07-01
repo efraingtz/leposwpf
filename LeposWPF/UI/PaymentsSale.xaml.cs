@@ -131,7 +131,8 @@ namespace LeposWPF.UI
             Boolean singleDot = paymentTextBox.Text.Where(a => a.Equals('.')).Count() == 0;
             Boolean isDot = e.Key == System.Windows.Input.Key.OemPeriod;
             Boolean isBackSpace = e.Key == System.Windows.Input.Key.Back;
-            if (!((isDot && singleDot) || isBackSpace || isDigit))
+            Boolean isDigitNumericPad = !(e.Key < System.Windows.Input.Key.NumPad0 || e.Key > System.Windows.Input.Key.NumPad9);
+            if (!((isDot && singleDot) || isBackSpace || isDigit || isDigitNumericPad))
             {
                 e.Handled = true;
             }
